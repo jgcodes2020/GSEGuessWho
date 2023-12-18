@@ -3,12 +3,11 @@ package ca.gse.guesswho.models;
 import java.net.URL;
 
 /**
- * Represents a Guess Who character. Contains their name, attributes, as well as a URL pointing to their picture.
+ * Represents a Guess Who character. Is intended to be an immutable data class.
  */
 public class GuessWhoCharacter {
 
 	private String name;
-	private URL imageUrl;
 	private byte eyeColour;
 	private byte gender;
 	private byte skinTone;
@@ -22,23 +21,21 @@ public class GuessWhoCharacter {
 
 	/**
 	 * Creates a new character with the specified name, image, and attributes.
-	 * @param name
-	 * @param imageUrl
-	 * @param eyeColour
-	 * @param gender
-	 * @param skinTone
-	 * @param hairColour
-	 * @param facialHair
-	 * @param glasses
-	 * @param visibleTeeth
-	 * @param headwear
-	 * @param hairStyle
-	 * @param piercings
+	 * @param name the character's name
+	 * @param eyeColour the character's eye colour, should be one of the {@code GuessWhoCharacter.EYE_COLOUR_*} constants
+	 * @param gender the character's gender, should be one of the {@code GuessWhoCharacter.GENDER_*} constants
+	 * @param skinTone the character's skin tone, should be one of the {@code GuessWhoCharacter.SKIN_TONE_*} constants
+	 * @param hairColour the character's hair colour, should be one of the {@code GuessWhoCharacter.HAIR_COLOUR_*} constants
+	 * @param facialHair the character's facial hair, should be one of the {@code GuessWhoCharacter.FACIAL_HAIR_*} constants
+	 * @param glasses the character's glasses, should be one of the {@code GuessWhoCharacter.GLASSES_*} constants
+	 * @param visibleTeeth the character's teeth visibility, should be one of the {@code GuessWhoCharacter.VISIBLE_TEETH_*} constants
+	 * @param headwear the character's headwear, should be one of the {@code GuessWhoCharacter.HEADWEAR_*} constants
+	 * @param hairStyle the character's gender, should be one of the {@code GuessWhoCharacter.HAIR_STYLE_*} constants
+	 * @param piercings the character's gender, should be one of the {@code GuessWhoCharacter.PIERCINGS_*} constants
 	 */
 	public GuessWhoCharacter(String name, URL imageUrl, byte eyeColour, byte gender, byte skinTone, byte hairColour,
 			byte facialHair, byte glasses, byte visibleTeeth, byte headwear, byte hairStyle, byte piercings) {
 		this.name = name;
-		this.imageUrl = imageUrl;
 		this.eyeColour = eyeColour;
 		this.gender = gender;
 		this.skinTone = skinTone;
@@ -171,15 +168,6 @@ public class GuessWhoCharacter {
 	 */
 	public String getName() {
 		return this.name;
-	}
-
-	/**
-	 * Gets a URL pointing to the character's image. It should usually be a local URL,
-	 * such as one pointing to a local file or resource.
-	 * @return a URL pointing to the character's image.
-	 */
-	public URL getImageUrl() {
-		return this.imageUrl;
 	}
 
 	/**
