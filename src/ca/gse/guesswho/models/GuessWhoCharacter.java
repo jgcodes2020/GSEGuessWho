@@ -21,19 +21,30 @@ public class GuessWhoCharacter {
 
 	/**
 	 * Creates a new character with the specified name, image, and attributes.
-	 * @param name the character's name
-	 * @param eyeColour the character's eye colour, should be one of the {@code GuessWhoCharacter.EYE_COLOUR_*} constants
-	 * @param gender the character's gender, should be one of the {@code GuessWhoCharacter.GENDER_*} constants
-	 * @param skinTone the character's skin tone, should be one of the {@code GuessWhoCharacter.SKIN_TONE_*} constants
-	 * @param hairColour the character's hair colour, should be one of the {@code GuessWhoCharacter.HAIR_COLOUR_*} constants
-	 * @param facialHair the character's facial hair, should be one of the {@code GuessWhoCharacter.FACIAL_HAIR_*} constants
-	 * @param glasses the character's glasses, should be one of the {@code GuessWhoCharacter.GLASSES_*} constants
-	 * @param visibleTeeth the character's teeth visibility, should be one of the {@code GuessWhoCharacter.VISIBLE_TEETH_*} constants
-	 * @param headwear the character's headwear, should be one of the {@code GuessWhoCharacter.HEADWEAR_*} constants
-	 * @param hairStyle the character's gender, should be one of the {@code GuessWhoCharacter.HAIR_STYLE_*} constants
-	 * @param piercings the character's gender, should be one of the {@code GuessWhoCharacter.PIERCINGS_*} constants
+	 * 
+	 * @param name         the character's name
+	 * @param eyeColour    the character's eye colour, should be one of the
+	 *                     {@code GuessWhoCharacter.EYE_COLOUR_*} constants
+	 * @param gender       the character's gender, should be one of the
+	 *                     {@code GuessWhoCharacter.GENDER_*} constants
+	 * @param skinTone     the character's skin tone, should be one of the
+	 *                     {@code GuessWhoCharacter.SKIN_TONE_*} constants
+	 * @param hairColour   the character's hair colour, should be one of the
+	 *                     {@code GuessWhoCharacter.HAIR_COLOUR_*} constants
+	 * @param facialHair   the character's facial hair, should be one of the
+	 *                     {@code GuessWhoCharacter.FACIAL_HAIR_*} constants
+	 * @param glasses      the character's glasses, should be one of the
+	 *                     {@code GuessWhoCharacter.GLASSES_*} constants
+	 * @param visibleTeeth the character's teeth visibility, should be one of the
+	 *                     {@code GuessWhoCharacter.VISIBLE_TEETH_*} constants
+	 * @param headwear     the character's headwear, should be one of the
+	 *                     {@code GuessWhoCharacter.HEADWEAR_*} constants
+	 * @param hairStyle    the character's gender, should be one of the
+	 *                     {@code GuessWhoCharacter.HAIR_STYLE_*} constants
+	 * @param piercings    the character's gender, should be one of the
+	 *                     {@code GuessWhoCharacter.PIERCINGS_*} constants
 	 */
-	public GuessWhoCharacter(String name, URL imageUrl, byte eyeColour, byte gender, byte skinTone, byte hairColour,
+	public GuessWhoCharacter(String name, byte eyeColour, byte gender, byte skinTone, byte hairColour,
 			byte facialHair, byte glasses, byte visibleTeeth, byte headwear, byte hairStyle, byte piercings) {
 		this.name = name;
 		this.eyeColour = eyeColour;
@@ -47,7 +58,28 @@ public class GuessWhoCharacter {
 		this.hairStyle = hairStyle;
 		this.piercings = piercings;
 	}
-	
+
+	/**
+	 * Parses a Guess Who character from a row of CSV. TODO: document format
+	 * @param row the CSV row to read
+	 * @return a Guess Who character based on the provided data.
+	 */
+	public static GuessWhoCharacter fromCsvRow(String row) {
+		String[] parts = row.split(",");
+		return new GuessWhoCharacter(
+				parts[0],
+				Byte.parseByte(parts[1]),
+				Byte.parseByte(parts[2]),
+				Byte.parseByte(parts[3]),
+				Byte.parseByte(parts[4]),
+				Byte.parseByte(parts[5]),
+				Byte.parseByte(parts[6]),
+				Byte.parseByte(parts[7]),
+				Byte.parseByte(parts[8]),
+				Byte.parseByte(parts[9]),
+				Byte.parseByte(parts[10]));
+	}
+
 	/**
 	 * Represents brown eye colour.
 	 */
@@ -117,7 +149,7 @@ public class GuessWhoCharacter {
 	 * Represents the presence of glasses.
 	 */
 	public static final byte GLASSES_YES = 1;
-	
+
 	/**
 	 * Represents the absence of visible teeth.
 	 */
@@ -125,7 +157,7 @@ public class GuessWhoCharacter {
 	/**
 	 * Represents the presence of visible teeth.
 	 */
-	public static final byte VISIBLE_TEETH_YES = 0;
+	public static final byte VISIBLE_TEETH_YES = 1;
 
 	/**
 	 * Represents the absence of headwear.
@@ -156,14 +188,15 @@ public class GuessWhoCharacter {
 	/**
 	 * Represents the absence of piercings.
 	 */
-	public static final byte PIERCINGS_NONE = 0;
+	public static final byte PIERCINGS_NO = 0;
 	/**
 	 * Represents the presence of ear piercings.
 	 */
-	public static final byte PIERCINGS_EAR = 1;
+	public static final byte PIERCINGS_YES = 1;
 
 	/**
 	 * Gets the character's name.
+	 * 
 	 * @return the character's name.
 	 */
 	public String getName() {
@@ -173,6 +206,7 @@ public class GuessWhoCharacter {
 	/**
 	 * Gets the character's eye colour. The value should be one of the
 	 * {@code EYE_COLOUR_*} constants in this class.
+	 * 
 	 * @return the character's eye colour
 	 * @see GuessWhoCharacter#EYE_COLOUR_BROWN
 	 * @see GuessWhoCharacter#EYE_COLOUR_GREEN
@@ -185,6 +219,7 @@ public class GuessWhoCharacter {
 	/**
 	 * Gets the character's gender. The value should be one of the
 	 * {@code GENDER_*} constants in this class.
+	 * 
 	 * @return the character's gender.
 	 * @see GuessWhoCharacter#GENDER_MALE
 	 * @see GuessWhoCharacter#GENDER_FEMALE
@@ -196,6 +231,7 @@ public class GuessWhoCharacter {
 	/**
 	 * Gets the character's skin tone. The value should be one of the
 	 * {@code SKIN_TONE_*} constants in this class.
+	 * 
 	 * @return the character's skin tone.
 	 * @see GuessWhoCharacter#SKIN_TONE_LIGHT
 	 * @see GuessWhoCharacter#SKIN_TONE_DARK
@@ -207,6 +243,7 @@ public class GuessWhoCharacter {
 	/**
 	 * Gets the character's hair colour. The value should be one of the
 	 * {@code HAIR_COLOUR_*} constants in this class.
+	 * 
 	 * @return the character's hair colour.
 	 * @see GuessWhoCharacter#HAIR_COLOUR_BLACK
 	 * @see GuessWhoCharacter#HAIR_COLOUR_BROWN
@@ -221,6 +258,7 @@ public class GuessWhoCharacter {
 	/**
 	 * Gets the character's facial hair style. The value should be one of the
 	 * {@code FACIAL_HAIR_*} constants in this class.
+	 * 
 	 * @return the character's facial hair style.
 	 * @see GuessWhoCharacter#FACIAL_HAIR_NO
 	 * @see GuessWhoCharacter#FACIAL_HAIR_YES
@@ -232,6 +270,7 @@ public class GuessWhoCharacter {
 	/**
 	 * Gets the character's glasses. The value should be one of the
 	 * {@code GLASSES_*} constants in this class.
+	 * 
 	 * @return the character's glasses.
 	 * @see GuessWhoCharacter#GLASSES_NO
 	 * @see GuessWhoCharacter#GLASSES_YES
@@ -243,6 +282,7 @@ public class GuessWhoCharacter {
 	/**
 	 * Gets the character's teeth visibility. The value should be one of the
 	 * {@code VISIBLE_TEETH_*} constants in this class.
+	 * 
 	 * @return the character's teeth visibility.
 	 * @see GuessWhoCharacter#VISIBLE_TEETH_NO
 	 * @see GuessWhoCharacter#VISIBLE_TEETH_YES
@@ -254,6 +294,7 @@ public class GuessWhoCharacter {
 	/**
 	 * Gets the character's headwear. The value should be one of the
 	 * {@code HEADWEAR_*} constants in this class.
+	 * 
 	 * @return the character's headwear.
 	 * @see GuessWhoCharacter#HEADWEAR_NO
 	 * @see GuessWhoCharacter#HEADWEAR_YES
@@ -265,6 +306,7 @@ public class GuessWhoCharacter {
 	/**
 	 * Gets the character's hair style. The value should be one of the
 	 * {@code HAIR_STYLE_*} constants in this class.
+	 * 
 	 * @return the character's hair style.
 	 * @see GuessWhoCharacter#HAIR_STYLE_SHORT
 	 * @see GuessWhoCharacter#HAIR_STYLE_TIED
@@ -278,12 +320,168 @@ public class GuessWhoCharacter {
 	/**
 	 * Gets the character's piercings. The value should be one of the
 	 * {@code PIERCINGS_*} constants in this class.
+	 * 
 	 * @return the character's piercings.
-	 * @see GuessWhoCharacter#PIERCINGS_NONE
-	 * @see GuessWhoCharacter#PIERCINGS_EAR
+	 * @see GuessWhoCharacter#PIERCINGS_NO
+	 * @see GuessWhoCharacter#PIERCINGS_YES
 	 */
 	public byte getPiercings() {
 		return this.piercings;
 	}
 
+	/**
+	 * Returns a descriptive string listing all the character's attributes.
+	 * 
+	 * @return a descriptive string listing all the character's attributes.
+	 */
+	@Override
+	public String toString() {
+		// Create a StringBuilder to build the name piecewise
+		StringBuilder output = new StringBuilder();
+		output.append(this.name).append(" (");
+		
+		// switch over values for each attribute
+		// this literally repeats for all of them, so I won't add more comments
+		switch (this.eyeColour) {
+			case EYE_COLOUR_BROWN:
+				output.append("brown eyes");
+				break;
+			case EYE_COLOUR_GREEN:
+				output.append("green eyes");
+				break;
+			case EYE_COLOUR_BLUE:
+				output.append("blue eyes");
+				break;
+			default:
+				// this should never happen, the assertion should never trigger
+				// same goes for all the others
+				assert false;
+		}
+		output.append(", ");
+		
+		switch (this.gender) {
+			case GENDER_MALE:
+				output.append("male");
+				break;
+			case GENDER_FEMALE:
+				output.append("female");
+				break;
+			default:
+				assert false;
+		}
+		output.append(", ");
+		
+		switch (this.skinTone) {
+			case SKIN_TONE_LIGHT:
+				output.append("light skin tone");
+				break;
+			case SKIN_TONE_DARK:
+				output.append("dark skin tone");
+				break;
+			default:
+				assert false;
+		}
+		output.append(", ");
+		
+		switch (this.hairColour) {
+			case HAIR_COLOUR_BLACK:
+				output.append("black hair");
+				break;
+			case HAIR_COLOUR_BROWN:
+				output.append("brown hair");
+				break;
+			case HAIR_COLOUR_GINGER:
+				output.append("ginger hair");
+				break;
+			case HAIR_COLOUR_BLONDE:
+				output.append("blonde hair");
+				break;
+			case HAIR_COLOUR_WHITE:
+				output.append("white hair");
+				break;
+			default:
+				assert false;
+		}
+		output.append(", ");
+		
+		switch (this.facialHair) {
+			case FACIAL_HAIR_NO:
+				output.append("no facial hair");
+				break;
+			case FACIAL_HAIR_YES:
+				output.append("facial hair");
+				break;
+			default:
+				assert false;
+		}
+		output.append(", ");
+		
+		switch (this.glasses) {
+			case GLASSES_NO:
+				output.append("no glasses");
+				break;
+			case GLASSES_YES:
+				output.append("glasses");
+				break;
+			default:
+				assert false;
+		}
+		output.append(", ");
+		
+		switch (this.visibleTeeth) {
+			case VISIBLE_TEETH_NO:
+				output.append("no visible teeth");
+				break;
+			case VISIBLE_TEETH_YES:
+				output.append("visible teeth");
+				break;
+			default:
+				assert false;
+		}
+		output.append(", ");
+		
+		switch (this.headwear) {
+			case HEADWEAR_NO:
+				output.append("no headwear");
+				break;
+			case HEADWEAR_YES:
+				output.append("headwear");
+				break;
+			default:
+				assert false;
+		}
+		output.append(", ");
+		
+		switch (this.hairStyle) {
+			case HAIR_STYLE_SHORT:
+				output.append("short hair");
+				break;
+			case HAIR_STYLE_TIED:
+				output.append("tied-up hair");
+				break;
+			case HAIR_STYLE_LONG:
+				output.append("long hair");
+				break;
+			case HAIR_STYLE_BALD:
+				output.append("bald");
+				break;
+			default:
+				assert false;
+		}
+		output.append(", ");
+		
+		switch (this.piercings) {
+			case PIERCINGS_NO:
+				output.append("no piercings");
+				break;
+			case PIERCINGS_YES:
+				output.append("piercings");
+				break;
+			default:
+				assert false;
+		}
+		// add closing bracket, output value (it's gonna be pretty long)
+		output.append(")");
+		return output.toString();
+	}
 }
