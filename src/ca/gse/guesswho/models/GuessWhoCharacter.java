@@ -61,6 +61,7 @@ public class GuessWhoCharacter {
 
 	/**
 	 * Parses a Guess Who character from a row of CSV. TODO: document format
+	 * 
 	 * @param row the CSV row to read
 	 * @return a Guess Who character based on the provided data.
 	 */
@@ -79,6 +80,17 @@ public class GuessWhoCharacter {
 				Byte.parseByte(parts[9]),
 				Byte.parseByte(parts[10]));
 	}
+
+	public static final int ATTRIBUTE_EYE_COLOUR = 0;
+	public static final int ATTRIBUTE_GENDER = 1;
+	public static final int ATTRIBUTE_SKIN_TONE = 2;
+	public static final int ATTRIBUTE_HAIR_COLOUR = 3;
+	public static final int ATTRIBUTE_FACIAL_HAIR = 4;
+	public static final int ATTRIBUTE_GLASSES = 5;
+	public static final int ATTRIBUTE_VISIBLE_TEETH = 6;
+	public static final int ATTRIBUTE_HEADWEAR = 7;
+	public static final int ATTRIBUTE_HAIR_STYLE = 8;
+	public static final int ATTRIBUTE_PIERCINGS = 9;
 
 	/**
 	 * Represents brown eye colour.
@@ -201,6 +213,39 @@ public class GuessWhoCharacter {
 	 */
 	public String getName() {
 		return this.name;
+	}
+
+	/**
+	 * Selects and returns an attribute according to an attribute code.
+	 * This avoids the need for reflectively calling one of the {@code get*()} methods.
+	 * @param attributeCode one of the {@code ATTRIBUTE_*} values on this class.
+	 * @return the attribute corresponding to {@code attributeCode}
+	 */
+	public byte getAttribute(int attributeCode) {
+		switch (attributeCode) {
+			case ATTRIBUTE_EYE_COLOUR:
+				return this.eyeColour;
+			case ATTRIBUTE_GENDER:
+				return this.gender;
+			case ATTRIBUTE_SKIN_TONE:
+				return this.skinTone;
+			case ATTRIBUTE_HAIR_COLOUR:
+				return this.hairColour;
+			case ATTRIBUTE_FACIAL_HAIR:
+				return this.facialHair;
+			case ATTRIBUTE_GLASSES:
+				return this.glasses;
+			case ATTRIBUTE_VISIBLE_TEETH:
+				return this.visibleTeeth;
+			case ATTRIBUTE_HEADWEAR:
+				return this.headwear;
+			case ATTRIBUTE_HAIR_STYLE:
+				return this.hairStyle;
+			case ATTRIBUTE_PIERCINGS:
+				return this.piercings;
+			default:
+				throw new IllegalArgumentException("Invalid attribute code " + attributeCode);
+		}
 	}
 
 	/**
@@ -339,7 +384,7 @@ public class GuessWhoCharacter {
 		// Create a StringBuilder to build the name piecewise
 		StringBuilder output = new StringBuilder();
 		output.append(this.name).append(" (");
-		
+
 		// switch over values for each attribute
 		// this literally repeats for all of them, so I won't add more comments
 		switch (this.eyeColour) {
@@ -358,7 +403,7 @@ public class GuessWhoCharacter {
 				assert false;
 		}
 		output.append(", ");
-		
+
 		switch (this.gender) {
 			case GENDER_MALE:
 				output.append("male");
@@ -370,7 +415,7 @@ public class GuessWhoCharacter {
 				assert false;
 		}
 		output.append(", ");
-		
+
 		switch (this.skinTone) {
 			case SKIN_TONE_LIGHT:
 				output.append("light skin tone");
@@ -382,7 +427,7 @@ public class GuessWhoCharacter {
 				assert false;
 		}
 		output.append(", ");
-		
+
 		switch (this.hairColour) {
 			case HAIR_COLOUR_BLACK:
 				output.append("black hair");
@@ -403,7 +448,7 @@ public class GuessWhoCharacter {
 				assert false;
 		}
 		output.append(", ");
-		
+
 		switch (this.facialHair) {
 			case FACIAL_HAIR_NO:
 				output.append("no facial hair");
@@ -415,7 +460,7 @@ public class GuessWhoCharacter {
 				assert false;
 		}
 		output.append(", ");
-		
+
 		switch (this.glasses) {
 			case GLASSES_NO:
 				output.append("no glasses");
@@ -427,7 +472,7 @@ public class GuessWhoCharacter {
 				assert false;
 		}
 		output.append(", ");
-		
+
 		switch (this.visibleTeeth) {
 			case VISIBLE_TEETH_NO:
 				output.append("no visible teeth");
@@ -439,7 +484,7 @@ public class GuessWhoCharacter {
 				assert false;
 		}
 		output.append(", ");
-		
+
 		switch (this.headwear) {
 			case HEADWEAR_NO:
 				output.append("no headwear");
@@ -451,7 +496,7 @@ public class GuessWhoCharacter {
 				assert false;
 		}
 		output.append(", ");
-		
+
 		switch (this.hairStyle) {
 			case HAIR_STYLE_SHORT:
 				output.append("short hair");
@@ -469,7 +514,7 @@ public class GuessWhoCharacter {
 				assert false;
 		}
 		output.append(", ");
-		
+
 		switch (this.piercings) {
 			case PIERCINGS_NO:
 				output.append("no piercings");
