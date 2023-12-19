@@ -11,13 +11,13 @@ import ca.gse.guesswho.models.Question;
 import ca.gse.guesswho.models.questions.AttributeQuestion;
 import ca.gse.guesswho.models.questions.CharacterQuestion;
 
-public class DumbAIPlayer extends Player {
+public class SmartAIPlayer extends Player {
 	private Random rng;
 
 	/**
-	 * Creates a new dumb AI player.
+	 * Creates a new smart AI player.
 	 */
-	public DumbAIPlayer() {
+	public SmartAIPlayer() {
 		rng = new Random();
 	}
 
