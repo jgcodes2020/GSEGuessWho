@@ -1,9 +1,10 @@
 package ca.gse.guesswho.models;
 
+import java.util.BitSet;
 import java.util.List;
 
 public abstract class Player {
-	protected boolean[] remainingIndexes;
+	protected BitSet remainingIndexes;
 	protected int secretIndex;
 	
 	public abstract Question takeTurn();
@@ -17,10 +18,8 @@ public abstract class Player {
 			throw new IllegalArgumentException("Player creation requires a loaded character list!");
 		
 		// create and fill the "remaining indexes" array with true
-		this.remainingIndexes = new boolean[characters.size()];
-		for (int i = 0; i < remainingIndexes.length; i++) {
-			this.remainingIndexes[i] = true;
-		}
+		this.remainingIndexes = new BitSet(characters.size());
+		this.remainingIndexes.set(0, characters.size());
 		// set the secret index to -1 as a sentinel value
 		this.secretIndex = -1;
 	}
@@ -33,7 +32,7 @@ public abstract class Player {
 		return this.secretIndex;
 	}
 	
-	public boolean[] getRemainingIndexes() {
+	public BitSet getRemainingIndexes() {
 		return this.remainingIndexes;
 	}
 }

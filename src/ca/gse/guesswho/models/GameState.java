@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.BitSet;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -115,11 +116,11 @@ public class GameState {
             boolean isP1Winner = !(this.isPlayer1Turn ^ matchValue);
             winner = isP1Winner ? WINNER_P1 : WINNER_P2;
         } else {
-            boolean[] remainingIndexes = asking.getRemainingIndexes();
-            for (int i = 0; i < remainingIndexes.length; i++) {
+            BitSet remainingIndexes = asking.getRemainingIndexes();
+            for (int i = 0; i < remainingIndexes.length(); i++) {
                 // if the current character doesn't match the same as the secret character, flip it down
                 if (question.match(characterList.get(i)) != matchValue)
-                    remainingIndexes[i] = false;
+                    remainingIndexes.clear(i);
             }
         }
         // switch turns

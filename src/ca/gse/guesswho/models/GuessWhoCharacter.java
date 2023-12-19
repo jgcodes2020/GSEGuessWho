@@ -81,16 +81,50 @@ public class GuessWhoCharacter {
 				Byte.parseByte(parts[10]));
 	}
 
+	/**
+	 * Represents the eye colour attribute.
+	 */
 	public static final int ATTRIBUTE_EYE_COLOUR = 0;
+	/**
+	 * Represents the gender attribute.
+	 */
 	public static final int ATTRIBUTE_GENDER = 1;
+	/**
+	 * Represents the skin tone attribute.
+	 */
 	public static final int ATTRIBUTE_SKIN_TONE = 2;
+	/**
+	 * Represents the hair colour attribute.
+	 */
 	public static final int ATTRIBUTE_HAIR_COLOUR = 3;
+	/**
+	 * Represents the facial hair attribute.
+	 */
 	public static final int ATTRIBUTE_FACIAL_HAIR = 4;
+	/**
+	 * Represents the glasses attribute.
+	 */
 	public static final int ATTRIBUTE_GLASSES = 5;
+	/**
+	 * Represents the visible teeth attribute.
+	 */
 	public static final int ATTRIBUTE_VISIBLE_TEETH = 6;
+	/**
+	 * Represents the headwear attribute.
+	 */
 	public static final int ATTRIBUTE_HEADWEAR = 7;
+	/**
+	 * Represents the hair style attribute.
+	 */
 	public static final int ATTRIBUTE_HAIR_STYLE = 8;
+	/**
+	 * Represents the piercings attribute.
+	 */
 	public static final int ATTRIBUTE_PIERCINGS = 9;
+	/**
+	 * Upper bound on the indices allocated for attribute codes.
+	 */
+	public static final int ATTRIBUTE_NUM_VALS = 10;
 
 	/**
 	 * Represents brown eye colour.
@@ -104,6 +138,10 @@ public class GuessWhoCharacter {
 	 * Represents blue eye colour.
 	 */
 	public static final byte EYE_COLOUR_BLUE = 2;
+	/**
+	 * Upper bound on the indices allocated for eye colour values.
+	 */
+	public static final byte EYE_COLOUR_NUM_VALS = 3;
 
 	/**
 	 * Represents male gender.
@@ -113,6 +151,10 @@ public class GuessWhoCharacter {
 	 * Represents female gender.
 	 */
 	public static final byte GENDER_FEMALE = 1;
+	/**
+	 * Upper bound on the indices allocated for gender values.
+	 */
+	public static final byte GENDER_NUM_VALS = 2;
 
 	/**
 	 * Represents light skin tone.
@@ -122,6 +164,10 @@ public class GuessWhoCharacter {
 	 * Represents dark skin tone.
 	 */
 	public static final byte SKIN_TONE_DARK = 1;
+	/**
+	 * Upper bound on the indices allocated for gender values.
+	 */
+	public static final byte SKIN_TONE_NUM_VALS = 2;
 
 	/**
 	 * Represents black hair colour.
@@ -143,6 +189,10 @@ public class GuessWhoCharacter {
 	 * Represents white hair colour.
 	 */
 	public static final byte HAIR_COLOUR_WHITE = 4;
+	/**
+	 * Upper bound on the indices allocated for hair colour values.
+	 */
+	public static final byte HAIR_COLOUR_NUM_VALS = 5;
 
 	/**
 	 * Represents the absence of facial hair.
@@ -152,6 +202,7 @@ public class GuessWhoCharacter {
 	 * Represents the presence of facial hair.
 	 */
 	public static final byte FACIAL_HAIR_YES = 1;
+	public static final byte FACIAL_HAIR_NUM_VALS = 2;
 
 	/**
 	 * Represents the absence of glasses.
@@ -161,7 +212,11 @@ public class GuessWhoCharacter {
 	 * Represents the presence of glasses.
 	 */
 	public static final byte GLASSES_YES = 1;
-
+	/**
+	 * Upper bound on the indices allocated for glasses values.
+	 */
+	public static final byte GLASSES_NUM_VALS = 2;
+	
 	/**
 	 * Represents the absence of visible teeth.
 	 */
@@ -170,6 +225,10 @@ public class GuessWhoCharacter {
 	 * Represents the presence of visible teeth.
 	 */
 	public static final byte VISIBLE_TEETH_YES = 1;
+	/**
+	 * Upper bound on the indices allocated for visible teeth values.
+	 */
+	public static final byte VISIBLE_TEETH_NUM_VALS = 2;
 
 	/**
 	 * Represents the absence of headwear.
@@ -179,6 +238,10 @@ public class GuessWhoCharacter {
 	 * Represents the presence of headwear.
 	 */
 	public static final byte HEADWEAR_YES = 1;
+	/**
+	 * Upper bound on the indices allocated for headwear values.
+	 */
+	public static final byte HEADWEAR_NUM_VALS = 2;
 
 	/**
 	 * Represents a short hair style.
@@ -196,6 +259,10 @@ public class GuessWhoCharacter {
 	 * Represents a bald hair style.
 	 */
 	public static final byte HAIR_STYLE_BALD = 3;
+	/**
+	 * Upper bound on the indices allocated for hair style values.
+	 */
+	public static final byte HAIR_STYLE_NUM_VALS = 4;
 
 	/**
 	 * Represents the absence of piercings.
@@ -205,6 +272,10 @@ public class GuessWhoCharacter {
 	 * Represents the presence of ear piercings.
 	 */
 	public static final byte PIERCINGS_YES = 1;
+	/**
+	 * Upper bound on the indices allocated for piercings values.
+	 */
+	public static final byte PIERCINGS_NUM_VALS = 2;
 
 	/**
 	 * Gets the character's name.
@@ -217,11 +288,15 @@ public class GuessWhoCharacter {
 
 	/**
 	 * Selects and returns an attribute according to an attribute code.
-	 * This avoids the need for reflectively calling one of the {@code get*()} methods.
+	 * This avoids the need for reflectively calling one of the {@code get*()}
+	 * methods.
+	 * 
 	 * @param attributeCode one of the {@code ATTRIBUTE_*} values on this class.
 	 * @return the attribute corresponding to {@code attributeCode}
 	 */
 	public byte getAttribute(int attributeCode) {
+		// switch on the attribute, return the corresponding field
+		// I could make this an array of byte, but this makes for less readable code
 		switch (attributeCode) {
 			case ATTRIBUTE_EYE_COLOUR:
 				return this.eyeColour;
@@ -243,6 +318,40 @@ public class GuessWhoCharacter {
 				return this.hairStyle;
 			case ATTRIBUTE_PIERCINGS:
 				return this.piercings;
+			default:
+				throw new IllegalArgumentException("Invalid attribute code " + attributeCode);
+		}
+	}
+
+	/**
+	 * Determines the maximum value allocated for a specific attribute code.
+	 * 
+	 * @param attributeCode one of the {@code ATTRIBUTE_*} values on this class.
+	 * @return
+	 */
+	public static byte attributeMaxValue(int attributeCode) {
+		// switch on the attribute code, return the corresponding constant
+		switch (attributeCode) {
+			case ATTRIBUTE_EYE_COLOUR:
+				return EYE_COLOUR_NUM_VALS;
+			case ATTRIBUTE_GENDER:
+				return GENDER_NUM_VALS;
+			case ATTRIBUTE_SKIN_TONE:
+				return SKIN_TONE_NUM_VALS;
+			case ATTRIBUTE_HAIR_COLOUR:
+				return HAIR_COLOUR_NUM_VALS;
+			case ATTRIBUTE_FACIAL_HAIR:
+				return FACIAL_HAIR_NUM_VALS;
+			case ATTRIBUTE_GLASSES:
+				return GLASSES_NUM_VALS;
+			case ATTRIBUTE_VISIBLE_TEETH:
+				return VISIBLE_TEETH_NUM_VALS;
+			case ATTRIBUTE_HEADWEAR:
+				return HEADWEAR_NUM_VALS;
+			case ATTRIBUTE_HAIR_STYLE:
+				return HAIR_STYLE_NUM_VALS;
+			case ATTRIBUTE_PIERCINGS:
+				return PIERCINGS_NUM_VALS;
 			default:
 				throw new IllegalArgumentException("Invalid attribute code " + attributeCode);
 		}
