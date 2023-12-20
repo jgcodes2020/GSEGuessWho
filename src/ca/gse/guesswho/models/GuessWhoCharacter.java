@@ -1,6 +1,5 @@
 package ca.gse.guesswho.models;
 
-import java.net.URL;
 import java.util.Objects;
 
 /**

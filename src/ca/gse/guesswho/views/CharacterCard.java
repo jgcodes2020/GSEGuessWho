@@ -1,8 +1,6 @@
 package ca.gse.guesswho.views;
 
 import java.awt.Image;
-import java.net.URL;
-
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;

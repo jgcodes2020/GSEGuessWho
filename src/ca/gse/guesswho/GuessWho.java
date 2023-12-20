@@ -6,7 +6,6 @@ import javax.swing.*;
 
 import ca.gse.guesswho.models.GameState;
 import ca.gse.guesswho.models.GuessWhoCharacter;
-import ca.gse.guesswho.models.players.DumbAIPlayer;
 import ca.gse.guesswho.views.CharacterCard;
 
 public class GuessWho {

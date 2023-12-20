@@ -1,24 +1,16 @@
 package ca.gse.guesswho.models.players;
 
-import java.util.BitSet;
 import java.util.List;
-import java.util.Random;
-
 import ca.gse.guesswho.models.*;
 import ca.gse.guesswho.models.questions.*;
 
 public class SmartAIPlayer extends Player {
-    private int turnCount;
     private int[][] frequencyList;
 
     /**
      * Creates a new smart AI player.
      */
     public SmartAIPlayer() {
-        turnCount = 0;
-
-        List<GuessWhoCharacter> characterList = GameState.getCharacterList();
-
         frequencyList = new int[GuessWhoCharacter.ATTRIBUTE_NUM_VALS][];
         for (int i = 0; i < frequencyList.length; i++) {
             frequencyList[i] = new int[GuessWhoCharacter.attributeMaxValue(i)];
