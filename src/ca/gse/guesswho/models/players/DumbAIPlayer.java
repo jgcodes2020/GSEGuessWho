@@ -51,6 +51,8 @@ public class DumbAIPlayer extends Player {
 			nextQuestion = new AttributeQuestion(randomAttribute, randomValue);
 			// if it has been asked before, ask a different one (hopefully this doesn't hang or something)
 		} while (previousQuestions.contains(nextQuestion));
+		// add this question to the list of previously-asked questions
+		previousQuestions.add(nextQuestion);
 		return nextQuestion;
 	}
 

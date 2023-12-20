@@ -54,9 +54,7 @@ public class GameState {
     }
 
     /**
-     * Gets the global character list. This is an array for efficiency; it should
-     * NOT under any circumstances be modified.
-     * 
+     * Gets the global character list.
      * @return the global character list, or null if it hasn't been loaded
      */
     public static List<GuessWhoCharacter> getCharacterList() {
@@ -89,6 +87,17 @@ public class GameState {
             this.player2.setSecretIndex(rng.nextInt(characterList.size()));
         }
     }
+	
+	/**
+	 * Gets the current winner of the game.
+	 * @return the game's winner
+	 * @see GameState#WINNER_NONE
+	 * @see GameState#WINNER_P1
+	 * @see GameState#WINNER_P2
+	 */
+	public byte getWinner() {
+		return winner;
+	}
 
     /**
      * Performs the next player's turn.

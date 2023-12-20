@@ -1,24 +1,28 @@
 package ca.gse.guesswho.models.players;
 
-import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.List;
 import java.util.Random;
 
-import ca.gse.guesswho.models.GameState;
-import ca.gse.guesswho.models.GuessWhoCharacter;
-import ca.gse.guesswho.models.Player;
-import ca.gse.guesswho.models.Question;
-import ca.gse.guesswho.models.questions.AttributeQuestion;
-import ca.gse.guesswho.models.questions.CharacterQuestion;
+import ca.gse.guesswho.models.*;
+import ca.gse.guesswho.models.questions.*;
 
 public class SmartAIPlayer extends Player {
-	private Random rng;
+	private int turnCount;
+	private BitSet[] remainingAttributes;
 
 	/**
 	 * Creates a new smart AI player.
 	 */
 	public SmartAIPlayer() {
-		rng = new Random();
+		turnCount = 0;
+		
+		List<GuessWhoCharacter> characterList = GameState.getCharacterList();
+		
+		remainingAttributes = new BitSet[GuessWhoCharacter.ATTRIBUTE_NUM_VALS];
+		for (int i = 0; i < remainingAttributes.length; i++) {
+			remainingAttributes[i] = new BitSet();
+		}
 	}
 
 	/**
@@ -39,6 +43,15 @@ public class SmartAIPlayer extends Player {
 			int finalIndex = remainingIndexes.nextSetBit(0);
 			return new CharacterQuestion(characters.get(finalIndex));
 		}
+		
+		// The first question can always be about gender
+		if (turnCount == 0) {
+			turnCount++;
+			return new AttributeQuestion(GuessWhoCharacter.ATTRIBUTE_GENDER, GuessWhoCharacter.GENDER_MALE);
+		}
+		
+		
+		
 		throw new UnsupportedOperationException("TO BE IMPLEMENTED!!");
 	}
 

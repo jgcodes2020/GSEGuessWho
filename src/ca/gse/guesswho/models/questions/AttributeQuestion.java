@@ -1,6 +1,7 @@
 package ca.gse.guesswho.models.questions;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 import ca.gse.guesswho.models.GuessWhoCharacter;
 import ca.gse.guesswho.models.Question;
@@ -61,7 +62,7 @@ public class AttributeQuestion extends Question {
 	public int hashCode() {
 		// We use Java's built-in hash code combiner here as I can't be
 		// bothered to make my own. This is necessary to make it compatible with HashMap.
-		return Arrays.hashCode(new int[] {attribute, checkedValue});
+		return Objects.hash(attribute, checkedValue);
 	}
 	
 }
