@@ -1,6 +1,7 @@
 package ca.gse.guesswho.models;
 
 import java.net.URL;
+import java.util.Objects;
 
 /**
  * Represents a Guess Who character. Is intended to be an immutable data class.
@@ -481,6 +482,16 @@ public class GuessWhoCharacter {
 	 */
 	public byte getPiercings() {
 		return this.piercings;
+	}
+	
+	@Override
+	public int hashCode() {
+		// We use Java's default hash combiner to merge all these values into
+		// a single hash code. I could implement this myself, but it wouldn't be
+		// worth it.
+		return Objects.hash(
+			name, eyeColour, gender, skinTone, hairColour, facialHair, 
+			glasses, visibleTeeth, headwear, hairStyle, piercings);
 	}
 
 	/**

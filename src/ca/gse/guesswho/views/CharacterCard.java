@@ -12,7 +12,7 @@ public class CharacterCard extends JPanel {
 	private JLabel textLabel;
 	private JLabel iconLabel;
 	
-	public CharacterCard(String name, URL image) {
+	public CharacterCard(String name, Image image) {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
 		textLabel = new JLabel(name);

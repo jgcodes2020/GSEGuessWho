@@ -1,6 +1,7 @@
 package ca.gse.guesswho.models.players;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
@@ -13,12 +14,14 @@ import ca.gse.guesswho.models.questions.CharacterQuestion;
 
 public class DumbAIPlayer extends Player {
 	private Random rng;
+	private HashSet<Question> previousQuestions;
 
 	/**
 	 * Creates a new dumb AI player.
 	 */
 	public DumbAIPlayer() {
 		rng = new Random();
+		previousQuestions = new HashSet<>();
 	}
 
 	/**
@@ -34,12 +37,21 @@ public class DumbAIPlayer extends Player {
 	public Question takeTurn() {
 		List<GuessWhoCharacter> characters = GameState.getCharacterList();
 
-		// if we're down to one option, use that one
+		// if we're down to one option, guess that one
 		if (remainingIndexes.cardinality() == 1) {
 			int finalIndex = remainingIndexes.nextSetBit(0);
 			return new CharacterQuestion(characters.get(finalIndex));
 		}
-		throw new UnsupportedOperationException("TO BE IMPLEMENTED!!");
+		
+		Question nextQuestion;
+		do {
+			// generate a random attribute question
+			int randomAttribute = rng.nextInt(GuessWhoCharacter.ATTRIBUTE_NUM_VALS);
+			byte randomValue = (byte) rng.nextInt(GuessWhoCharacter.attributeMaxValue(randomAttribute));
+			nextQuestion = new AttributeQuestion(randomAttribute, randomValue);
+			// if it has been asked before, ask a different one (hopefully this doesn't hang or something)
+		} while (previousQuestions.contains(nextQuestion));
+		return nextQuestion;
 	}
 
 	/**

@@ -45,4 +45,20 @@ public class CharacterQuestion extends Question {
 	public boolean getIsFinal() {
 		return true;
 	}
+	
+	@Override
+	public boolean equals(Object thatObj) {
+		if (thatObj == null || !(thatObj instanceof CharacterQuestion))
+			return false;
+		
+		CharacterQuestion that = (CharacterQuestion) thatObj;
+		return this.character == that.character;
+	}
+	
+	@Override
+	public int hashCode() {
+		// invert and offset the hash code so that the question hashes differently
+		// than the character.
+		return ~character.hashCode() + 0xA455;
+	}
 }

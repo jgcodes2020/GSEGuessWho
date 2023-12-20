@@ -1,10 +1,12 @@
 package ca.gse.guesswho.models.questions;
 
+import java.util.Arrays;
+
 import ca.gse.guesswho.models.GuessWhoCharacter;
 import ca.gse.guesswho.models.Question;
 
 /**
- * Represents a question about a specific attribute.
+ * Represents a question about a specific attribute of a character.
  */
 public class AttributeQuestion extends Question {
 	private int attribute;
@@ -25,18 +27,41 @@ public class AttributeQuestion extends Question {
 		this.attribute = attribute;
 		this.checkedValue = checkedValue;
 	}
-
-	/**
-	 * Mat
-	 */
+	
 	@Override
 	public boolean match(GuessWhoCharacter character) {
 		return character.getAttribute(attribute) == checkedValue;
 	}
 
+	/**
+	 * Attribute questions do not end the game when the answer is "no". This method will
+	 * thus always return false.
+	 * @return false
+	 */
 	@Override
 	public boolean getIsFinal() {
 		return false;
+	}
+	
+	/**
+	 * Determines whether an object is semantically equal to this question; that is, it checks
+	 * if the other object asks for the same attribute and value as this question.
+	 * @return whether the supplied object refers to the same question as this one
+	 */
+	@Override
+	public boolean equals(Object thatObj) {
+		if (thatObj == null || !(thatObj instanceof AttributeQuestion))
+			return false;
+		
+		AttributeQuestion that = (AttributeQuestion) thatObj;
+		return (this.attribute == that.attribute) && (this.checkedValue == that.checkedValue);
+	}
+	
+	@Override
+	public int hashCode() {
+		// We use Java's built-in hash code combiner here as I can't be
+		// bothered to make my own. This is necessary to make it compatible with HashMap.
+		return Arrays.hashCode(new int[] {attribute, checkedValue});
 	}
 	
 }
