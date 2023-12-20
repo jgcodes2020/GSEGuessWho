@@ -9,7 +9,7 @@ import ca.gse.guesswho.models.questions.*;
 
 public class SmartAIPlayer extends Player {
 	private int turnCount;
-	private BitSet[] remainingAttributes;
+	private int[][] frequencyList;
 
 	/**
 	 * Creates a new smart AI player.
@@ -19,9 +19,9 @@ public class SmartAIPlayer extends Player {
 		
 		List<GuessWhoCharacter> characterList = GameState.getCharacterList();
 		
-		remainingAttributes = new BitSet[GuessWhoCharacter.ATTRIBUTE_NUM_VALS];
-		for (int i = 0; i < remainingAttributes.length; i++) {
-			remainingAttributes[i] = new BitSet();
+		frequencyList = new int[GuessWhoCharacter.ATTRIBUTE_NUM_VALS][];
+		for (int i = 0; i < frequencyList.length; i++) {
+			frequencyList[i] = new int[GuessWhoCharacter.attributeMaxValue(i)];
 		}
 	}
 
@@ -44,13 +44,17 @@ public class SmartAIPlayer extends Player {
 			return new CharacterQuestion(characters.get(finalIndex));
 		}
 		
-		// The first question can always be about gender
-		if (turnCount == 0) {
-			turnCount++;
-			return new AttributeQuestion(GuessWhoCharacter.ATTRIBUTE_GENDER, GuessWhoCharacter.GENDER_MALE);
+		// reset the frequency list values to 0
+		for (int i = 0; i < frequencyList.length; i++) {
+			for (int j = 0; j < frequencyList.length; j++) {
+				frequencyList[i][j] = 0;
+			}
 		}
 		
-		
+		// 
+		for (int i = remainingIndexes.nextSetBit(0); i != Integer.MAX_VALUE; i = remainingIndexes.nextSetBit(i + 1)) {
+			
+		}
 		
 		throw new UnsupportedOperationException("TO BE IMPLEMENTED!!");
 	}
