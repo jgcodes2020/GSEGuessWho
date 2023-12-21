@@ -2,6 +2,7 @@ package ca.gse.guesswho;
 
 import java.awt.*;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Map;
 
 import javax.swing.*;
@@ -32,6 +33,7 @@ public class GuessWho {
 	}
 	
     public static void main(String[] args) throws IOException {
+		
 		GameState.loadCharacters(GuessWho.class.getResource("CharacterData.csv"));
 		QuestionBank.loadQuestions(GuessWho.class.getResource("QuestionBank.csv"));
 		
