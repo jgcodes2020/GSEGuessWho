@@ -1,5 +1,7 @@
 package ca.gse.guesswho.models;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Objects;
 
 /**
@@ -8,6 +10,7 @@ import java.util.Objects;
 public class GuessWhoCharacter {
 
 	private String name;
+	private URL imageURL;
 	private byte eyeColour;
 	private byte gender;
 	private byte skinTone;
@@ -44,9 +47,10 @@ public class GuessWhoCharacter {
 	 * @param piercings    the character's gender, should be one of the
 	 *                     {@code GuessWhoCharacter.PIERCINGS_*} constants
 	 */
-	public GuessWhoCharacter(String name, byte eyeColour, byte gender, byte skinTone, byte hairColour,
+	public GuessWhoCharacter(String name, URL imageURL, byte eyeColour, byte gender, byte skinTone, byte hairColour,
 			byte facialHair, byte glasses, byte visibleTeeth, byte headwear, byte hairStyle, byte piercings) {
 		this.name = name;
+		this.imageURL = imageURL;
 		this.eyeColour = eyeColour;
 		this.gender = gender;
 		this.skinTone = skinTone;
@@ -64,12 +68,19 @@ public class GuessWhoCharacter {
 	 * 
 	 * @param row the CSV row to read
 	 * @return a Guess Who character based on the provided data.
+	 * @throws MalformedURLException
+	 * @throws NumberFormatException
 	 */
-	public static GuessWhoCharacter fromCsvRow(String row) {
+	public static GuessWhoCharacter fromCsvRow(String row) throws NumberFormatException, MalformedURLException {
 		String[] parts = row.split(",");
+		
+		// all paths will start at fullURL
+		URL fullURL = GuessWhoCharacter.class.getResource("/ca/gse/guesswho/" + parts[1]);
+		
 		return new GuessWhoCharacter(
 				parts[0],
-				Byte.parseByte(parts[1]),
+				fullURL,
+				// all of these correspond to integer constants in this class
 				Byte.parseByte(parts[2]),
 				Byte.parseByte(parts[3]),
 				Byte.parseByte(parts[4]),
@@ -78,7 +89,8 @@ public class GuessWhoCharacter {
 				Byte.parseByte(parts[7]),
 				Byte.parseByte(parts[8]),
 				Byte.parseByte(parts[9]),
-				Byte.parseByte(parts[10]));
+				Byte.parseByte(parts[10]),
+				Byte.parseByte(parts[11]));
 	}
 
 	/**
@@ -285,7 +297,15 @@ public class GuessWhoCharacter {
 	public String getName() {
 		return this.name;
 	}
-
+	
+	/**
+	 * Gets the URL of this character's image.
+	 * @return the URL of this character's image.
+	 */
+	public URL getImageURL() {
+		return imageURL;
+	}
+	
 	/**
 	 * Selects and returns an attribute according to an attribute code.
 	 * This avoids the need for reflectively calling one of the {@code get*()}
