@@ -31,7 +31,7 @@ public class DataCaches {
 	 * @throws IOException if an I/O error occurs.
 	 */
 	public static void loadCharacters(URL path) throws IOException {
-		try (BufferedReader br = new BufferedReader(new InputStreamReader(new ProgressMonitorInputStream(null, "Loading character data...", path.openStream())))) {
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(new ProgressMonitorInputStream(null, "Loading game...", path.openStream())))) {
 			// this stores the last line we read
 			String line;
 			// this keeps track of the characters we've parsed
