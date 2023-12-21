@@ -28,7 +28,7 @@ public class SmartAIPlayer extends Player {
      */
     @Override
     public Question takeTurn() {
-        List<GuessWhoCharacter> characters = GameState.getCharacterList();
+        List<GuessWhoCharacter> characters = DataCaches.getCharacterList();
 
         // if we're down to one option, use that one
         if (remainingIndexes.cardinality() == 1) {

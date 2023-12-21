@@ -15,7 +15,7 @@ public class CharacterCard extends JPanel {
 	private JLabel textLabel;
 	private JLabel iconLabel;
 	
-	public CharacterCard(String name, URL image) {
+	public CharacterCard(String name, Image image) {
 		setLayout(new BorderLayout());
 		
 		textLabel = new JLabel(name);

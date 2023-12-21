@@ -12,7 +12,7 @@ public abstract class Player {
 	public abstract String getName();
 	
 	protected Player() {
-		List<GuessWhoCharacter> characters = GameState.getCharacterList();
+		List<GuessWhoCharacter> characters = DataCaches.getCharacterList();
 		
 		if (characters == null)
 			throw new IllegalArgumentException("Player creation requires a loaded character list!");
@@ -52,7 +52,7 @@ public abstract class Player {
 	public GuessWhoCharacter getSecretCharacter() {
 		if (this.secretIndex < 0)
 			return null;
-		return GameState.getCharacterList().get(this.secretIndex);
+		return DataCaches.getCharacterList().get(this.secretIndex);
 	}
 	
 	/**

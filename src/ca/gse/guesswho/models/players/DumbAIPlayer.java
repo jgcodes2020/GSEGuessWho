@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
+import ca.gse.guesswho.models.DataCaches;
 import ca.gse.guesswho.models.GameState;
 import ca.gse.guesswho.models.GuessWhoCharacter;
 import ca.gse.guesswho.models.Player;
@@ -34,7 +35,7 @@ public class DumbAIPlayer extends Player {
 	 */
 	@Override
 	public Question takeTurn() {
-		List<GuessWhoCharacter> characters = GameState.getCharacterList();
+		List<GuessWhoCharacter> characters = DataCaches.getCharacterList();
 
 		// if we're down to one option, guess that one
 		if (remainingIndexes.cardinality() == 1) {
