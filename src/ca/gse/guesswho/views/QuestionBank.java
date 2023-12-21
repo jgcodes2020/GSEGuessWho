@@ -48,7 +48,7 @@ public class QuestionBank {
 	 * Gets the question bank.
 	 * @return a map representing the question bank.
 	 */
-	public static Map<String, AttributeQuestion> getQuestionBank() {
+	public static Map<String, AttributeQuestion> getQuestions() {
 		return questionBank;
 	}
 }

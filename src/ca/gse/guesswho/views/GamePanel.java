@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 
 import ca.gse.guesswho.components.CharacterCard;
 import ca.gse.guesswho.models.GameState;
+import ca.gse.guesswho.models.GuessWhoCharacter;
 import ca.gse.guesswho.models.Player;
 
 public class GamePanel extends JPanel {
@@ -22,7 +23,9 @@ public class GamePanel extends JPanel {
 		cards = new CharacterCard[characterAmt];
 
 		for (int i = 0; i < characterAmt; i++){
-			CharacterCard curCard = new CharacterCard(Integer.toString(i),null);
+			GuessWhoCharacter character = GameState.getCharacterList().get(i);
+			
+			CharacterCard curCard = new CharacterCard(character.getName(),null);
 			cards[i] = curCard;
 			board.add(cards[i]);
 		}

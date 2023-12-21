@@ -42,7 +42,7 @@ public class GuessWho {
 		System.out.println();
 		
 		System.out.println("Questions: ");
-		for (Map.Entry<String, AttributeQuestion> entry : QuestionBank.getQuestionBank().entrySet()) {
+		for (Map.Entry<String, AttributeQuestion> entry : QuestionBank.getQuestions().entrySet()) {
 			System.out.printf("%s (%s)\n", entry.getKey(), entry.getValue());
 		}
 		System.out.println();
