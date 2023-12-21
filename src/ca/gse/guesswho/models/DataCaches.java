@@ -10,6 +10,7 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 import javax.swing.ProgressMonitor;
+import javax.swing.ProgressMonitorInputStream;
 
 import ca.gse.guesswho.models.questions.AttributeQuestion;
 
@@ -20,7 +21,6 @@ import java.io.InputStreamReader;
 
 public class DataCaches {
 	private static List<GuessWhoCharacter> characterList = null;
-	private static List<Image> imageCache = null;
 	private static Map<String, AttributeQuestion> questionBank = null;
 	
 	/**
@@ -31,7 +31,7 @@ public class DataCaches {
 	 * @throws IOException if an I/O error occurs.
 	 */
 	public static void loadCharacters(URL path) throws IOException {
-		try (BufferedReader br = new BufferedReader(new InputStreamReader(path.openStream()))) {
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(new ProgressMonitorInputStream(null, "Loading character data...", path.openStream())))) {
 			// this stores the last line we read
 			String line;
 			// this keeps track of the characters we've parsed
@@ -57,25 +57,6 @@ public class DataCaches {
 	 */
 	public static List<GuessWhoCharacter> getCharacterList() {
 		return characterList;
-	}
-	
-	public static void loadImageCache() throws IOException {
-		ProgressMonitor progress = new ProgressMonitor(null, "Loading images...", null, 0, 24);
-		Image[] images = new Image[characterList.size()];
-		
-		for (int i = 0; i < images.length; i++) {
-			URL imageURL = characterList.get(i).getImageURL();
-			progress.setProgress(i);
-			images[i] = ImageIO.read(imageURL);
-		}
-		progress.setProgress(24);
-		
-		// store images in an immutable list since no one should be changing them
-		imageCache = Collections.unmodifiableList(Arrays.asList(images));
-	}
-	
-	public static List<Image> getImageCache() {
-		return imageCache;
 	}
 	
 	/**

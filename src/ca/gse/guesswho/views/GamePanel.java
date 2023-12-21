@@ -28,10 +28,9 @@ public class GamePanel extends JPanel {
 
 		for (int i = 0; i < characterAmt; i++) {
 			GuessWhoCharacter character = DataCaches.getCharacterList().get(i);
-			Image img = DataCaches.getImageCache().get(i);
 
 			CharacterCard curCard;
-			curCard = new CharacterCard(character.getName(), img);
+			curCard = new CharacterCard(character.getName(), character.getImage());
 			cards[i] = curCard;
 			board.add(cards[i]);
 		}

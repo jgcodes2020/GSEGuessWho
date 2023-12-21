@@ -30,7 +30,6 @@ public class GuessWho {
     public static void main(String[] args) throws IOException {
 		
 		DataCaches.loadCharacters(GuessWho.class.getResource("CharacterData.csv"));
-		DataCaches.loadImageCache();
 		DataCaches.loadQuestions(GuessWho.class.getResource("QuestionBank.csv"));
 		
 		System.out.println("Characters:");

@@ -1,8 +1,12 @@
 package ca.gse.guesswho.models;
 
+import java.awt.Image;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Objects;
+
+import javax.imageio.ImageIO;
 
 /**
  * Represents a Guess Who character. Is intended to be an immutable data class.
@@ -10,7 +14,7 @@ import java.util.Objects;
 public class GuessWhoCharacter {
 
 	private String name;
-	private URL imageURL;
+	private Image image;
 	private byte eyeColour;
 	private byte gender;
 	private byte skinTone;
@@ -47,10 +51,10 @@ public class GuessWhoCharacter {
 	 * @param piercings    the character's gender, should be one of the
 	 *                     {@code GuessWhoCharacter.PIERCINGS_*} constants
 	 */
-	public GuessWhoCharacter(String name, URL imageURL, byte eyeColour, byte gender, byte skinTone, byte hairColour,
+	public GuessWhoCharacter(String name, Image image, byte eyeColour, byte gender, byte skinTone, byte hairColour,
 			byte facialHair, byte glasses, byte visibleTeeth, byte headwear, byte hairStyle, byte piercings) {
 		this.name = name;
-		this.imageURL = imageURL;
+		this.image = image;
 		this.eyeColour = eyeColour;
 		this.gender = gender;
 		this.skinTone = skinTone;
@@ -68,18 +72,19 @@ public class GuessWhoCharacter {
 	 * 
 	 * @param row the CSV row to read
 	 * @return a Guess Who character based on the provided data.
-	 * @throws MalformedURLException
 	 * @throws NumberFormatException
+	 * @throws IOException
 	 */
-	public static GuessWhoCharacter fromCsvRow(String row) throws NumberFormatException, MalformedURLException {
+	public static GuessWhoCharacter fromCsvRow(String row) throws NumberFormatException, IOException {
 		String[] parts = row.split(",");
 		
-		// all paths will start at fullURL
-		URL fullURL = GuessWhoCharacter.class.getResource("/ca/gse/guesswho/" + parts[1]);
+		// convert the stored path to a URL
+		URL imageURL = GuessWhoCharacter.class.getResource("/ca/gse/guesswho/" + parts[1]);
+		Image image = ImageIO.read(imageURL);
 		
 		return new GuessWhoCharacter(
 				parts[0],
-				fullURL,
+				image,
 				// all of these correspond to integer constants in this class
 				Byte.parseByte(parts[2]),
 				Byte.parseByte(parts[3]),
@@ -302,8 +307,8 @@ public class GuessWhoCharacter {
 	 * Gets the URL of this character's image.
 	 * @return the URL of this character's image.
 	 */
-	public URL getImageURL() {
-		return imageURL;
+	public Image getImage() {
+		return image;
 	}
 	
 	/**
