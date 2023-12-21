@@ -38,11 +38,21 @@ public abstract class Player {
 	
 	/**
 	 * Gets this player's secret index, or -1 if the player does not have a secret index.
-	 * @return the secret index set on this character.
+	 * @return the secret index set on this player.
 	 * @see GameState#getCharacterList()
 	 */
 	public int getSecretIndex() {
 		return this.secretIndex;
+	}
+	
+	/**
+	 * Gets this player's secret character, or null if one has not been assigned.
+	 * @return the secret character set on this player.
+	 */
+	public GuessWhoCharacter getSecretCharacter() {
+		if (this.secretIndex < 0)
+			return null;
+		return GameState.getCharacterList().get(this.secretIndex);
 	}
 	
 	/**
