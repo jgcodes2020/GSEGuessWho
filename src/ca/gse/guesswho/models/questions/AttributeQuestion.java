@@ -64,4 +64,9 @@ public class AttributeQuestion extends Question {
 		return Objects.hash(attribute, checkedValue);
 	}
 	
+	@Override
+	public String toString() {
+		return String.format("AttributeQuestion {attr=%s, value=%s}", this.attribute, this.checkedValue);
+	}
+	
 }

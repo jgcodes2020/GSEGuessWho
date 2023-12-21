@@ -3,6 +3,7 @@ package ca.gse.guesswho.views;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 
+import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
 import ca.gse.guesswho.components.CharacterCard;
