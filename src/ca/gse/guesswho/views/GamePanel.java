@@ -3,6 +3,7 @@ package ca.gse.guesswho.views;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -38,11 +39,13 @@ public class GamePanel extends JPanel {
 	private JPanel buildInput(){
 		JPanel board = new JPanel();
 		board.setLayout(new FlowLayout());
-		JComboBox<String> questionList = new JComboBox<>();
+		ArrayList <String> questions = new ArrayList<String>();
 		JButton confirmButton = new JButton("Confirm");
 		for (String question : QuestionBank.getQuestions().keySet()) {
-			questionList.addItem(question);
+			questions.add(question);
 		}
+		JList<String> questionList = new JList<String>(questions);
+
 		board.add(questionList);
 		board.add(confirmButton);
 		return board;
@@ -52,7 +55,7 @@ public class GamePanel extends JPanel {
 	public GamePanel(Player p1, Player p2) {
 		state = new GameState(p1, p2);
 		
-		setLayout(new BorderLayout());4
+		setLayout(new BorderLayout());
 		add(buildBoard(), BorderLayout.CENTER);
 		add(buildInput(), BorderLayout.SOUTH);
 
