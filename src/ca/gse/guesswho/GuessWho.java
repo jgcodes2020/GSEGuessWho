@@ -28,6 +28,11 @@ public class GuessWho {
 	
     public static void main(String[] args) throws IOException {
 		GameState.loadCharacters(GuessWho.class.getResource("CharacterData.csv"));
+		
+		for (GuessWhoCharacter character : GameState.getCharacterList()) {
+			System.out.println(character);
+		}
+		
 		buildWindow().setVisible(true);
     }
 
