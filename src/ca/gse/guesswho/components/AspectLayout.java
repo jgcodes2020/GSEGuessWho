@@ -1,4 +1,4 @@
-package ca.gse.guesswho.views;
+package ca.gse.guesswho.components;
 
 import java.awt.*;
 
