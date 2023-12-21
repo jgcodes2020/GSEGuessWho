@@ -21,7 +21,7 @@ public class GuessWho {
 	
 	private static JFrame buildWindow() {
 		JFrame frame = new JFrame("Guess Me");
-		frame.setSize(640, 480);
+		frame.setSize(1440, 1024);
 		
 		// temp: start the game now idk
 		gamePanel = new GamePanel(new HumanPlayer("TestPlayer"), new DumbAIPlayer());

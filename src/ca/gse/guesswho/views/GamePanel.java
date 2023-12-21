@@ -1,13 +1,11 @@
 package ca.gse.guesswho.views;
 //gui
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JPanel;
 import javax.swing.*;
 import ca.gse.guesswho.components.CharacterCard;
 import ca.gse.guesswho.models.GameState;
@@ -36,18 +34,25 @@ public class GamePanel extends JPanel {
 		return board;
 	}
 
-	private JPanel buildInput(){
+	private JPanel bottomBar(){
 		JPanel board = new JPanel();
 		board.setLayout(new FlowLayout());
 		ArrayList <String> questions = new ArrayList<String>();
 		JButton confirmButton = new JButton("Confirm");
+		CharacterCard userCharacter = new CharacterCard("Rachel", null);
 		for (String question : QuestionBank.getQuestions().keySet()) {
 			questions.add(question);
 		}
-		JList<String> questionList = new JList<String>(questions);
+		JList<String> questionList = new JList<String>(questions.toArray(new String[questions.size()]));
+		JScrollPane questionScroll = new JScrollPane(questionList);
 
-		board.add(questionList);
+		questionScroll.setViewportView(questionList);
+		//board.setPreferredSize(new Dimension(Integer.MAX_VALUE, 210));;//720 by 210
+		//board.setMaximumSize(new Dimension(Integer.MAX_VALUE, 210));;//720 by 210
+
+		board.add(questionScroll);
 		board.add(confirmButton);
+		board.add(userCharacter);
 		return board;
 
 	}
@@ -57,7 +62,7 @@ public class GamePanel extends JPanel {
 		
 		setLayout(new BorderLayout());
 		add(buildBoard(), BorderLayout.CENTER);
-		add(buildInput(), BorderLayout.SOUTH);
+		add(bottomBar(), BorderLayout.SOUTH);
 
 	}
 }
