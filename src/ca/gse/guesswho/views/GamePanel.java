@@ -48,7 +48,7 @@ public class GamePanel extends JPanel {
 
 		questionScroll.setViewportView(questionList);
 		//board.setPreferredSize(new Dimension(Integer.MAX_VALUE, 210));;//720 by 210
-		//board.setMaximumSize(new Dimension(Integer.MAX_VALUE, 210));;//720 by 210
+
 
 		board.add(questionScroll);
 		board.add(confirmButton);
@@ -59,7 +59,7 @@ public class GamePanel extends JPanel {
 	
 	public GamePanel(Player p1, Player p2) {
 		state = new GameState(p1, p2);
-		
+
 		setLayout(new BorderLayout());
 		add(buildBoard(), BorderLayout.CENTER);
 		add(bottomBar(), BorderLayout.SOUTH);
