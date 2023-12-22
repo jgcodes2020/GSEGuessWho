@@ -1,30 +1,52 @@
 package ca.gse.guesswho;
 
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.io.IOException;
-import java.util.Map;
 
+import javax.smartcardio.Card;
 import javax.swing.*;
 
 import ca.gse.guesswho.models.DataCaches;
-import ca.gse.guesswho.models.GuessWhoCharacter;
 import ca.gse.guesswho.models.players.DumbAIPlayer;
 import ca.gse.guesswho.models.players.HumanPlayer;
-import ca.gse.guesswho.models.questions.AttributeQuestion;
 import ca.gse.guesswho.views.GamePanel;
+import ca.gse.guesswho.views.MenuPanel;
 
 public class GuessWho {
-	private static GamePanel gamePanel;
+	private static JFrame frame = null;
+	private static JPanel rootPanel = null;
+	private static CardLayout rootLayout = null;
+	
+	private static MenuPanel menuPanel = null;
+	private static GamePanel gamePanel = null;
 	
 	private static JFrame buildWindow() {
-		JFrame frame = new JFrame("Guess Me");
+		frame = new JFrame("Guess Me");
 		frame.setSize(1440, 1024);
 		
-		// temp: start the game now idk
-		gamePanel = new GamePanel(new HumanPlayer("TestPlayer"), new DumbAIPlayer());
-		frame.setContentPane(gamePanel);
 		
+		rootLayout = new CardLayout();
+		
+		rootPanel = new JPanel();
+		rootPanel.setLayout(rootLayout);
+	
+		menuPanel = new MenuPanel();
+		menuPanel.addStartPressedListener(GuessWho::onGameStart);
+		rootPanel.add(menuPanel, "menu");
+		
+		frame.setContentPane(rootPanel);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		return frame;
+	}
+	
+	private static void onGameStart() {
+		// initialize game state
+		gamePanel = new GamePanel(new HumanPlayer("GSETestUser"), new DumbAIPlayer());
+		rootPanel.add(gamePanel, "game");
+		
+		// switch to "game" panel
+		rootLayout.show(rootPanel, "game");
 	}
 	
     public static void main(String[] args) throws IOException {
@@ -32,17 +54,24 @@ public class GuessWho {
 		DataCaches.loadCharacters(GuessWho.class.getResource("CharacterData.csv"));
 		DataCaches.loadQuestions(GuessWho.class.getResource("QuestionBank.csv"));
 		
-		System.out.println("Characters:");
-		for (GuessWhoCharacter character : DataCaches.getCharacterList()) {
-			System.out.println(character);
-		}
-		System.out.println();
+		// System.out.println("Characters:");
+		// for (GuessWhoCharacter character : DataCaches.getCharacterList()) {
+		// 	System.out.println(character);
+		// }
+		// System.out.println();
 		
-		System.out.println("Questions: ");
-		for (Map.Entry<String, AttributeQuestion> entry : DataCaches.getQuestions().entrySet()) {
-			System.out.printf("%s (%s)\n", entry.getKey(), entry.getValue());
+		// System.out.println("Questions: ");
+		// for (Map.Entry<String, AttributeQuestion> entry : DataCaches.getQuestions().entrySet()) {
+		// 	System.out.printf("%s (%s)\n", entry.getKey(), entry.getValue());
+		// }
+		// System.out.println();
+		
+		try {
+			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+				| UnsupportedLookAndFeelException e) {
+			System.out.println("Could not retrieve Nimbus theme, reverting to default theme");
 		}
-		System.out.println();
 		
 		buildWindow().setVisible(true);
     }
