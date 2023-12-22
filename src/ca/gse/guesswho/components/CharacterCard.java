@@ -16,7 +16,7 @@ public class CharacterCard extends JPanel {
 	private static Color HIGHLIGHT_COLOUR = new Color(0x0088FF);
 	
 	private JLabel textLabel;
-	private ImageDisplay iconLabel;
+	private CharacterImageDisplay iconLabel;
 	
 	public CharacterCard(GuessWhoCharacter character) {
 		setLayout(new BorderLayout());
@@ -24,7 +24,7 @@ public class CharacterCard extends JPanel {
 		textLabel = new JLabel(character.getName());
 		textLabel.setHorizontalAlignment(JLabel.CENTER);
 		
-		iconLabel = new ImageDisplay(character.getImage());
+		iconLabel = new CharacterImageDisplay(character.getImage());
 		
 		add(iconLabel, BorderLayout.CENTER);
 		add(textLabel, BorderLayout.SOUTH);
@@ -41,6 +41,10 @@ public class CharacterCard extends JPanel {
 				CharacterCard.this.handleMouseExited(e);
 			}
 		});
+	}
+	
+	public void setCrossedOut(boolean value) {
+		iconLabel.setCrossedOut(value);
 	}
 	
 	private void handleMouseEntered(MouseEvent e) {

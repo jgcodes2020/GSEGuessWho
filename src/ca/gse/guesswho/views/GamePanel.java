@@ -8,6 +8,8 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.BitSet;
+import java.util.Map;
 
 import javax.swing.*;
 
@@ -16,9 +18,13 @@ import ca.gse.guesswho.models.DataCaches;
 import ca.gse.guesswho.models.GameState;
 import ca.gse.guesswho.models.GuessWhoCharacter;
 import ca.gse.guesswho.models.Player;
+import ca.gse.guesswho.models.players.HumanPlayer;
+import ca.gse.guesswho.models.questions.AttributeQuestion;
 
 public class GamePanel extends JPanel {
 	private GameState state;
+	private JPanel boardPanel;
+	
 	private CharacterCard[] cards;
 	private JList<String> questionList;
 	private JLabel errorMessage;
@@ -72,6 +78,7 @@ public class GamePanel extends JPanel {
 		ArrayList <String> questions = new ArrayList<String>();
 		JButton confirmButton = new JButton("Confirm");
 		errorMessage = new JLabel("");
+		
 		CharacterCard userCharacter = new CharacterCard(state.getCurrentPlayer().getSecretCharacter());
 		for (String question : DataCaches.getQuestions().keySet()) {
 			questions.add(question);
@@ -85,7 +92,6 @@ public class GamePanel extends JPanel {
 		userCharacter.setPreferredSize(new Dimension(320, 210));;//720 by 210
 
 		confirmButton.addActionListener(this::submitButtonPressed);
-		ActionListener s;
 		board.add(questionScroll);
 		board.add(confirmButton);
 		board.add(userCharacter);
@@ -94,27 +100,45 @@ public class GamePanel extends JPanel {
 
 	}
 
-	private boolean checkScrollSelection(){
+	private boolean checkScrollSelection() {
 		return questionList.getSelectedIndex() != -1;
+	}
+	
+	private void updateUIState() {
+		BitSet playerRemainingIndexes = state.getCurrentPlayer().getRemainingIndexes();
+		for (int i = 0; i < cards.length; i++) {
+			cards[i].setCrossedOut(!playerRemainingIndexes.get(i));
+		}
 	}
 
 	public void submitButtonPressed(ActionEvent e){
-		if (checkScrollSelection()) {
-			errorMessage.setText("");
-		}
-		else{
+		if (!checkScrollSelection()) {
 			errorMessage.setText("You have to select a question");
+			return;
 		}
+		
+		// set the current player's next question (it should be human)
+		Map<String, AttributeQuestion> questionBank = DataCaches.getQuestions();
+		AttributeQuestion nextQuestion = questionBank.get(questionList.getSelectedValue());
+		((HumanPlayer) state.getCurrentPlayer()).setNextQuestion(nextQuestion);
+		state.doNextTurn();
+		
+		if (!state.getCurrentPlayer().isHuman())
+			state.doNextTurn();
+		
+		updateUIState();
+		boardPanel.repaint();
 	}
 	
 	public GamePanel(Player p1, Player p2) {
 		state = new GameState(p1, p2);
-
+		
+		boardPanel = buildBoard();
 
 		setLayout(new BorderLayout());
-		add(buildBoard(), BorderLayout.CENTER);
-		add(questionBoard(), BorderLayout.EAST);
+		add(boardPanel, BorderLayout.CENTER);
 		add(bottomBar(), BorderLayout.SOUTH);
+		add(questionBoard(), BorderLayout.EAST);
 
 	}
 }
