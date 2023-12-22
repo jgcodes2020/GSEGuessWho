@@ -4,6 +4,8 @@ import java.util.BitSet;
 import java.util.List;
 import java.util.Random;
 
+import ca.gse.guesswho.views.GamePanel;
+
 public class GameState {
 	private static Random rng = new Random();
 
@@ -12,7 +14,8 @@ public class GameState {
 
 	private byte winner;
 	private boolean isPlayer1Turn;
-
+	private boolean anwser;
+	
 	public static final byte WINNER_NONE = 0;
 	public static final byte WINNER_P1 = 1;
 	public static final byte WINNER_P2 = 2;
@@ -92,7 +95,7 @@ public class GameState {
 		Question question = asking.takeTurn();
 		GuessWhoCharacter secretCharacter = characterList.get(answering.getSecretIndex());
 		boolean matchValue = question.match(secretCharacter);
-
+		anwser = matchValue;
 		if (question.getIsFinal()) {
 			// player 1 wins if it is their turn and the character matches, or if it is the
 			// other person's turn
@@ -111,5 +114,14 @@ public class GameState {
 		}
 		// switch turns
 		this.isPlayer1Turn = !this.isPlayer1Turn;
+	}
+
+	public String getAns(){//So turningn the awnser of the question to yes or no.
+		if (anwser == true){
+			return ("Yes");
+		}
+		else{
+			return ("No");
+		}
 	}
 }

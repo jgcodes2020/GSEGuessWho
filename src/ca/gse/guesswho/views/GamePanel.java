@@ -29,6 +29,8 @@ public class GamePanel extends JPanel {
 	private CharacterCard[] cards;
 	private JList<String> questionList;
 	private JLabel errorMessage;
+	JPanel innerBoard;
+
 	
 	
 
@@ -54,21 +56,11 @@ public class GamePanel extends JPanel {
 
 	private JPanel questionBoard(){
 		JPanel board = new JPanel();
-		JPanel innerBoard = new JPanel();
+		innerBoard = new JPanel();
+		innerBoard.setLayout(new GridLayout(20,1));//Need to fix the layout but i want things to go down.
 		board.setLayout(new BoxLayout(board, BoxLayout.Y_AXIS));
 		JLabel questions = new JLabel ("questions");
 		JScrollPane scroller = new JScrollPane(innerBoard);
-		if (state.getPlayer1Turn()==true){
-			questions.setText("a");
-
-			questions.setHorizontalAlignment(SwingConstants.LEFT);
-		}
-		else{
-			questions.setText("b");
-
-			questions.setHorizontalAlignment(SwingConstants.RIGHT);
-		}
-		innerBoard.add(questions);
 
 		board.add(scroller);
 
@@ -104,7 +96,6 @@ public class GamePanel extends JPanel {
 		board.add(errorMessage);
 		board.add(Box.createHorizontalGlue());
 		return board;
-
 	}
 
 	private boolean checkScrollSelection() {
@@ -119,6 +110,7 @@ public class GamePanel extends JPanel {
 	}
 
 	public void submitButtonPressed(ActionEvent e){
+		String questionSelected = questionList.getSelectedValue();
 		if (!checkScrollSelection()) {
 			errorMessage.setText("You have to select a question");
 			return;
@@ -126,16 +118,36 @@ public class GamePanel extends JPanel {
 		
 		// set the current player's next question (it should be human)
 		Map<String, AttributeQuestion> questionBank = DataCaches.getQuestions();
-		AttributeQuestion nextQuestion = questionBank.get(questionList.getSelectedValue());
+		AttributeQuestion nextQuestion = questionBank.get(questionSelected);
 		((HumanPlayer) state.getCurrentPlayer()).setNextQuestion(nextQuestion);
+		addToResponse(questionSelected);//Put the question into the response panel
 		state.doNextTurn();
-		
+		addToResponse(state.getAns());//Put the awnser into the response panel
+
 		if (!state.getCurrentPlayer().isHuman())
 			state.doNextTurn();
 		
 		updateUIState();
 		boardPanel.repaint();
 	}
+
+
+	public void addToResponse(String response){
+		JLabel questions = new JLabel();
+		if (state.getPlayer1Turn()==true){
+			questions.setText(response+" P1");
+
+			questions.setHorizontalAlignment(SwingConstants.LEFT);
+		}
+		else{
+			questions.setText(response+" P2");
+
+			questions.setHorizontalAlignment(SwingConstants.RIGHT);
+		}
+		innerBoard.add(questions);
+
+	}
+
 	
 	public GamePanel(Player p1, Player p2) {
 		state = new GameState(p1, p2);
