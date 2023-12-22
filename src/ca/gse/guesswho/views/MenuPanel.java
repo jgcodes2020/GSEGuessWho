@@ -12,6 +12,10 @@ public class MenuPanel extends JPanel {
 	private static final Font TITLE_FONT = new Font("Dialog", Font.BOLD, 60);
 	private static final Font BUTTON_FONT = new Font("Dialog", Font.BOLD, 20);
 	
+	// Runnable represents a void-type method with no parameters.
+	// There is no additional information that needs to be carried.
+	private List<Runnable> startPressedHandlers = new ArrayList<>();
+	
 	/**
 	 * Creates a menu button. All menu buttons have a bunch of shared properties,
 	 * so I'm putting this in a method.
@@ -26,8 +30,6 @@ public class MenuPanel extends JPanel {
 		
 		return result;
 	}
-	
-	private List<Runnable> startPressedHandlers = new ArrayList<>();
 	
 	public MenuPanel() {
 		setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));

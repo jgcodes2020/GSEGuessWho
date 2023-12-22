@@ -12,6 +12,7 @@ import ca.gse.guesswho.models.players.DumbAIPlayer;
 import ca.gse.guesswho.models.players.HumanPlayer;
 import ca.gse.guesswho.views.GamePanel;
 import ca.gse.guesswho.views.MenuPanel;
+import ca.gse.guesswho.views.WinScreenPanel;
 
 public class GuessWho {
 	private static JFrame frame = null;
@@ -20,6 +21,7 @@ public class GuessWho {
 	
 	private static MenuPanel menuPanel = null;
 	private static GamePanel gamePanel = null;
+	private static WinScreenPanel winPanel = null;
 	
 	private static JFrame buildWindow() {
 		frame = new JFrame("Guess Me");

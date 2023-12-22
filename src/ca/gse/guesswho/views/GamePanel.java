@@ -1,20 +1,19 @@
 package ca.gse.guesswho.views;
+
 //gui
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Map;
-
+import java.util.function.Consumer;
 import javax.swing.*;
 
 import ca.gse.guesswho.components.CharacterCard;
+import ca.gse.guesswho.events.GameWonEvent;
 import ca.gse.guesswho.models.DataCaches;
 import ca.gse.guesswho.models.GameState;
 import ca.gse.guesswho.models.GuessWhoCharacter;
@@ -25,19 +24,22 @@ import ca.gse.guesswho.models.questions.AttributeQuestion;
 public class GamePanel extends JPanel {
 	private GameState state;
 	private JPanel boardPanel;
-	
+
 	private CharacterCard[] cards;
 	private JList<String> questionList;
 	private JLabel errorMessage;
 	JPanel innerBoard;
 
-	
-	
+
+	// Consumer<GameWonEvent> represents a method that takes
+	// GameWonEvent and returns void
+	public ArrayList<Consumer<GameWonEvent>> gameWonHandlers;
 
 	private JPanel buildBoard() {
 		JPanel board = new JPanel();
 		board.setLayout(new GridLayout(4, 6));
 		board.setBackground(Color.RED);
+    board.setBorder(BorderFactory.createLineBorder(Color.RED, 20));
 
 		final int characterAmt = 24;
 		cards = new CharacterCard[characterAmt];
@@ -53,14 +55,26 @@ public class GamePanel extends JPanel {
 		return board;
 	}
 
-
-	private JPanel questionBoard(){
+	private JPanel questionBoard() {
 		JPanel board = new JPanel();
 		innerBoard = new JPanel();
 		innerBoard.setLayout(new GridLayout(20,1));//Need to fix the layout but i want things to go down.
 		board.setLayout(new BoxLayout(board, BoxLayout.Y_AXIS));
-		JLabel questions = new JLabel ("questions");
+
+    board.setBorder(BorderFactory.createLineBorder(Color.RED, 20));
+
+		JLabel questions = new JLabel("questions");
 		JScrollPane scroller = new JScrollPane(innerBoard);
+		if (state.getPlayer1Turn() == true) {
+			questions.setText("a");
+
+			questions.setHorizontalAlignment(SwingConstants.LEFT);
+		} else {
+			questions.setText("b");
+
+			questions.setHorizontalAlignment(SwingConstants.RIGHT);
+		}
+		innerBoard.add(questions);
 
 		board.add(scroller);
 
@@ -71,11 +85,15 @@ public class GamePanel extends JPanel {
 	private JPanel bottomBar() {
 		JPanel board = new JPanel();
 		board.setLayout(new BoxLayout(board, BoxLayout.X_AXIS));
-		ArrayList <String> questions = new ArrayList<String>();
+		ArrayList<String> questions = new ArrayList<String>();
 		JButton confirmButton = new JButton("Confirm");
 		errorMessage = new JLabel("");
+
+    board.setBackground(Color.RED);
+    board.setBorder(BorderFactory.createLineBorder(Color.RED, 20));
 		
 		CharacterCard userCharacter = new CharacterCard(state.getCurrentPlayer().getSecretCharacter());
+    userCharacter.setClickable(false);
 		for (String question : DataCaches.getQuestions().keySet()) {
 			questions.add(question);
 		}
@@ -83,12 +101,15 @@ public class GamePanel extends JPanel {
 		JScrollPane questionScroll = new JScrollPane(questionList);
 
 		questionScroll.setViewportView(questionList);
-		questionScroll.setPreferredSize(new Dimension(540, 210));;//720 by 210
-		confirmButton.setPreferredSize(new Dimension(210, 210));;//720 by 210
-		userCharacter.setPreferredSize(new Dimension(320, 210));;//720 by 210
+		questionScroll.setPreferredSize(new Dimension(540, 210));
+		;// 720 by 210
+		confirmButton.setPreferredSize(new Dimension(210, 210));
+		;// 720 by 210
+		userCharacter.setPreferredSize(new Dimension(320, 210));
+		;// 720 by 210
 
 		confirmButton.addActionListener(this::submitButtonPressed);
-		
+
 		board.add(Box.createHorizontalGlue());
 		board.add(questionScroll);
 		board.add(confirmButton);
@@ -101,7 +122,7 @@ public class GamePanel extends JPanel {
 	private boolean checkScrollSelection() {
 		return questionList.getSelectedIndex() != -1;
 	}
-	
+
 	private void updateUIState() {
 		BitSet playerRemainingIndexes = state.getCurrentPlayer().getRemainingIndexes();
 		for (int i = 0; i < cards.length; i++) {
@@ -115,18 +136,32 @@ public class GamePanel extends JPanel {
 			errorMessage.setText("You have to select a question");
 			return;
 		}
-		
+
+		byte currentWinner;
+
 		// set the current player's next question (it should be human)
 		Map<String, AttributeQuestion> questionBank = DataCaches.getQuestions();
 		AttributeQuestion nextQuestion = questionBank.get(questionSelected);
 		((HumanPlayer) state.getCurrentPlayer()).setNextQuestion(nextQuestion);
 		addToResponse(questionSelected);//Put the question into the response panel
+
 		state.doNextTurn();
 		addToResponse(state.getAns());//Put the awnser into the response panel
 
 		if (!state.getCurrentPlayer().isHuman())
+		currentWinner = state.getWinner();
+		// check if the player won.
+		if (currentWinner != GameState.WINNER_NONE)
+			fireGameWon(currentWinner == GameState.WINNER_P1);
+
+		if (!state.getCurrentPlayer().isHuman()) {
 			state.doNextTurn();
-		
+			// check the winner again
+			currentWinner = state.getWinner();
+			if (currentWinner != GameState.WINNER_NONE)
+				fireGameWon(currentWinner == GameState.WINNER_P1);
+		}
+
 		updateUIState();
 		boardPanel.repaint();
 	}
@@ -148,10 +183,20 @@ public class GamePanel extends JPanel {
 
 	}
 
+
+	private void fireGameWon(boolean winnerIsP1) {
+		for (Consumer<GameWonEvent> handler : gameWonHandlers) {
+			handler.accept(new GameWonEvent(this, winnerIsP1));
+		}
+	}
 	
+	public void addGameWonListener(Consumer<GameWonEvent> handler) {
+		gameWonHandlers.add(handler);
+	}
+
 	public GamePanel(Player p1, Player p2) {
 		state = new GameState(p1, p2);
-		
+
 		boardPanel = buildBoard();
 
 		setLayout(new BorderLayout());
