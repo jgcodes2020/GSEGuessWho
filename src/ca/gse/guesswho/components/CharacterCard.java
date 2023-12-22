@@ -17,6 +17,7 @@ public class CharacterCard extends JPanel {
 	
 	private JLabel textLabel;
 	private CharacterImageDisplay iconLabel;
+	private boolean clickable;
 	
 	public CharacterCard(GuessWhoCharacter character) {
 		setLayout(new BorderLayout());
@@ -48,7 +49,7 @@ public class CharacterCard extends JPanel {
 	}
 	
 	private void handleMouseEntered(MouseEvent e) {
-		this.setBackground(HIGHLIGHT_COLOUR);
+		
 		this.repaint();
 	}
 	
@@ -56,5 +57,13 @@ public class CharacterCard extends JPanel {
 		this.setBackground(null);
 		this.repaint();
 		
+	}
+
+	public boolean isClickable(){
+		return clickable;
+	}
+
+	public void setClickable(boolean state) {
+		clickable = state;
 	}
 }

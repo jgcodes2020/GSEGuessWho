@@ -7,6 +7,7 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Map;
@@ -28,10 +29,13 @@ public class GamePanel extends JPanel {
 	private CharacterCard[] cards;
 	private JList<String> questionList;
 	private JLabel errorMessage;
+	
+	
 
 	private JPanel buildBoard() {
 		JPanel board = new JPanel();
 		board.setLayout(new GridLayout(4, 6));
+		board.setBackground(Color.RED);
 
 		final int characterAmt = 24;
 		cards = new CharacterCard[characterAmt];
