@@ -47,11 +47,11 @@ public class GamePanel extends JPanel {
 		ArrayList <String> questions = new ArrayList<String>();
 		JButton confirmButton = new JButton("Confirm");
 		errorMessage = new JLabel("");
-		CharacterCard userCharacter = new CharacterCard(DataCaches.getCharacterByName("Rachel"));
+		CharacterCard userCharacter = new CharacterCard(state.getCurrentPlayer().getSecretCharacter());
 		for (String question : DataCaches.getQuestions().keySet()) {
 			questions.add(question);
 		}
-		JList<String> questionList = new JList<String>(questions.toArray(new String[questions.size()]));
+		questionList = new JList<String>(questions.toArray(new String[questions.size()]));
 		JScrollPane questionScroll = new JScrollPane(questionList);
 
 		questionScroll.setViewportView(questionList);

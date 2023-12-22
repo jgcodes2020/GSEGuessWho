@@ -66,6 +66,10 @@ public class GameState {
 		return winner;
 	}
 
+	public Player getCurrentPlayer() {
+		return isPlayer1Turn ? player1 : player2;
+	}
+
 	/**
 	 * Performs the next player's turn.
 	 */
