@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -17,10 +19,14 @@ public class CharacterCard extends JPanel {
 	
 	private JLabel textLabel;
 	private CharacterImageDisplay iconLabel;
-	private boolean clickable;
+	private boolean clickable = true;
 	
 	public CharacterCard(GuessWhoCharacter character) {
 		setLayout(new BorderLayout());
+
+    setBackground(Color.WHITE);
+
+    setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		
 		textLabel = new JLabel(character.getName());
 		textLabel.setHorizontalAlignment(JLabel.CENTER);
@@ -55,7 +61,7 @@ public class CharacterCard extends JPanel {
 	}
 	
 	private void handleMouseExited(MouseEvent e) {
-		this.setBackground(null);
+		this.setBackground(Color.WHITE);
 		this.repaint();
 		
 	}

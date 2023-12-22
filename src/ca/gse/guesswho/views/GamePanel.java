@@ -33,6 +33,7 @@ public class GamePanel extends JPanel {
 		JPanel board = new JPanel();
 		board.setLayout(new GridLayout(4, 6));
 		board.setBackground(Color.RED);
+    board.setBorder(BorderFactory.createLineBorder(Color.RED, 20));
 
 		final int characterAmt = 24;
 		cards = new CharacterCard[characterAmt];
@@ -53,6 +54,9 @@ public class GamePanel extends JPanel {
 		JPanel board = new JPanel();
 		JPanel innerBoard = new JPanel();
 		board.setLayout(new BoxLayout(board, BoxLayout.Y_AXIS));
+
+    board.setBorder(BorderFactory.createLineBorder(Color.RED, 20));
+
 		JLabel questions = new JLabel ("questions");
 		JScrollPane scroller = new JScrollPane(innerBoard);
 		if (state.getPlayer1Turn()==true){
@@ -79,8 +83,12 @@ public class GamePanel extends JPanel {
 		ArrayList <String> questions = new ArrayList<String>();
 		JButton confirmButton = new JButton("Confirm");
 		errorMessage = new JLabel("");
+
+    board.setBackground(Color.RED);
+    board.setBorder(BorderFactory.createLineBorder(Color.RED, 20));
 		
 		CharacterCard userCharacter = new CharacterCard(state.getCurrentPlayer().getSecretCharacter());
+    userCharacter.setClickable(false);
 		for (String question : DataCaches.getQuestions().keySet()) {
 			questions.add(question);
 		}
