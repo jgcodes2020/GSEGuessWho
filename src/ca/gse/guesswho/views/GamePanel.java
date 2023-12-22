@@ -68,7 +68,7 @@ public class GamePanel extends JPanel {
 
 	private JPanel bottomBar(){
 		JPanel board = new JPanel();
-		board.setLayout(new FlowLayout());
+		board.setLayout(new BoxLayout(board, BoxLayout.X_AXIS));
 		ArrayList <String> questions = new ArrayList<String>();
 		JButton confirmButton = new JButton("Confirm");
 		errorMessage = new JLabel("");
@@ -80,7 +80,10 @@ public class GamePanel extends JPanel {
 		JScrollPane questionScroll = new JScrollPane(questionList);
 
 		questionScroll.setViewportView(questionList);
-		//board.setPreferredSize(new Dimension(Integer.MAX_VALUE, 210));;//720 by 210
+		questionScroll.setPreferredSize(new Dimension(540, 210));;//720 by 210
+		confirmButton.setPreferredSize(new Dimension(210, 210));;//720 by 210
+		userCharacter.setPreferredSize(new Dimension(320, 210));;//720 by 210
+
 		confirmButton.addActionListener(this::submitButtonPressed);
 		ActionListener s;
 		board.add(questionScroll);
@@ -110,8 +113,8 @@ public class GamePanel extends JPanel {
 
 		setLayout(new BorderLayout());
 		add(buildBoard(), BorderLayout.CENTER);
-		add(bottomBar(), BorderLayout.SOUTH);
 		add(questionBoard(), BorderLayout.EAST);
+		add(bottomBar(), BorderLayout.SOUTH);
 
 	}
 }
