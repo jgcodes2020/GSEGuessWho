@@ -72,7 +72,7 @@ public class GamePanel extends JPanel {
 		return board;
 	}
 
-	private JPanel bottomBar(){
+	private JPanel bottomBar() {
 		JPanel board = new JPanel();
 		board.setLayout(new BoxLayout(board, BoxLayout.X_AXIS));
 		ArrayList <String> questions = new ArrayList<String>();
@@ -92,10 +92,13 @@ public class GamePanel extends JPanel {
 		userCharacter.setPreferredSize(new Dimension(320, 210));;//720 by 210
 
 		confirmButton.addActionListener(this::submitButtonPressed);
+		
+		board.add(Box.createHorizontalGlue());
 		board.add(questionScroll);
 		board.add(confirmButton);
 		board.add(userCharacter);
 		board.add(errorMessage);
+		board.add(Box.createHorizontalGlue());
 		return board;
 
 	}
