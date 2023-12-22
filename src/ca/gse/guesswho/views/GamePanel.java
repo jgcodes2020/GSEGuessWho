@@ -30,7 +30,7 @@ public class GamePanel extends JPanel {
 			GuessWhoCharacter character = DataCaches.getCharacterList().get(i);
 
 			CharacterCard curCard;
-			curCard = new CharacterCard(character.getName(), character.getImage());
+			curCard = new CharacterCard(character);
 			cards[i] = curCard;
 			board.add(cards[i]);
 		}
@@ -42,7 +42,7 @@ public class GamePanel extends JPanel {
 		board.setLayout(new FlowLayout());
 		ArrayList <String> questions = new ArrayList<String>();
 		JButton confirmButton = new JButton("Confirm");
-		CharacterCard userCharacter = new CharacterCard("Rachel", null);
+		CharacterCard userCharacter = new CharacterCard(DataCaches.getCharacterByName("Rachel"));
 		for (String question : DataCaches.getQuestions().keySet()) {
 			questions.add(question);
 		}

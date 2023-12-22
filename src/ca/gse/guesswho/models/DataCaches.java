@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +20,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+/**
+ * Class handling all data that is loaded from files.
+ */
 public class DataCaches {
 	private static List<GuessWhoCharacter> characterList = null;
 	private static Map<String, AttributeQuestion> questionBank = null;
@@ -57,6 +61,19 @@ public class DataCaches {
 	 */
 	public static List<GuessWhoCharacter> getCharacterList() {
 		return characterList;
+	}
+	
+	public static GuessWhoCharacter getCharacterByName(String name) {
+		if (characterList == null)
+			throw new IllegalStateException("Character list isn't loaded yet!");
+		
+		// Iterator-based iteration. This is what the 'for (Type thing : list)' effectively does
+		// on the inside; 
+		for (GuessWhoCharacter gwCharacter : characterList) {
+			if (gwCharacter.getName().equals(name))
+				return gwCharacter;
+		}
+		throw new IllegalArgumentException("There is no characted named " + name);
 	}
 	
 	/**

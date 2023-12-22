@@ -8,6 +8,8 @@ import java.awt.event.MouseEvent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import ca.gse.guesswho.models.GuessWhoCharacter;
+
 public class CharacterCard extends JPanel {
 	// even though Java was developed by Americans, and spells "colour" that way
 	// I refuse to spell it the wrong way.
@@ -16,13 +18,13 @@ public class CharacterCard extends JPanel {
 	private JLabel textLabel;
 	private ImageDisplay iconLabel;
 	
-	public CharacterCard(String name, Image image) {
+	public CharacterCard(GuessWhoCharacter character) {
 		setLayout(new BorderLayout());
 		
-		textLabel = new JLabel(name);
+		textLabel = new JLabel(character.getName());
 		textLabel.setHorizontalAlignment(JLabel.CENTER);
 		
-		iconLabel = new ImageDisplay(image);
+		iconLabel = new ImageDisplay(character.getImage());
 		
 		add(iconLabel, BorderLayout.CENTER);
 		add(textLabel, BorderLayout.SOUTH);
