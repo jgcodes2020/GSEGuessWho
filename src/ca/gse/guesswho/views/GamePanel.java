@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.*;
@@ -18,6 +20,8 @@ import ca.gse.guesswho.models.Player;
 public class GamePanel extends JPanel {
 	private GameState state;
 	private CharacterCard[] cards;
+	private JList<String> questionList;
+	private JLabel errorMessage;
 
 	private JPanel buildBoard() {
 		JPanel board = new JPanel();
@@ -42,6 +46,7 @@ public class GamePanel extends JPanel {
 		board.setLayout(new FlowLayout());
 		ArrayList <String> questions = new ArrayList<String>();
 		JButton confirmButton = new JButton("Confirm");
+		errorMessage = new JLabel("");
 		CharacterCard userCharacter = new CharacterCard(DataCaches.getCharacterByName("Rachel"));
 		for (String question : DataCaches.getQuestions().keySet()) {
 			questions.add(question);
@@ -51,13 +56,32 @@ public class GamePanel extends JPanel {
 
 		questionScroll.setViewportView(questionList);
 		//board.setPreferredSize(new Dimension(Integer.MAX_VALUE, 210));;//720 by 210
-
-
+		confirmButton.addActionListener(this::submitButtonpressed);
+		ActionListener s;
 		board.add(questionScroll);
 		board.add(confirmButton);
 		board.add(userCharacter);
+		board.add(errorMessage);
 		return board;
 
+	}
+
+	private boolean checkScrollSelection(){
+		if (questionList.getSelectedIndex() == -1){
+			return false;
+		}
+		else{
+			return true;
+		}
+	}
+
+	public void submitButtonpressed(ActionEvent e){
+		if (checkScrollSelection() == true){
+			errorMessage.setText("");
+		}
+		else{
+			errorMessage.setText("You have to select a question");
+		}
 	}
 	
 	public GamePanel(Player p1, Player p2) {
