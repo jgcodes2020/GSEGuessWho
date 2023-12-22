@@ -2,16 +2,13 @@ package ca.gse.guesswho.views;
 //gui
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Map;
-
+import java.util.function.IntConsumer;
 import javax.swing.*;
 
 import ca.gse.guesswho.components.CharacterCard;
@@ -30,7 +27,7 @@ public class GamePanel extends JPanel {
 	private JList<String> questionList;
 	private JLabel errorMessage;
 	
-	
+	public ArrayList<IntConsumer> onGameWon;
 
 	private JPanel buildBoard() {
 		JPanel board = new JPanel();

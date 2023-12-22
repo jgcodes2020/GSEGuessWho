@@ -49,7 +49,8 @@ public class CharacterCard extends JPanel {
 	}
 	
 	private void handleMouseEntered(MouseEvent e) {
-		
+		if (this.clickable)
+			this.setBackground(HIGHLIGHT_COLOUR);
 		this.repaint();
 	}
 	
