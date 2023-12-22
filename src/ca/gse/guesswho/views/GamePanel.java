@@ -56,7 +56,7 @@ public class GamePanel extends JPanel {
 
 		questionScroll.setViewportView(questionList);
 		//board.setPreferredSize(new Dimension(Integer.MAX_VALUE, 210));;//720 by 210
-		confirmButton.addActionListener(this::submitButtonpressed);
+		confirmButton.addActionListener(this::submitButtonPressed);
 		ActionListener s;
 		board.add(questionScroll);
 		board.add(confirmButton);
@@ -67,16 +67,11 @@ public class GamePanel extends JPanel {
 	}
 
 	private boolean checkScrollSelection(){
-		if (questionList.getSelectedIndex() == -1){
-			return false;
-		}
-		else{
-			return true;
-		}
+		return questionList.getSelectedIndex() != -1;
 	}
 
-	public void submitButtonpressed(ActionEvent e){
-		if (checkScrollSelection() == true){
+	public void submitButtonPressed(ActionEvent e){
+		if (checkScrollSelection()) {
 			errorMessage.setText("");
 		}
 		else{
