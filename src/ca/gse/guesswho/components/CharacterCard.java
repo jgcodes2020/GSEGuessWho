@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 
 public class CharacterCard extends JPanel {
 	private JLabel textLabel;
-	private JLabel iconLabel;
+	private ImageDisplay iconLabel;
 	
 	public CharacterCard(String name, Image image) {
 		setLayout(new BorderLayout());
@@ -21,10 +21,7 @@ public class CharacterCard extends JPanel {
 		textLabel = new JLabel(name);
 		textLabel.setHorizontalAlignment(JLabel.CENTER);
 		
-		if (image == null)
-			iconLabel = new JLabel("<insert icon here>");
-		else
-			iconLabel = new JLabel(new ImageIcon(image));
+		iconLabel = new ImageDisplay(image);
 		
 		add(iconLabel, BorderLayout.CENTER);
 		add(textLabel, BorderLayout.SOUTH);
