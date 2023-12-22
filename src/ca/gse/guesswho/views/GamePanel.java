@@ -63,17 +63,8 @@ public class GamePanel extends JPanel {
 
     board.setBorder(BorderFactory.createLineBorder(Color.RED, 20));
 
-		JLabel questions = new JLabel("questions");
+		JLabel questions = new JLabel("Questions");
 		JScrollPane scroller = new JScrollPane(innerBoard);
-		if (state.getPlayer1Turn() == true) {
-			questions.setText("a");
-
-			questions.setHorizontalAlignment(SwingConstants.LEFT);
-		} else {
-			questions.setText("b");
-
-			questions.setHorizontalAlignment(SwingConstants.RIGHT);
-		}
 		innerBoard.add(questions);
 
 		board.add(scroller);
@@ -148,7 +139,6 @@ public class GamePanel extends JPanel {
 		state.doNextTurn();
 		addToResponse(state.getAns());//Put the awnser into the response panel
 
-		if (!state.getCurrentPlayer().isHuman())
 		currentWinner = state.getWinner();
 		// check if the player won.
 		if (currentWinner != GameState.WINNER_NONE)
