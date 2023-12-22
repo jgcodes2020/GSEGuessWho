@@ -12,6 +12,8 @@ public class MenuPanel extends JPanel {
 	private static final Font TITLE_FONT = new Font("Dialog", Font.BOLD, 60);
 	private static final Font BUTTON_FONT = new Font("Dialog", Font.BOLD, 20);
 	
+	// Runnable represents a void-type method with no parameters.
+	// There is no additional information that needs to be carried.
 	private List<Runnable> startPressedHandlers = new ArrayList<>();
 	
 	/**

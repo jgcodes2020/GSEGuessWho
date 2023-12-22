@@ -1,4 +1,5 @@
 package ca.gse.guesswho.views;
+
 //gui
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -8,10 +9,11 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Map;
-import java.util.function.IntConsumer;
+import java.util.function.Consumer;
 import javax.swing.*;
 
 import ca.gse.guesswho.components.CharacterCard;
+import ca.gse.guesswho.events.GameWonEvent;
 import ca.gse.guesswho.models.DataCaches;
 import ca.gse.guesswho.models.GameState;
 import ca.gse.guesswho.models.GuessWhoCharacter;
@@ -22,12 +24,14 @@ import ca.gse.guesswho.models.questions.AttributeQuestion;
 public class GamePanel extends JPanel {
 	private GameState state;
 	private JPanel boardPanel;
-	
+
 	private CharacterCard[] cards;
 	private JList<String> questionList;
 	private JLabel errorMessage;
-	
-	public ArrayList<IntConsumer> onGameWon;
+
+	// Consumer<GameWonEvent> represents a method that takes
+	// GameWonEvent and returns void
+	public ArrayList<Consumer<GameWonEvent>> gameWonHandlers;
 
 	private JPanel buildBoard() {
 		JPanel board = new JPanel();
@@ -48,19 +52,17 @@ public class GamePanel extends JPanel {
 		return board;
 	}
 
-
-	private JPanel questionBoard(){
+	private JPanel questionBoard() {
 		JPanel board = new JPanel();
 		JPanel innerBoard = new JPanel();
 		board.setLayout(new BoxLayout(board, BoxLayout.Y_AXIS));
-		JLabel questions = new JLabel ("questions");
+		JLabel questions = new JLabel("questions");
 		JScrollPane scroller = new JScrollPane(innerBoard);
-		if (state.getPlayer1Turn()==true){
+		if (state.getPlayer1Turn() == true) {
 			questions.setText("a");
 
 			questions.setHorizontalAlignment(SwingConstants.LEFT);
-		}
-		else{
+		} else {
 			questions.setText("b");
 
 			questions.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -76,10 +78,10 @@ public class GamePanel extends JPanel {
 	private JPanel bottomBar() {
 		JPanel board = new JPanel();
 		board.setLayout(new BoxLayout(board, BoxLayout.X_AXIS));
-		ArrayList <String> questions = new ArrayList<String>();
+		ArrayList<String> questions = new ArrayList<String>();
 		JButton confirmButton = new JButton("Confirm");
 		errorMessage = new JLabel("");
-		
+
 		CharacterCard userCharacter = new CharacterCard(state.getCurrentPlayer().getSecretCharacter());
 		for (String question : DataCaches.getQuestions().keySet()) {
 			questions.add(question);
@@ -88,12 +90,15 @@ public class GamePanel extends JPanel {
 		JScrollPane questionScroll = new JScrollPane(questionList);
 
 		questionScroll.setViewportView(questionList);
-		questionScroll.setPreferredSize(new Dimension(540, 210));;//720 by 210
-		confirmButton.setPreferredSize(new Dimension(210, 210));;//720 by 210
-		userCharacter.setPreferredSize(new Dimension(320, 210));;//720 by 210
+		questionScroll.setPreferredSize(new Dimension(540, 210));
+		;// 720 by 210
+		confirmButton.setPreferredSize(new Dimension(210, 210));
+		;// 720 by 210
+		userCharacter.setPreferredSize(new Dimension(320, 210));
+		;// 720 by 210
 
 		confirmButton.addActionListener(this::submitButtonPressed);
-		
+
 		board.add(Box.createHorizontalGlue());
 		board.add(questionScroll);
 		board.add(confirmButton);
@@ -107,7 +112,7 @@ public class GamePanel extends JPanel {
 	private boolean checkScrollSelection() {
 		return questionList.getSelectedIndex() != -1;
 	}
-	
+
 	private void updateUIState() {
 		BitSet playerRemainingIndexes = state.getCurrentPlayer().getRemainingIndexes();
 		for (int i = 0; i < cards.length; i++) {
@@ -115,28 +120,50 @@ public class GamePanel extends JPanel {
 		}
 	}
 
-	public void submitButtonPressed(ActionEvent e){
+	public void submitButtonPressed(ActionEvent e) {
 		if (!checkScrollSelection()) {
 			errorMessage.setText("You have to select a question");
 			return;
 		}
-		
+
+		byte currentWinner;
+
 		// set the current player's next question (it should be human)
 		Map<String, AttributeQuestion> questionBank = DataCaches.getQuestions();
 		AttributeQuestion nextQuestion = questionBank.get(questionList.getSelectedValue());
 		((HumanPlayer) state.getCurrentPlayer()).setNextQuestion(nextQuestion);
+
 		state.doNextTurn();
-		
-		if (!state.getCurrentPlayer().isHuman())
+		currentWinner = state.getWinner();
+		// check if the player won.
+		if (currentWinner != GameState.WINNER_NONE)
+			fireGameWon(currentWinner == GameState.WINNER_P1);
+
+		if (!state.getCurrentPlayer().isHuman()) {
 			state.doNextTurn();
-		
+			// check the winner again
+			currentWinner = state.getWinner();
+			if (currentWinner != GameState.WINNER_NONE)
+				fireGameWon(currentWinner == GameState.WINNER_P1);
+		}
+
 		updateUIState();
 		boardPanel.repaint();
 	}
+
+	private void fireGameWon(boolean winnerIsP1) {
+		for (Consumer<GameWonEvent> handler : gameWonHandlers) {
+			handler.accept(new GameWonEvent(this, winnerIsP1));
+		}
+	}
 	
+	public void addGameWonListener(Consumer<GameWonEvent> handler) {
+		gameWonHandlers.add(handler);
+	}
+
 	public GamePanel(Player p1, Player p2) {
 		state = new GameState(p1, p2);
-		
+
 		boardPanel = buildBoard();
 
 		setLayout(new BorderLayout());
