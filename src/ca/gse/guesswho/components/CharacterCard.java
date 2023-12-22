@@ -5,13 +5,14 @@ import java.awt.Color;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.net.URL;
-
-import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class CharacterCard extends JPanel {
+	// even though Java was developed by Americans, and spells "colour" that way
+	// I refuse to spell it the wrong way.
+	private static Color HIGHLIGHT_COLOUR = new Color(0x0088FF);
+	
 	private JLabel textLabel;
 	private ImageDisplay iconLabel;
 	
@@ -41,7 +42,7 @@ public class CharacterCard extends JPanel {
 	}
 	
 	private void handleMouseEntered(MouseEvent e) {
-		this.setBackground(Color.YELLOW);
+		this.setBackground(HIGHLIGHT_COLOUR);
 		this.repaint();
 	}
 	
