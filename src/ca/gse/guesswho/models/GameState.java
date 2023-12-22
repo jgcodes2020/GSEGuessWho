@@ -70,6 +70,9 @@ public class GameState {
 		return isPlayer1Turn ? player1 : player2;
 	}
 
+	public boolean getPlayer1Turn() {
+		return isPlayer1Turn;
+	}
 	/**
 	 * Performs the next player's turn.
 	 */

@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.*;
-import javax.swing.JPanel;
+
 import ca.gse.guesswho.components.CharacterCard;
 import ca.gse.guesswho.models.DataCaches;
 import ca.gse.guesswho.models.GameState;
@@ -38,6 +38,31 @@ public class GamePanel extends JPanel {
 			cards[i] = curCard;
 			board.add(cards[i]);
 		}
+		return board;
+	}
+
+
+	private JPanel questionBoard(){
+		JPanel board = new JPanel();
+		JPanel innerBoard = new JPanel();
+		board.setLayout(new BoxLayout(board, BoxLayout.Y_AXIS));
+		JLabel questions = new JLabel ("questions");
+		JScrollPane scroller = new JScrollPane(innerBoard);
+		if (state.getPlayer1Turn()==true){
+			questions.setText("a");
+
+			questions.setHorizontalAlignment(SwingConstants.LEFT);
+		}
+		else{
+			questions.setText("b");
+
+			questions.setHorizontalAlignment(SwingConstants.RIGHT);
+		}
+		innerBoard.add(questions);
+
+		board.add(scroller);
+
+		board.setMinimumSize(new Dimension(900, 0));
 		return board;
 	}
 
@@ -91,6 +116,7 @@ public class GamePanel extends JPanel {
 		setLayout(new BorderLayout());
 		add(buildBoard(), BorderLayout.CENTER);
 		add(bottomBar(), BorderLayout.SOUTH);
+		add(questionBoard(), BorderLayout.EAST);
 
 	}
 }
