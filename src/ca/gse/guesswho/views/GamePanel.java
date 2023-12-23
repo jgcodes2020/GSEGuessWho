@@ -30,7 +30,6 @@ public class GamePanel extends JPanel {
 	private JLabel errorMessage;
 	JPanel innerBoard;
 
-
 	// Consumer<GameWonEvent> represents a method that takes
 	// GameWonEvent and returns void
 	public ArrayList<Consumer<GameWonEvent>> gameWonHandlers;
@@ -39,7 +38,7 @@ public class GamePanel extends JPanel {
 		JPanel board = new JPanel();
 		board.setLayout(new GridLayout(4, 6));
 		board.setBackground(Color.RED);
-    board.setBorder(BorderFactory.createLineBorder(Color.RED, 20));
+		board.setBorder(BorderFactory.createLineBorder(Color.RED, 20));
 
 		final int characterAmt = 24;
 		cards = new CharacterCard[characterAmt];
@@ -58,10 +57,10 @@ public class GamePanel extends JPanel {
 	private JPanel questionBoard() {
 		JPanel board = new JPanel();
 		innerBoard = new JPanel();
-		innerBoard.setLayout(new GridLayout(20,1));//Need to fix the layout but i want things to go down.
+		innerBoard.setLayout(new GridLayout(20, 1));// Need to fix the layout but i want things to go down.
 		board.setLayout(new BoxLayout(board, BoxLayout.Y_AXIS));
 
-    board.setBorder(BorderFactory.createLineBorder(Color.RED, 20));
+		board.setBorder(BorderFactory.createLineBorder(Color.RED, 20));
 
 		JLabel questions = new JLabel("Questions");
 		JScrollPane scroller = new JScrollPane(innerBoard);
@@ -80,11 +79,11 @@ public class GamePanel extends JPanel {
 		JButton confirmButton = new JButton("Confirm");
 		errorMessage = new JLabel("");
 
-    board.setBackground(Color.RED);
-    board.setBorder(BorderFactory.createLineBorder(Color.RED, 20));
-		
+		board.setBackground(Color.RED);
+		board.setBorder(BorderFactory.createLineBorder(Color.RED, 20));
+
 		CharacterCard userCharacter = new CharacterCard(state.getCurrentPlayer().getSecretCharacter());
-    userCharacter.setClickable(false);
+		userCharacter.setClickable(false);
 		for (String question : DataCaches.getQuestions().keySet()) {
 			questions.add(question);
 		}
@@ -93,11 +92,8 @@ public class GamePanel extends JPanel {
 
 		questionScroll.setViewportView(questionList);
 		questionScroll.setPreferredSize(new Dimension(540, 210));
-		;// 720 by 210
 		confirmButton.setPreferredSize(new Dimension(210, 210));
-		;// 720 by 210
 		userCharacter.setPreferredSize(new Dimension(320, 210));
-		;// 720 by 210
 
 		confirmButton.addActionListener(this::submitButtonPressed);
 
@@ -121,7 +117,7 @@ public class GamePanel extends JPanel {
 		}
 	}
 
-	public void submitButtonPressed(ActionEvent e){
+	public void submitButtonPressed(ActionEvent e) {
 		String questionSelected = questionList.getSelectedValue();
 		if (!checkScrollSelection()) {
 			errorMessage.setText("You have to select a question");
@@ -134,10 +130,10 @@ public class GamePanel extends JPanel {
 		Map<String, AttributeQuestion> questionBank = DataCaches.getQuestions();
 		AttributeQuestion nextQuestion = questionBank.get(questionSelected);
 		((HumanPlayer) state.getCurrentPlayer()).setNextQuestion(nextQuestion);
-		addToResponse(questionSelected);//Put the question into the response panel
+		addToResponse(questionSelected);// Put the question into the response panel
 
 		state.doNextTurn();
-		addToResponse(state.getAns());//Put the awnser into the response panel
+		addToResponse(state.getAns());// Put the awnser into the response panel
 
 		currentWinner = state.getWinner();
 		// check if the player won.
@@ -156,16 +152,14 @@ public class GamePanel extends JPanel {
 		boardPanel.repaint();
 	}
 
-
-	public void addToResponse(String response){
+	public void addToResponse(String response) {
 		JLabel questions = new JLabel();
-		if (state.getPlayer1Turn()==true){
-			questions.setText(response+" P1");
+		if (state.getPlayer1Turn() == true) {
+			questions.setText(response + " P1");
 
 			questions.setHorizontalAlignment(SwingConstants.LEFT);
-		}
-		else{
-			questions.setText(response+" P2");
+		} else {
+			questions.setText(response + " P2");
 
 			questions.setHorizontalAlignment(SwingConstants.RIGHT);
 		}
@@ -173,13 +167,12 @@ public class GamePanel extends JPanel {
 
 	}
 
-
 	private void fireGameWon(boolean winnerIsP1) {
 		for (Consumer<GameWonEvent> handler : gameWonHandlers) {
 			handler.accept(new GameWonEvent(this, winnerIsP1));
 		}
 	}
-	
+
 	public void addGameWonListener(Consumer<GameWonEvent> handler) {
 		gameWonHandlers.add(handler);
 	}

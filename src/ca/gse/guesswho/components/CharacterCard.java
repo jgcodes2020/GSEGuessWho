@@ -23,7 +23,7 @@ public class CharacterCard extends JPanel {
 	
 	private JLabel textLabel;
 	private CharacterImageDisplay iconLabel;
-	private boolean clickable;
+	private boolean clickable = true;
 	private boolean selected;
 	
 	private List<Consumer<CharacterSelectEvent>> selectHandlers = new ArrayList<>();
