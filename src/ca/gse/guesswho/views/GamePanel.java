@@ -5,7 +5,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
-import java.awt.Color;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Map;
@@ -24,6 +24,7 @@ import ca.gse.guesswho.models.questions.AttributeQuestion;
 public class GamePanel extends JPanel {
 	private GameState state;
 	private JPanel boardPanel;
+	private JPanel questionPanel;
 
 	private CharacterCard[] cards;
 	private JList<String> questionList;
@@ -37,30 +38,33 @@ public class GamePanel extends JPanel {
 	private JPanel buildBoard() {
 		JPanel board = new JPanel();
 		board.setLayout(new GridLayout(4, 6));
-		board.setBackground(Color.RED);
-		board.setBorder(BorderFactory.createLineBorder(Color.RED, 20));
+		// board.setBackground(Color.RED);
+		// board.setBorder(BorderFactory.createLineBorder(Color.RED, 20));
 
 		final int characterAmt = 24;
 		cards = new CharacterCard[characterAmt];
+		
+		// this merely needs to exist, we don't do anything
+		// other than adding the cards to it
+		ButtonGroup buttonGroup = new ButtonGroup();
 
 		for (int i = 0; i < characterAmt; i++) {
 			GuessWhoCharacter character = DataCaches.getCharacterList().get(i);
-
-			CharacterCard curCard;
-			curCard = new CharacterCard(character);
-			cards[i] = curCard;
+			
+			cards[i] = new CharacterCard(character);
+			buttonGroup.add(cards[i]);
 			board.add(cards[i]);
 		}
 		return board;
 	}
 
-	private JPanel questionBoard() {
+	private JPanel buildQuestionBoard() {
 		JPanel board = new JPanel();
 		innerBoard = new JPanel();
 		innerBoard.setLayout(new GridLayout(20, 1));// Need to fix the layout but i want things to go down.
 		board.setLayout(new BoxLayout(board, BoxLayout.Y_AXIS));
 
-		board.setBorder(BorderFactory.createLineBorder(Color.RED, 20));
+		board.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
 		JLabel questions = new JLabel("Questions");
 		JScrollPane scroller = new JScrollPane(innerBoard);
@@ -79,8 +83,8 @@ public class GamePanel extends JPanel {
 		JButton confirmButton = new JButton("Confirm");
 		errorMessage = new JLabel("");
 
-		board.setBackground(Color.RED);
-		board.setBorder(BorderFactory.createLineBorder(Color.RED, 20));
+		// board.setBackground(Color.RED);
+		// board.setBorder(BorderFactory.createLineBorder(Color.RED, 20));
 
 		CharacterCard userCharacter = new CharacterCard(state.getCurrentPlayer().getSecretCharacter());
 		userCharacter.setClickable(false);
@@ -150,6 +154,7 @@ public class GamePanel extends JPanel {
 
 		updateUIState();
 		boardPanel.repaint();
+		this.validate();
 	}
 
 	public void addToResponse(String response) {
@@ -181,11 +186,12 @@ public class GamePanel extends JPanel {
 		state = new GameState(p1, p2);
 
 		boardPanel = buildBoard();
+		questionPanel = buildQuestionBoard();
 
 		setLayout(new BorderLayout());
 		add(boardPanel, BorderLayout.CENTER);
 		add(bottomBar(), BorderLayout.SOUTH);
-		add(questionBoard(), BorderLayout.EAST);
+		add(questionPanel, BorderLayout.EAST);
 
 	}
 }
