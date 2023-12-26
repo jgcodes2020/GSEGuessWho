@@ -1,20 +1,9 @@
 package ca.gse.guesswho.components;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Cursor;
-import java.util.function.Consumer;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JToggleButton;
-
-import java.util.List;
-import java.util.ArrayList;
 
 import ca.gse.guesswho.models.GuessWhoCharacter;
 

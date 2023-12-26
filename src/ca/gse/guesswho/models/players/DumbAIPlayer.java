@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Random;
 
 import ca.gse.guesswho.models.DataCaches;
-import ca.gse.guesswho.models.GameState;
 import ca.gse.guesswho.models.GuessWhoCharacter;
 import ca.gse.guesswho.models.Player;
 import ca.gse.guesswho.models.Question;

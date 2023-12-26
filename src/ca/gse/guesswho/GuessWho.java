@@ -1,10 +1,8 @@
 package ca.gse.guesswho;
 
-import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.io.IOException;
 
-import javax.smartcardio.Card;
 import javax.swing.*;
 
 import ca.gse.guesswho.models.DataCaches;

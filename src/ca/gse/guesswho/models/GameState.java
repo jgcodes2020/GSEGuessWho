@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Random;
 
 import ca.gse.guesswho.models.players.HumanPlayer;
-import ca.gse.guesswho.views.GamePanel;
 
 public class GameState {
 	private static Random rng = new Random();

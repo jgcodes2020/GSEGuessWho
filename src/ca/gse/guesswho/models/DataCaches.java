@@ -2,20 +2,15 @@ package ca.gse.guesswho.models;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.imageio.ImageIO;
-import javax.swing.ProgressMonitor;
 import javax.swing.ProgressMonitorInputStream;
 
 import ca.gse.guesswho.models.questions.AttributeQuestion;
 
-import java.awt.Image;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;

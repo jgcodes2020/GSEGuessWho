@@ -1,28 +1,16 @@
 package ca.gse.guesswho.views;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.BitSet;
-import java.util.Map;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.*;
 import java.util.function.Consumer;
 import javax.swing.*;
-import javax.swing.event.ListDataEvent;
-import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-
 import ca.gse.guesswho.components.CharacterCard;
-import ca.gse.guesswho.events.GameWonEvent;
-import ca.gse.guesswho.models.DataCaches;
-import ca.gse.guesswho.models.GameState;
-import ca.gse.guesswho.models.GuessWhoCharacter;
-import ca.gse.guesswho.models.Player;
-import ca.gse.guesswho.models.players.HumanPlayer;
-import ca.gse.guesswho.models.questions.AttributeQuestion;
+import ca.gse.guesswho.events.*;
+import ca.gse.guesswho.models.*;
+import ca.gse.guesswho.models.questions.*;
+import ca.gse.guesswho.models.players.*;
 
 public class GamePanel extends JPanel {
 	private GameState state;
