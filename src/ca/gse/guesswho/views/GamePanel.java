@@ -1,6 +1,5 @@
 package ca.gse.guesswho.views;
 
-//gui
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -11,6 +10,10 @@ import java.util.BitSet;
 import java.util.Map;
 import java.util.function.Consumer;
 import javax.swing.*;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import ca.gse.guesswho.components.CharacterCard;
 import ca.gse.guesswho.events.GameWonEvent;
@@ -27,6 +30,8 @@ public class GamePanel extends JPanel {
 	private JPanel questionPanel;
 
 	private CharacterCard[] cards;
+	private ButtonGroup cardGroup;
+	
 	private JList<String> questionList;
 	private JLabel errorMessage;
 	JPanel innerBoard;
@@ -44,15 +49,14 @@ public class GamePanel extends JPanel {
 		final int characterAmt = 24;
 		cards = new CharacterCard[characterAmt];
 		
-		// this merely needs to exist, we don't do anything
-		// other than adding the cards to it
-		ButtonGroup buttonGroup = new ButtonGroup();
+		cardGroup = new ButtonGroup();
 
 		for (int i = 0; i < characterAmt; i++) {
 			GuessWhoCharacter character = DataCaches.getCharacterList().get(i);
 			
 			cards[i] = new CharacterCard(character);
-			buttonGroup.add(cards[i]);
+			cards[i].addActionListener(this::characterCardPressed);
+			cardGroup.add(cards[i]);
 			board.add(cards[i]);
 		}
 		return board;
@@ -87,11 +91,15 @@ public class GamePanel extends JPanel {
 		// board.setBorder(BorderFactory.createLineBorder(Color.RED, 20));
 
 		CharacterCard userCharacter = new CharacterCard(state.getCurrentPlayer().getSecretCharacter());
-		userCharacter.setClickable(false);
+		userCharacter.setEnabled(false);
+		
 		for (String question : DataCaches.getQuestions().keySet()) {
 			questions.add(question);
 		}
-		questionList = new JList<String>(questions.toArray(new String[questions.size()]));
+		
+		questionList = new JList<String>(questions.toArray(new String[0]));
+		questionList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		questionList.addListSelectionListener(this::questionListValueChanged);
 		JScrollPane questionScroll = new JScrollPane(questionList);
 
 		questionScroll.setViewportView(questionList);
@@ -121,7 +129,7 @@ public class GamePanel extends JPanel {
 		}
 	}
 
-	public void submitButtonPressed(ActionEvent e) {
+	private void submitButtonPressed(ActionEvent e) {
 		String questionSelected = questionList.getSelectedValue();
 		if (!checkScrollSelection()) {
 			errorMessage.setText("You have to select a question");
@@ -156,7 +164,21 @@ public class GamePanel extends JPanel {
 		boardPanel.repaint();
 		this.validate();
 	}
-
+	
+	private void characterCardPressed(ActionEvent e) {
+		// if we select a character, then deselect any question
+		// we might have selected
+		questionList.clearSelection();
+	}
+	
+	private void questionListValueChanged(ListSelectionEvent e) {
+		// if we select a question, then deselect any character
+		// we might have selected
+		if (!questionList.getSelectionModel().isSelectionEmpty()) {
+			cardGroup.clearSelection();
+		}
+	}
+	
 	public void addToResponse(String response) {
 		JLabel questions = new JLabel();
 		if (state.getPlayer1Turn() == true) {
