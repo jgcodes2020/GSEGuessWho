@@ -28,7 +28,7 @@ public abstract class Player {
 	 * Sets this player's secret character as an index into the character.list
 	 * @param secretIndex the secret index to set.
 	 * @throws IllegalStateException if the player already has a secret index.
-	 * @see GameState#getCharacterList()
+	 * @see DataCaches#getCharacterList()
 	 */
 	public void setSecretIndex(int secretIndex) {
 		if (this.secretIndex >= 0)
@@ -39,7 +39,7 @@ public abstract class Player {
 	/**
 	 * Gets this player's secret index, or -1 if the player does not have a secret index.
 	 * @return the secret index set on this player.
-	 * @see GameState#getCharacterList()
+	 * @see DataCaches#getCharacterList()
 	 */
 	public int getSecretIndex() {
 		return this.secretIndex;
@@ -58,7 +58,7 @@ public abstract class Player {
 	/**
 	 * Returns a bitset containing the remaining indexes for this player
 	 * @return the remaining indexes for this player
-	 * @see GameState#getCharacterList()
+	 * @see DataCaches#getCharacterList()
 	 */
 	public BitSet getRemainingIndexes() {
 		return this.remainingIndexes;
