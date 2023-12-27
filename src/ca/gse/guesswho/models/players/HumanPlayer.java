@@ -16,8 +16,8 @@ public class HumanPlayer extends Player {
 		return this.nextQuestion;
 	}
 
-	public void setNextQuestion(Question nextQuestion) {
-		this.nextQuestion = nextQuestion;
+	public void setNextQuestion(Question question) {
+		nextQuestion = question;
 	}
 	
 	@Override

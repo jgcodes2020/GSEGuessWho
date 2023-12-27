@@ -4,6 +4,7 @@ import java.util.BitSet;
 import java.util.List;
 import java.util.Random;
 
+import ca.gse.guesswho.models.players.HumanPlayer;
 import ca.gse.guesswho.views.GamePanel;
 
 public class GameState {
@@ -15,7 +16,7 @@ public class GameState {
 	private byte winner;
 	private boolean isPlayer1Turn;
 	private boolean anwser;
-	
+	private Question question;
 	public static final byte WINNER_NONE = 0;
 	public static final byte WINNER_P1 = 1;
 	public static final byte WINNER_P2 = 2;
@@ -92,7 +93,7 @@ public class GameState {
 			answering = player1;
 		}
 
-		Question question = asking.takeTurn();
+		question = asking.takeTurn();
 		GuessWhoCharacter secretCharacter = characterList.get(answering.getSecretIndex());
 		boolean matchValue = question.match(secretCharacter);
 		anwser = matchValue;
@@ -123,5 +124,27 @@ public class GameState {
 		else{
 			return ("No");
 		}
+	}
+
+	public String getPlyQuestion(){//Returning the question as String (doesnt rlly work)
+
+		Question returningValue;
+		if (getCurrentPlayer().isHuman() == true){
+			//return (getCurrentPlayer().takeTurn().toString());
+			returningValue = (((HumanPlayer)getCurrentPlayer()).getNextQuestion());
+					System.err.println(returningValue.toString()+"a");
+
+		}
+		else{
+			returningValue =  getCurrentPlayer().takeTurn();
+			System.err.println(returningValue.toString()+"b");
+		}
+		for (String question : DataCaches.getQuestions().keySet()) {
+			System.err.println(DataCaches.getQuestions().get(question));
+			if (DataCaches.getQuestions().get(question) == returningValue){//It loops over the list and check whether they are the same, IT DOESNT WORK WHEN AI IS THE PLAYER
+				return (question);
+			}
+		}
+		return (returningValue.toString());
 	}
 }

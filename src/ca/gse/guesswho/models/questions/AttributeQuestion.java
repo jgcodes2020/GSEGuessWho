@@ -66,6 +66,7 @@ public class AttributeQuestion extends Question {
 	
 	@Override
 	public String toString() {
+		System.err.println();
 		return String.format("AttributeQuestion {attr=%s, value=%s}", this.attribute, this.checkedValue);
 	}
 	

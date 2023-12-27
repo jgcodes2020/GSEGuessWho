@@ -136,16 +136,19 @@ public class GamePanel extends JPanel {
 			return;
 		}
 
-		byte currentWinner;
 
+		byte currentWinner;
+		
 		// set the current player's next question (it should be human)
 		Map<String, AttributeQuestion> questionBank = DataCaches.getQuestions();
 		AttributeQuestion nextQuestion = questionBank.get(questionSelected);
 		((HumanPlayer) state.getCurrentPlayer()).setNextQuestion(nextQuestion);
-		addToResponse(questionSelected);// Put the question into the response panel
+		addToResponse(state.getPlyQuestion()); // Put the question into the response panel
+		
+		state.doNextTurn();//Give the turn to the next person. (Assumed as AI)
 
-		state.doNextTurn();
 		addToResponse(state.getAns());// Put the awnser into the response panel
+		addToResponse(state.getPlyQuestion());
 
 		currentWinner = state.getWinner();
 		// check if the player won.
@@ -154,11 +157,16 @@ public class GamePanel extends JPanel {
 
 		if (!state.getCurrentPlayer().isHuman()) {
 			state.doNextTurn();
+			addToResponse(state.getAns());
+
+			
 			// check the winner again
 			currentWinner = state.getWinner();
 			if (currentWinner != GameState.WINNER_NONE)
 				fireGameWon(currentWinner == GameState.WINNER_P1);
 		}
+		questionList.clearSelection();
+
 
 		updateUIState();
 		boardPanel.repaint();
