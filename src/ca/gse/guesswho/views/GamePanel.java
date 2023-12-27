@@ -181,13 +181,10 @@ public class GamePanel extends JPanel {
 	
 	public void addToResponse(String response) {
 		JLabel questions = new JLabel();
+		questions.setText(response +" | "+state.getCurrentPlayer().getName());
 		if (state.getPlayer1Turn() == true) {
-			questions.setText(response + " P1");
-
 			questions.setHorizontalAlignment(SwingConstants.LEFT);
 		} else {
-			questions.setText(response + " P2");
-
 			questions.setHorizontalAlignment(SwingConstants.RIGHT);
 		}
 		innerBoard.add(questions);
