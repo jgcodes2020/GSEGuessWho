@@ -12,6 +12,10 @@ import ca.gse.guesswho.views.GamePanel;
 import ca.gse.guesswho.views.MenuPanel;
 import ca.gse.guesswho.views.WinScreenPanel;
 
+/**
+ * Main class for the game. Manages the main window, and switches
+ * between the various panels that comprise the main layout.
+ */
 public class GuessWho {
 	private static JFrame frame = null;
 	private static JPanel rootPanel = null;
@@ -21,11 +25,16 @@ public class GuessWho {
 	private static GamePanel gamePanel = null;
 	private static WinScreenPanel winPanel = null;
 	
+	/**
+	 * Creates a JFrame for the whole GUI.
+	 * @return the JFrame for the whole GUI.
+	 */
 	private static JFrame buildWindow() {
 		frame = new JFrame("Guess Me");
 		frame.setSize(1440, 1024);
 		
-		
+		// CardLayout lets us switch beetween various panels
+		// programatically.
 		rootLayout = new CardLayout();
 		
 		rootPanel = new JPanel();
@@ -40,6 +49,9 @@ public class GuessWho {
 		return frame;
 	}
 	
+	/**
+	 * Called when the game is supposed to start.
+	 */
 	private static void onGameStart() {
 		// initialize game state
 		gamePanel = new GamePanel(new HumanPlayer("GSETestUser"), new DumbAIPlayer());
@@ -49,8 +61,12 @@ public class GuessWho {
 		rootLayout.show(rootPanel, "game");
 	}
 	
+	/**
+	 * The program's main method. Loads data, sets up the theme, and starts the application.
+	 * @param args command-line arguments; currently unused.
+	 * @throws IOException if an I/O error occurs.
+	 */
     public static void main(String[] args) throws IOException {
-		
 		DataCaches.loadCharacters(GuessWho.class.getResource("CharacterData.csv"));
 		DataCaches.loadQuestions(GuessWho.class.getResource("QuestionBank.csv"));
 		

@@ -8,6 +8,9 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
+/**
+ * Panel that displays and manages the main menu.
+ */
 public class MenuPanel extends JPanel {
 	private static final Font TITLE_FONT = new Font("Dialog", Font.BOLD, 60);
 	private static final Font BUTTON_FONT = new Font("Dialog", Font.BOLD, 20);
@@ -31,6 +34,9 @@ public class MenuPanel extends JPanel {
 		return result;
 	}
 	
+	/**
+	 * Constructs a MenuPanel.
+	 */
 	public MenuPanel() {
 		setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));

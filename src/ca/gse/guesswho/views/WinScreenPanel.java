@@ -36,6 +36,9 @@ public class WinScreenPanel extends JPanel {
 		return result;
 	}
 	
+	/**
+	 * Sets up a win screen panel.
+	 */
 	public WinScreenPanel() {
 		setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));

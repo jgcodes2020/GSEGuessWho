@@ -14,8 +14,10 @@ public class GameState {
 
 	private byte winner;
 	private boolean isPlayer1Turn;
-	private boolean anwser;
-	private Question question;
+	
+	private boolean lastAnswer;
+	private Question lastQuestion;
+	
 	public static final byte WINNER_NONE = 0;
 	public static final byte WINNER_P1 = 1;
 	public static final byte WINNER_P2 = 2;
@@ -92,11 +94,12 @@ public class GameState {
 			answering = player1;
 		}
 
-		question = asking.takeTurn();
+		lastQuestion = asking.takeTurn();
 		GuessWhoCharacter secretCharacter = characterList.get(answering.getSecretIndex());
-		boolean matchValue = question.match(secretCharacter);
-		anwser = matchValue;
-		if (question.getIsFinal()) {
+		boolean matchValue = lastQuestion.match(secretCharacter);
+		
+		lastAnswer = matchValue;
+		if (lastQuestion.getIsFinal()) {
 			// player 1 wins if it is their turn and the character matches, or if it is the
 			// other person's turn
 			// and the character doesn't match. This is equivalent to A XNOR B or NOT (A XOR
@@ -108,7 +111,7 @@ public class GameState {
 			for (int i = 0; i < remainingIndexes.length(); i++) {
 				// if the current character doesn't match the same as the secret character, flip
 				// it down
-				if (question.match(characterList.get(i)) != matchValue)
+				if (lastQuestion.match(characterList.get(i)) != matchValue)
 					remainingIndexes.clear(i);
 			}
 		}
@@ -116,34 +119,11 @@ public class GameState {
 		this.isPlayer1Turn = !this.isPlayer1Turn;
 	}
 
-	public String getAns(){//So turningn the awnser of the question to yes or no.
-		if (anwser == true){
-			return ("Yes");
-		}
-		else{
-			return ("No");
-		}
+	public boolean getLastAnswer() {//So turningn the awnser of the question to yes or no.
+		return lastAnswer;
 	}
 
-	public String getPlyQuestion(){//Returning the question as String (doesnt rlly work)
-
-		Question returningValue;
-		if (getCurrentPlayer().isHuman() == true){
-			//return (getCurrentPlayer().takeTurn().toString());
-			returningValue = (((HumanPlayer)getCurrentPlayer()).getNextQuestion());
-					System.err.println(returningValue.toString()+"a");
-
-		}
-		else{
-			returningValue =  getCurrentPlayer().takeTurn();
-			System.err.println(returningValue.toString()+"b");
-		}
-		for (String question : DataCaches.getQuestions().keySet()) {
-			System.err.println(DataCaches.getQuestions().get(question));
-			if (DataCaches.getQuestions().get(question) == returningValue){//It loops over the list and check whether they are the same, IT DOESNT WORK WHEN AI IS THE PLAYER
-				return (question);
-			}
-		}
-		return (returningValue.toString());
+	public Question getLastQuestion() {
+		return lastQuestion;
 	}
 }
