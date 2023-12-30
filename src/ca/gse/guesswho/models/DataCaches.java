@@ -20,7 +20,7 @@ import java.io.InputStreamReader;
  */
 public class DataCaches {
 	private static List<GuessWhoCharacter> characterList = null;
-	private static Map<String, AttributeQuestion> questionBank = null;
+	private static List<QuestionBankEntry> questionBank = null;
 	
 	/**
 	 * Loads and parses the character list from a CSV file. This must be done before
@@ -79,10 +79,7 @@ public class DataCaches {
 	public static void loadQuestions(URL source) throws IOException {
 		try (BufferedReader br = new BufferedReader(new InputStreamReader(source.openStream()))) {
 			String line;
-			// This works a lot like HashMap, but unlike HashMap, it maintains the order
-			// of elements when iterating. This means that questions appear in the exact
-			// order they are stored in the question bank.
-			LinkedHashMap<String, AttributeQuestion> map = new LinkedHashMap<>();
+			List<QuestionBankEntry> questions = new ArrayList<>();
             // read the header row. We could validate it, but I'm not doing that now.
             line = br.readLine();
             if (line == null)
@@ -90,23 +87,37 @@ public class DataCaches {
 			// read each data row, converting it to a key and attribute question.
 			while ((line = br.readLine()) != null) {
                 String[] parts = line.split(",");
-				// columns 1 and 2 contain an attribute and value
-				AttributeQuestion question = new AttributeQuestion(Integer.parseInt(parts[1]), Byte.parseByte(parts[2]));
 				// column 0 contains the question text
-				map.put(parts[0], question);
+				// columns 1 and 2 contain an attribute and value
+				String questionText = parts[0];
+				AttributeQuestion question = new AttributeQuestion(Integer.parseInt(parts[1]), Byte.parseByte(parts[2]));
+				
+				questions.add(new QuestionBankEntry(questionText, question));
             }
-			
-			// store it as an immutable map; we don't want the question bank to change after loading
-			questionBank = Collections.unmodifiableMap(map);
 		}
 	}
 	
 	/**
-	 * Gets the question bank.
+	 * Gets the question bank. The question bank is a list of pairs,
+	 * where each pair contains a string (the question text) and an
+	 * attribute question (the corresponding question object).
 	 * @return a map representing the question bank.
 	 */
-	public static Map<String, AttributeQuestion> getQuestions() {
+	public static List<QuestionBankEntry> getQuestionBank() {
 		return questionBank;
 	}
-
+	
+	/**
+	 * Attempts to find a matching question text for the given attribute question.
+	 * @param question the question to search for.
+	 * @return
+	 */
+	public static String tryGetQuestionString(AttributeQuestion question) {
+		for (QuestionBankEntry entry : questionBank) {
+			if (entry.getQuestionObject().equals(question)) {
+				return entry.getText();
+			}
+		}
+		return question.toString();
+	}
 }

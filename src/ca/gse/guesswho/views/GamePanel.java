@@ -1,6 +1,8 @@
 package ca.gse.guesswho.views;
 
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.*;
 import java.util.*;
 import java.util.function.Consumer;
@@ -92,7 +94,6 @@ public class GamePanel extends JPanel {
 	private JPanel buildBottomBar() {
 		JPanel board = new JPanel();
 		board.setLayout(new BoxLayout(board, BoxLayout.X_AXIS));
-		ArrayList<String> questions = new ArrayList<String>();
 		JButton confirmButton = new JButton("Confirm");
 		errorMessage = new JLabel("");
 
@@ -102,13 +103,15 @@ public class GamePanel extends JPanel {
 		CharacterCard userCharacter = new CharacterCard(state.getCurrentPlayer().getSecretCharacter());
 		userCharacter.setEnabled(false);
 
-		for (String question : DataCaches.getQuestions().keySet()) {
-			questions.add(question);
+		ArrayList<String> questions = new ArrayList<String>();
+		for (QuestionBankEntry entry : DataCaches.getQuestionBank()) {
+			questions.add(entry.getText());
 		}
 
 		questionList = new JList<String>(questions.toArray(new String[0]));
 		questionList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		questionList.addListSelectionListener(this::questionListValueChanged);
+		
 		JScrollPane questionScroll = new JScrollPane(questionList);
 
 		questionScroll.setViewportView(questionList);
@@ -145,26 +148,22 @@ public class GamePanel extends JPanel {
 	 * @param e the event being handled.
 	 */
 	private void submitButtonPressed(ActionEvent e) {
-		if (questionList.getSelectedIndex() == -1) {
+		// 
+		int selectedIndex = questionList.getSelectedIndex();
+		if (selectedIndex == -1) {
 			errorMessage.setText("You have to select a question");
 			return;
 		}
-		String questionSelected = questionList.getSelectedValue();
 
 		byte currentWinner;
 
+		// The order of questions in the question list is exactly the same as the question bank.
+		// We can retrieve the corresponding question by index.
+		AttributeQuestion nextQuestion = DataCaches.getQuestionBank().get(selectedIndex).getQuestionObject();
 		// set the current player's next question (it should be human)
-		Map<String, AttributeQuestion> questionBank = DataCaches.getQuestions();
-		AttributeQuestion nextQuestion = questionBank.get(questionSelected);
 		((HumanPlayer) state.getCurrentPlayer()).setNextQuestion(nextQuestion);
-		// addToResponse(state.getLastQuestion()); // Put the question into the response
-		// panel
 
 		state.doNextTurn();// Give the turn to the next person. (Assumed as AI)
-
-		// addToResponse(state.getLastAnswer());// Put the awnser into the response
-		// panel
-		// addToResponse(state.getLastQuestion());
 
 		currentWinner = state.getWinner();
 		// check if the player won.
