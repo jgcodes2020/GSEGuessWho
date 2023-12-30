@@ -46,6 +46,19 @@ public class CharacterQuestion extends Question {
 		return true;
 	}
 	
+	/**
+	 * Returns the character being guessed.
+	 * @return the character being guessed.
+	 */
+	public GuessWhoCharacter getCharacter() {
+		return character;
+	}
+	
+	/**
+	 * Checks whether this object is equal to another object. Two
+	 * character questions are equal if they refer to the same character.
+	 * @return true if {@code thatObj} is equal to this object.
+	 */
 	@Override
 	public boolean equals(Object thatObj) {
 		if (thatObj == null || !(thatObj instanceof CharacterQuestion))

@@ -10,18 +10,21 @@ import java.util.Map;
 import javax.swing.ProgressMonitorInputStream;
 
 import ca.gse.guesswho.models.questions.AttributeQuestion;
+import ca.gse.guesswho.models.questions.CharacterQuestion;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * Class handling all data that is loaded from files.
+ * Class handling all data that is loaded from files. Also
+ * handles some utility functions that heavily rely on the
+ * data caches.
  */
 public class DataCaches {
 	private static List<GuessWhoCharacter> characterList = null;
 	private static List<QuestionBankEntry> questionBank = null;
-	
+
 	/**
 	 * Loads and parses the character list from a CSV file. This must be done before
 	 * creating any {@link GameState} instances.
@@ -30,7 +33,8 @@ public class DataCaches {
 	 * @throws IOException if an I/O error occurs.
 	 */
 	public static void loadCharacters(URL path) throws IOException {
-		try (BufferedReader br = new BufferedReader(new InputStreamReader(new ProgressMonitorInputStream(null, "Loading game...", path.openStream())))) {
+		try (BufferedReader br = new BufferedReader(
+				new InputStreamReader(new ProgressMonitorInputStream(null, "Loading game...", path.openStream())))) {
 			// this stores the last line we read
 			String line;
 			// this keeps track of the characters we've parsed
@@ -57,22 +61,24 @@ public class DataCaches {
 	public static List<GuessWhoCharacter> getCharacterList() {
 		return characterList;
 	}
-	
+
 	public static GuessWhoCharacter getCharacterByName(String name) {
 		if (characterList == null)
 			throw new IllegalStateException("Character list isn't loaded yet!");
-		
-		// Iterator-based iteration. This is what the 'for (Type thing : list)' effectively does
-		// on the inside; 
+
+		// Iterator-based iteration. This is what the 'for (Type thing : list)'
+		// effectively does
+		// on the inside;
 		for (GuessWhoCharacter gwCharacter : characterList) {
 			if (gwCharacter.getName().equals(name))
 				return gwCharacter;
 		}
 		throw new IllegalArgumentException("There is no characted named " + name);
 	}
-	
+
 	/**
 	 * Loads and parses the question bank from a CSV file.
+	 * 
 	 * @param path the path to load from.
 	 * @throws IOException if an I/O error occurs.
 	 */
@@ -80,42 +86,56 @@ public class DataCaches {
 		try (BufferedReader br = new BufferedReader(new InputStreamReader(source.openStream()))) {
 			String line;
 			List<QuestionBankEntry> questions = new ArrayList<>();
-            // read the header row. We could validate it, but I'm not doing that now.
-            line = br.readLine();
-            if (line == null)
-                throw new IllegalArgumentException("Parsing failed! (missing header row)");
+			// read the header row. We could validate it, but I'm not doing that now.
+			line = br.readLine();
+			if (line == null)
+				throw new IllegalArgumentException("Parsing failed! (missing header row)");
 			// read each data row, converting it to a key and attribute question.
 			while ((line = br.readLine()) != null) {
-                String[] parts = line.split(",");
+				String[] parts = line.split(",");
 				// column 0 contains the question text
 				// columns 1 and 2 contain an attribute and value
 				String questionText = parts[0];
-				AttributeQuestion question = new AttributeQuestion(Integer.parseInt(parts[1]), Byte.parseByte(parts[2]));
-				
+				AttributeQuestion question = new AttributeQuestion(Integer.parseInt(parts[1]),
+						Byte.parseByte(parts[2]));
+
 				questions.add(new QuestionBankEntry(questionText, question));
-            }
+			}
+			// store the question bank as an immutable list, since we don't
+			// need to change it anyways.
+			questionBank = Collections.unmodifiableList(questions);
 		}
 	}
-	
+
 	/**
 	 * Gets the question bank. The question bank is a list of pairs,
 	 * where each pair contains a string (the question text) and an
 	 * attribute question (the corresponding question object).
+	 * 
 	 * @return a map representing the question bank.
 	 */
 	public static List<QuestionBankEntry> getQuestionBank() {
 		return questionBank;
 	}
-	
+
 	/**
-	 * Attempts to find a matching question text for the given attribute question.
-	 * @param question the question to search for.
-	 * @return
+	 * Determine the corresponding text for a question.
+	 * 
+	 * @param question the question
+	 * @return a string representing the question
 	 */
-	public static String tryGetQuestionString(AttributeQuestion question) {
-		for (QuestionBankEntry entry : questionBank) {
-			if (entry.getQuestionObject().equals(question)) {
-				return entry.getText();
+	public static String getQuestionString(Question question) {
+		if (question instanceof CharacterQuestion) {
+			// Character questions have a predictable format.
+			return String.format("Is your character %s?", ((CharacterQuestion) question).getCharacter().getName());
+		} else if (question instanceof AttributeQuestion) {
+			// Attribute questions are represented in the question bank. Since
+			// we don't have a hash map, this necessitates linear search; though
+			// this is fine since there aren't that many questions anyways.
+			for (QuestionBankEntry entry : questionBank) {
+				if (entry.getQuestionObject().equals(question)) {
+					return entry.getText();
+				}
 			}
 		}
 		return question.toString();
