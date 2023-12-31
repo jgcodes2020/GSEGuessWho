@@ -72,7 +72,10 @@ public class GameState {
 	}
 
 	public Player getCurrentPlayer() {
-		return isPlayer1Turn ? player1 : player2;
+		if (isPlayer1Turn)
+			return player1;
+		else
+			return player2;
 	}
 
 	public boolean getPlayer1Turn() {
@@ -105,7 +108,10 @@ public class GameState {
 			// and the character doesn't match. This is equivalent to A XNOR B or NOT (A XOR
 			// B).
 			boolean isP1Winner = !(this.isPlayer1Turn ^ matchValue);
-			winner = isP1Winner ? WINNER_P1 : WINNER_P2;
+			if (isP1Winner)
+				winner = WINNER_P1;
+			else
+				winner = WINNER_P2;
 		} else {
 			BitSet remainingIndexes = asking.getRemainingIndexes();
 			for (int i = 0; i < remainingIndexes.length(); i++) {
