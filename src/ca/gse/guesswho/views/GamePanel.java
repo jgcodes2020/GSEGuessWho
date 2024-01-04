@@ -11,6 +11,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import ca.gse.guesswho.components.CharacterCard;
+import ca.gse.guesswho.components.GScrollConstrainedPanel;
 import ca.gse.guesswho.events.*;
 import ca.gse.guesswho.models.*;
 import ca.gse.guesswho.models.questions.*;
@@ -29,7 +30,7 @@ public class GamePanel extends JPanel {
 
 	private JList<String> questionList;
 	private JLabel errorMessage;
-	JPanel innerBoard;
+	JPanel questionPanelContent;
 
 	// Consumer<GameWonEvent> represents a method that takes
 	// GameWonEvent and returns void
@@ -70,15 +71,15 @@ public class GamePanel extends JPanel {
 	 */
 	private JPanel buildChatboard() {
 		JPanel board = new JPanel();
-		innerBoard = new JPanel();
-		innerBoard.setLayout(new GridLayout(20, 1));// Need to fix the layout but i want things to go down.
+		questionPanelContent = new GScrollConstrainedPanel(true, false);
+		questionPanelContent.setLayout(new GridLayout(20, 1));// Need to fix the layout but i want things to go down.
 		board.setLayout(new BoxLayout(board, BoxLayout.Y_AXIS));
 
 		board.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
 		JLabel questions = new JLabel("Questions");
-		JScrollPane scroller = new JScrollPane(innerBoard);
-		innerBoard.add(questions);
+		JScrollPane scroller = new JScrollPane(questionPanelContent);
+		questionPanelContent.add(questions);
 
 		board.add(scroller);
 
@@ -227,7 +228,7 @@ public class GamePanel extends JPanel {
 		} else {
 			questions.setHorizontalAlignment(SwingConstants.RIGHT);
 		}
-		innerBoard.add(questions);
+		questionPanelContent.add(questions);
 
 	}
 
