@@ -155,7 +155,8 @@ public class GamePanel extends JPanel {
 			errorMessage.setText("You have to select a question");
 			return;
 		}
-
+		
+		errorMessage.setText("");
 		byte currentWinner;
 
 		// The order of questions in the question list is exactly the same as the question bank.
