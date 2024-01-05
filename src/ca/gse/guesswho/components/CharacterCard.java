@@ -13,7 +13,7 @@ import ca.gse.guesswho.models.GuessWhoCharacter;
  */
 public class CharacterCard extends JToggleButton {
 
-	private JLabel textLabel;
+	public JLabel textLabel;
 	private CharacterImageDisplay iconDisplay;
 
 	/**
@@ -44,4 +44,11 @@ public class CharacterCard extends JToggleButton {
 	public void setCrossedOut(boolean value) {
 		iconDisplay.setCrossedOut(value);
 	}
+
+
+	public String getNameStr(){
+		return textLabel.getText();
+	}
+
+	
 }

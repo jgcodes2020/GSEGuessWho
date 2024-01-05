@@ -27,7 +27,7 @@ public class GamePanel extends JPanel {
 
 	private CharacterCard[] cards;
 	private ButtonGroup cardGroup;
-
+	private String characterSelected = null;
 	private JList<String> questionList;
 	private JLabel errorMessage;
 	JPanel questionPanelContent;
@@ -149,43 +149,50 @@ public class GamePanel extends JPanel {
 	 * @param e the event being handled.
 	 */
 	private void submitButtonPressed(ActionEvent e) {
-		// 
-		int selectedIndex = questionList.getSelectedIndex();
-		if (selectedIndex == -1) {
-			errorMessage.setText("You have to select a question");
-			return;
-		}
-		
-		errorMessage.setText("");
-		byte currentWinner;
+		if (characterSelected == null){
+			errorMessage.setText(characterSelected);
+			int selectedIndex = questionList.getSelectedIndex();
+			if (selectedIndex == -1) {
+				errorMessage.setText("You have to select a question");
+				return;
+			}
 
-		// The order of questions in the question list is exactly the same as the question bank.
-		// We can retrieve the corresponding question by index.
-		AttributeQuestion nextQuestion = DataCaches.getQuestionBank().get(selectedIndex).getQuestionObject();
-		// set the current player's next question (it should be human)
-		((HumanPlayer) state.getCurrentPlayer()).setNextQuestion(nextQuestion);
 
-		state.doNextTurn();// Give the turn to the next person. (Assumed as AI)
+			
+			errorMessage.setText("");
+			byte currentWinner;
 
-		currentWinner = state.getWinner();
-		// check if the player won.
-		if (currentWinner != GameState.WINNER_NONE)
-			fireGameWon(currentWinner == GameState.WINNER_P1);
+			// The order of questions in the question list is exactly the same as the question bank.
+			// We can retrieve the corresponding question by index.
+			AttributeQuestion nextQuestion = DataCaches.getQuestionBank().get(selectedIndex).getQuestionObject();
+			// set the current player's next question (it should be human)
+			((HumanPlayer) state.getCurrentPlayer()).setNextQuestion(nextQuestion);
 
-		if (!state.getCurrentPlayer().isHuman()) {
-			state.doNextTurn();
-			// addToResponse(state.getLastAnswer());
+			state.doNextTurn();// Give the turn to the next person. (Assumed as AI)
 
-			// check the winner again
 			currentWinner = state.getWinner();
+			// check if the player won.
 			if (currentWinner != GameState.WINNER_NONE)
 				fireGameWon(currentWinner == GameState.WINNER_P1);
-		}
-		questionList.clearSelection();
 
-		updateUIState();
-		boardPanel.repaint();
-		this.validate();
+			if (!state.getCurrentPlayer().isHuman()) {
+				state.doNextTurn();
+				// addToResponse(state.getLastAnswer());
+
+				// check the winner again
+				currentWinner = state.getWinner();
+				if (currentWinner != GameState.WINNER_NONE)
+					fireGameWon(currentWinner == GameState.WINNER_P1);
+			}
+			questionList.clearSelection();
+
+			updateUIState();
+			boardPanel.repaint();
+			this.validate();
+		}
+		else{
+			errorMessage.setText(characterSelected);
+		}
 	}
 
 	/**
@@ -198,6 +205,8 @@ public class GamePanel extends JPanel {
 		// if we select a character, then deselect any question
 		// we might have selected
 		questionList.clearSelection();
+		characterSelected = (((CharacterCard) e.getSource()).getNameStr());
+		
 	}
 
 	/**
@@ -211,6 +220,7 @@ public class GamePanel extends JPanel {
 		// we might have selected
 		if (!questionList.getSelectionModel().isSelectionEmpty()) {
 			cardGroup.clearSelection();
+			characterSelected = null;
 		}
 	}
 
