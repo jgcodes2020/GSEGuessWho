@@ -13,6 +13,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import ca.gse.guesswho.events.GameWonEvent;
+
 public class WinScreenPanel extends JPanel {
 	private static final Font TITLE_FONT = new Font("Dialog", Font.BOLD, 60);
 	private static final Font BUTTON_FONT = new Font("Dialog", Font.BOLD, 20);
@@ -39,7 +41,7 @@ public class WinScreenPanel extends JPanel {
 	/**
 	 * Sets up a win screen panel.
 	 */
-	public WinScreenPanel() {
+	public WinScreenPanel(GameWonEvent winScenario) {
 		setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
@@ -47,7 +49,12 @@ public class WinScreenPanel extends JPanel {
 		add(Box.createVerticalGlue());
 		
 		// create the title text (this could be replaced with actual logo art if we wanted)
-		JLabel bigTitle = new JLabel("GUESS WHO\u2122");
+		String message;
+		if (winScenario.isWinnerP1())
+			message = "PLAYER 1 WINS!";
+		else
+			message = "PLAYER 2 WINS!";
+		JLabel bigTitle = new JLabel(message);
 		bigTitle.setFont(TITLE_FONT);
 		bigTitle.setAlignmentX(CENTER_ALIGNMENT); // everything is centered anyways, so yeah.
 		add(bigTitle);
@@ -71,6 +78,10 @@ public class WinScreenPanel extends JPanel {
 		}
 	}
 	
+	/**
+	 * Registers a handler to call when the "back to main menu" button is pressed.
+	 * @param handler the handler to call.
+	 */
 	public void addBackToMainMenuListener(Runnable handler) {
 		backToMainMenuHandlers.add(handler);
 	}

@@ -12,8 +12,32 @@ import ca.gse.guesswho.models.GuessWhoCharacter;
  * This combines a toggle button, a label, and a character image display.
  */
 public class CharacterCard extends JToggleButton {
+	/**
+	 * The internal model for a character card. Contains data relevant to the
+	 * card regardless of its appearance.
+	 */
+	public static class Model extends JToggleButton.ToggleButtonModel {
+		private GuessWhoCharacter character;
+		
+		/**
+		 * Constructs a new character card model.
+		 * @param character the character to use.
+		 */
+		public Model(GuessWhoCharacter character) {
+			this.character = character;
+		}
 
-	public JLabel textLabel;
+		/**
+		 * Gets the character used by the model.
+		 * @return the character being used.
+		 */
+		public GuessWhoCharacter getCharacter() {
+			return character;
+		}
+	}
+	
+
+	private JLabel textLabel;
 	private CharacterImageDisplay iconDisplay;
 
 	/**
@@ -21,6 +45,8 @@ public class CharacterCard extends JToggleButton {
 	 * @param character The Guess Who character to set on this CharacterCard.
 	 */
 	public CharacterCard(GuessWhoCharacter character) {
+		// use our custom model for the button.
+		setModel(new CharacterCard.Model(character));
 		setLayout(new BorderLayout());
 
 		// setBackground(Color.WHITE);
@@ -45,9 +71,13 @@ public class CharacterCard extends JToggleButton {
 		iconDisplay.setCrossedOut(value);
 	}
 
-
-	public String getNameStr(){
-		return textLabel.getText();
+	/**
+	 * Returns the character that this character card displays.
+	 * @return the character being displayed
+	 */
+	public GuessWhoCharacter getCharacter() {
+		// The character is stored in the model now, so we need to get it from there.
+		return ((CharacterCard.Model) getModel()).getCharacter();
 	}
 
 	

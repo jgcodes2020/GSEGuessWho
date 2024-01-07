@@ -66,9 +66,8 @@ public class DataCaches {
 		if (characterList == null)
 			throw new IllegalStateException("Character list isn't loaded yet!");
 
-		// Iterator-based iteration. This is what the 'for (Type thing : list)'
-		// effectively does
-		// on the inside;
+		// Linear search for the desired character. This should be fine since
+		// we don't have that many characters.
 		for (GuessWhoCharacter gwCharacter : characterList) {
 			if (gwCharacter.getName().equals(name))
 				return gwCharacter;

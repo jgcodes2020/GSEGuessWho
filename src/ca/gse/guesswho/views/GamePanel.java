@@ -27,14 +27,13 @@ public class GamePanel extends JPanel {
 
 	private CharacterCard[] cards;
 	private ButtonGroup cardGroup;
-	private String characterSelected = null;
 	private JList<String> questionList;
 	private JLabel errorMessage;
 	JPanel questionPanelContent;
 
 	// Consumer<GameWonEvent> represents a method that takes
 	// GameWonEvent and returns void
-	public ArrayList<Consumer<GameWonEvent>> gameWonHandlers;
+	private ArrayList<Consumer<GameWonEvent>> gameWonHandlers = new ArrayList<>();
 
 	/**
 	 * Internal method. Creates a JPanel for the game board.
@@ -112,7 +111,7 @@ public class GamePanel extends JPanel {
 		questionList = new JList<String>(questions.toArray(new String[0]));
 		questionList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		questionList.addListSelectionListener(this::questionListValueChanged);
-		
+
 		JScrollPane questionScroll = new JScrollPane(questionList);
 
 		questionScroll.setViewportView(questionList);
@@ -149,50 +148,51 @@ public class GamePanel extends JPanel {
 	 * @param e the event being handled.
 	 */
 	private void submitButtonPressed(ActionEvent e) {
-		if (characterSelected == null){
-			errorMessage.setText(characterSelected);
+		Question nextQuestion;
+		
+		CharacterCard.Model selectedCard = (CharacterCard.Model) cardGroup.getSelection();
+		if (selectedCard != null) {
+			nextQuestion = new CharacterQuestion(selectedCard.getCharacter());
+		} else {
 			int selectedIndex = questionList.getSelectedIndex();
 			if (selectedIndex == -1) {
 				errorMessage.setText("You have to select a question");
 				return;
 			}
 
-
-			
-			errorMessage.setText("");
-			byte currentWinner;
-
-			// The order of questions in the question list is exactly the same as the question bank.
+			// The order of questions in the question list is exactly the same as the
+			// question bank.
 			// We can retrieve the corresponding question by index.
-			AttributeQuestion nextQuestion = DataCaches.getQuestionBank().get(selectedIndex).getQuestionObject();
-			// set the current player's next question (it should be human)
-			((HumanPlayer) state.getCurrentPlayer()).setNextQuestion(nextQuestion);
+			nextQuestion = DataCaches.getQuestionBank().get(selectedIndex).getQuestionObject();
+		}
 
-			state.doNextTurn();// Give the turn to the next person. (Assumed as AI)
+		errorMessage.setText("");
+		byte currentWinner;
+		
+		// set the current player's next question (it should be human)
+		((HumanPlayer) state.getCurrentPlayer()).setNextQuestion(nextQuestion);
 
+		state.doNextTurn();// Give the turn to the next person. (Assumed as AI)
+
+		currentWinner = state.getWinner();
+		// check if the player won.
+		if (currentWinner != GameState.WINNER_NONE)
+			fireGameWon(currentWinner == GameState.WINNER_P1);
+
+		if (!state.getCurrentPlayer().isHuman()) {
+			state.doNextTurn();
+			// addToResponse(state.getLastAnswer());
+
+			// check the winner again
 			currentWinner = state.getWinner();
-			// check if the player won.
 			if (currentWinner != GameState.WINNER_NONE)
 				fireGameWon(currentWinner == GameState.WINNER_P1);
-
-			if (!state.getCurrentPlayer().isHuman()) {
-				state.doNextTurn();
-				// addToResponse(state.getLastAnswer());
-
-				// check the winner again
-				currentWinner = state.getWinner();
-				if (currentWinner != GameState.WINNER_NONE)
-					fireGameWon(currentWinner == GameState.WINNER_P1);
-			}
-			questionList.clearSelection();
-
-			updateUIState();
-			boardPanel.repaint();
-			this.validate();
 		}
-		else{
-			errorMessage.setText(characterSelected);
-		}
+		questionList.clearSelection();
+
+		updateUIState();
+		boardPanel.repaint();
+		this.validate();
 	}
 
 	/**
@@ -205,8 +205,6 @@ public class GamePanel extends JPanel {
 		// if we select a character, then deselect any question
 		// we might have selected
 		questionList.clearSelection();
-		characterSelected = (((CharacterCard) e.getSource()).getNameStr());
-		
 	}
 
 	/**
@@ -220,7 +218,6 @@ public class GamePanel extends JPanel {
 		// we might have selected
 		if (!questionList.getSelectionModel().isSelectionEmpty()) {
 			cardGroup.clearSelection();
-			characterSelected = null;
 		}
 	}
 
@@ -270,6 +267,7 @@ public class GamePanel extends JPanel {
 
 	/**
 	 * Constructs a GamePanel for the provided players.
+	 * 
 	 * @param p1 the first player
 	 * @param p2 the second player
 	 */
