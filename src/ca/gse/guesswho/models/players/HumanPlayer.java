@@ -21,7 +21,7 @@ public class HumanPlayer extends Player {
 	}
 	
 	@Override
-	public Question takeTurn() {
+	public Question askQuestion() {
 		if (nextQuestion == null)
 			throw new IllegalStateException("No next question is queued");
 		

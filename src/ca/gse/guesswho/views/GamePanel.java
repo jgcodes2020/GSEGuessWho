@@ -100,9 +100,6 @@ public class GamePanel extends JPanel {
 		// board.setBackground(Color.RED);
 		// board.setBorder(BorderFactory.createLineBorder(Color.RED, 20));
 
-		CharacterCard userCharacter = new CharacterCard(state.getCurrentPlayer().getSecretCharacter());
-		userCharacter.setEnabled(false);
-
 		ArrayList<String> questions = new ArrayList<String>();
 		for (QuestionBankEntry entry : DataCaches.getQuestionBank()) {
 			questions.add(entry.getText());
@@ -117,14 +114,12 @@ public class GamePanel extends JPanel {
 		questionScroll.setViewportView(questionList);
 		questionScroll.setPreferredSize(new Dimension(540, 210));
 		confirmButton.setPreferredSize(new Dimension(210, 210));
-		userCharacter.setPreferredSize(new Dimension(320, 210));
 
 		confirmButton.addActionListener(this::submitButtonPressed);
 
 		board.add(Box.createHorizontalGlue());
 		board.add(questionScroll);
 		board.add(confirmButton);
-		board.add(userCharacter);
 		board.add(errorMessage);
 		board.add(Box.createHorizontalGlue());
 		return board;

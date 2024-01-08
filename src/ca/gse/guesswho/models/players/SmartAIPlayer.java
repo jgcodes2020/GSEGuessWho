@@ -27,7 +27,7 @@ public class SmartAIPlayer extends Player {
      * </ul>
      */
     @Override
-    public Question takeTurn() {
+    public Question askQuestion() {
         List<GuessWhoCharacter> characters = DataCaches.getCharacterList();
 
         // if we're down to one option, use that one

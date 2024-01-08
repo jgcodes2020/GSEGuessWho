@@ -14,6 +14,7 @@ public class GameState {
 
 	private byte winner;
 	private boolean isPlayer1Turn;
+	private boolean isAnswerPhase;
 	
 	private boolean lastAnswer;
 	private Question lastQuestion;
@@ -49,14 +50,7 @@ public class GameState {
 
 		winner = WINNER_NONE;
 		isPlayer1Turn = true;
-
-		// draw a random card for the players who don't have one yet
-		if (this.player1.getSecretIndex() < 0) {
-			this.player1.setSecretIndex(rng.nextInt(characterList.size()));
-		}
-		if (this.player2.getSecretIndex() < 0) {
-			this.player2.setSecretIndex(rng.nextInt(characterList.size()));
-		}
+		isAnswerPhase = false;
 	}
 
 	/**
@@ -81,48 +75,43 @@ public class GameState {
 	public boolean getPlayer1Turn() {
 		return isPlayer1Turn;
 	}
+	
+	public boolean getAnswerPhase() {
+		return isAnswerPhase;
+	}
 	/**
 	 * Performs the next player's turn.
 	 */
 	public void doNextTurn() {
 		List<GuessWhoCharacter> characterList = DataCaches.getCharacterList();
 		
-		// determine who is asking a question and who is answering the question
-		Player asking, answering;
-		if (this.isPlayer1Turn) {
-			asking = player1;
-			answering = player2;
-		} else {
-			asking = player2;
-			answering = player1;
+		Player currentPlayer, otherPlayer;
+		if (isPlayer1Turn){
+			currentPlayer = player1;
+			otherPlayer = player2;
 		}
-
-		lastQuestion = asking.takeTurn();
-		GuessWhoCharacter secretCharacter = characterList.get(answering.getSecretIndex());
-		boolean matchValue = lastQuestion.match(secretCharacter);
-		
-		lastAnswer = matchValue;
-		if (lastQuestion.getIsFinal()) {
-			// player 1 wins if it is their turn and the character matches, or if it is the
-			// other person's turn
-			// and the character doesn't match. This is equivalent to A XNOR B or NOT (A XOR
-			// B).
-			boolean isP1Winner = !(this.isPlayer1Turn ^ matchValue);
-			if (isP1Winner)
-				winner = WINNER_P1;
-			else
-				winner = WINNER_P2;
-		} else {
-			BitSet remainingIndexes = asking.getRemainingIndexes();
-			for (int i = 0; i < remainingIndexes.length(); i++) {
-				// if the current character doesn't match the same as the secret character, flip
-				// it down
-				if (lastQuestion.match(characterList.get(i)) != matchValue)
-					remainingIndexes.clear(i);
+		else{
+			currentPlayer = player2;
+			otherPlayer = player1;
+		}
+			
+		if (isAnswerPhase) {
+			// answer phase
+			lastAnswer = currentPlayer.answerQuestion(lastQuestion);
+			
+			BitSet remaining = otherPlayer.getRemainingIndexes();
+			for (int i = 0; i < remaining.length(); i++) {
+				
 			}
+			
+			isAnswerPhase = false;
 		}
-		// switch turns
-		this.isPlayer1Turn = !this.isPlayer1Turn;
+		else {
+			// question phase
+			lastQuestion = currentPlayer.askQuestion();
+			isPlayer1Turn = !isPlayer1Turn;
+			isAnswerPhase = true;
+		}
 	}
 
 	public boolean getLastAnswer() {//So turningn the awnser of the question to yes or no.

@@ -3,7 +3,6 @@ package ca.gse.guesswho;
 import java.awt.CardLayout;
 import java.io.IOException;
 
-import javax.print.DocFlavor.STRING;
 import javax.swing.*;
 
 import ca.gse.guesswho.events.GameWonEvent;
