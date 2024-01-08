@@ -3,13 +3,38 @@ package ca.gse.guesswho.models;
 import java.util.BitSet;
 import java.util.List;
 
+/**
+ * Represents a player (actor within the game).
+ * Players are capable of asking and answering questions.
+ */
 public abstract class Player {
 	protected BitSet remainingIndexes;
 	
+	/**
+	 * Gets the player's next question.
+	 * @return the next question
+	 */
 	public abstract Question askQuestion();
+	
+	/**
+	 * Answers the last question asked; the last question is
+	 * typically made available to the game state
+	 * @param question the last question asked.
+	 * @return the answer to the question.
+	 */
 	public abstract boolean answerQuestion(Question question);
 	
+	/**
+	 * Checks if this player is human. Human players generally
+	 * ask and/or answer through user input.
+	 * @return true if the player is human.
+	 */
 	public abstract boolean isHuman();
+	/**
+	 * Gets this player's name. This is not related to the character
+	 * they choose; and merely acts as something they know.
+	 * @return the player's name.
+	 */
 	public abstract String getName();
 	
 	

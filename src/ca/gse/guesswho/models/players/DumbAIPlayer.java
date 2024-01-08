@@ -75,10 +75,4 @@ public class DumbAIPlayer extends AIPlayer {
 		return false;
 	}
 
-	@Override
-	public String getName() {
-		// TODO: should we add actual names or leave this one?
-		return "NoobGamer69420";
-	}
-
 }

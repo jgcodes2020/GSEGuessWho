@@ -12,6 +12,8 @@ public class SmartAIPlayer extends AIPlayer {
      */
     public SmartAIPlayer(String name, GuessWhoCharacter secret) {
 		super(name, secret);
+		// jagged 2D array for frequency counting. Reset on each turn but
+		// saves allocations to reuse the one array
         frequencyList = new int[GuessWhoCharacter.ATTRIBUTE_NUM_VALS][];
         for (int i = 0; i < frequencyList.length; i++) {
             frequencyList[i] = new int[GuessWhoCharacter.attributeMaxValue(i)];
@@ -88,12 +90,6 @@ public class SmartAIPlayer extends AIPlayer {
     @Override
     public boolean isHuman() {
         return false;
-    }
-
-    @Override
-    public String getName() {
-        // TODO: should we add actual names or leave this one?
-        return "NoobGamer69420";
     }
 
 }

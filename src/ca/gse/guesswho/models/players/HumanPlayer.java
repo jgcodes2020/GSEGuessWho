@@ -3,6 +3,9 @@ package ca.gse.guesswho.models.players;
 import ca.gse.guesswho.models.Player;
 import ca.gse.guesswho.models.Question;
 
+/**
+ * Represents a Human player.
+ */
 public class HumanPlayer extends Player {
 	private String name;
 	private Question nextQuestion;
@@ -26,6 +29,9 @@ public class HumanPlayer extends Player {
 		nextQuestion = question;
 	}
 	
+	/**
+	 * Asks the next
+	 */
 	@Override
 	public Question askQuestion() {
 		if (nextQuestion == null)
@@ -36,11 +42,21 @@ public class HumanPlayer extends Player {
 		return result;
 	}
 	
+	/**
+	 * Queues the next answer. Only one answer may be queued,
+	 * setting the next answer while one is queued overrides it.
+	 * @param answer the answer to queue.
+	 */
 	public void setNextAnswer(boolean answer) {
 		this.nextAnswer = answer;
 		this.hasNextAnswer = true;
 	}
 
+	/**
+	 * Returns the next queued answer if there is one, or throws if not.
+	 * @return the next answer
+	 * @throws IllegalStateException if no next answer has been queued.
+	 */
 	@Override
 	public boolean answerQuestion(Question question) {
 		if (!hasNextAnswer)
@@ -48,12 +64,20 @@ public class HumanPlayer extends Player {
 		hasNextAnswer = false;
 		return nextAnswer;
 	}
-
+	
+	/**
+	 * Human players are human, so this returns true.
+	 * @return true
+	 */
 	@Override
 	public boolean isHuman() {
 		return true;
 	}
 
+	/**
+	 * Gets this player's name.
+	 * @return this player's name
+	 */
 	@Override
 	public String getName() {
 		return this.name;
