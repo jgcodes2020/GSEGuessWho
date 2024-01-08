@@ -19,9 +19,8 @@ public class WinScreenPanel extends JPanel {
 	private static final Font TITLE_FONT = new Font("Dialog", Font.BOLD, 60);
 	private static final Font BUTTON_FONT = new Font("Dialog", Font.BOLD, 20);
 	
-	// Runnable represents a void-type method with no parameters.
-	// There is no additional information that needs to be carried.
-	private List<Runnable> backToMainMenuHandlers = new ArrayList<>();
+	private MainWindow main;
+	private JLabel bigTitle;
 	
 	/**
 	 * Creates a menu button. All menu buttons have a bunch of shared properties,
@@ -40,8 +39,11 @@ public class WinScreenPanel extends JPanel {
 	
 	/**
 	 * Sets up a win screen panel.
+	 * @param mainWindow the main window to link with this win screen panel
 	 */
-	public WinScreenPanel(GameWonEvent winScenario) {
+	public WinScreenPanel(MainWindow mainWindow) {
+		main = mainWindow;
+		
 		setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
@@ -49,12 +51,7 @@ public class WinScreenPanel extends JPanel {
 		add(Box.createVerticalGlue());
 		
 		// create the title text (this could be replaced with actual logo art if we wanted)
-		String message;
-		if (winScenario.isWinnerP1())
-			message = "PLAYER 1 WINS!";
-		else
-			message = "PLAYER 2 WINS!";
-		JLabel bigTitle = new JLabel(message);
+		bigTitle = new JLabel("");
 		bigTitle.setFont(TITLE_FONT);
 		bigTitle.setAlignmentX(CENTER_ALIGNMENT); // everything is centered anyways, so yeah.
 		add(bigTitle);
@@ -72,17 +69,17 @@ public class WinScreenPanel extends JPanel {
 		
 	}
 	
-	private void onBackToMainMenuPressed(ActionEvent event) {
-		for (Runnable handler : backToMainMenuHandlers) {
-			handler.run();
+	void updateView(GameWonEvent event) {
+
+		if (event.isWinnerP1()){
+			bigTitle.setText("YOU WIN!");
+		}
+		else{
+			bigTitle.setText("YOU LOSE! :D ");
 		}
 	}
 	
-	/**
-	 * Registers a handler to call when the "back to main menu" button is pressed.
-	 * @param handler the handler to call.
-	 */
-	public void addBackToMainMenuListener(Runnable handler) {
-		backToMainMenuHandlers.add(handler);
+	private void onBackToMainMenuPressed(ActionEvent e) {
+		main.switchPanel(MainWindow.CARD_MENU);
 	}
 }

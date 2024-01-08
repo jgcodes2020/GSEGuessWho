@@ -8,6 +8,11 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
+import ca.gse.guesswho.GuessWho;
+import ca.gse.guesswho.models.DataCaches;
+import ca.gse.guesswho.models.players.DumbAIPlayer;
+import ca.gse.guesswho.models.players.HumanPlayer;
+
 /**
  * Panel that displays and manages the main menu.
  */
@@ -18,6 +23,8 @@ public class MenuPanel extends JPanel {
 	// Runnable represents a void-type method with no parameters.
 	// There is no additional information that needs to be carried.
 	private List<Runnable> startPressedHandlers = new ArrayList<>();
+	
+	private MainWindow main;
 	
 	/**
 	 * Creates a menu button. All menu buttons have a bunch of shared properties,
@@ -37,7 +44,9 @@ public class MenuPanel extends JPanel {
 	/**
 	 * Constructs a MenuPanel.
 	 */
-	public MenuPanel() {
+	public MenuPanel(MainWindow window) {
+		this.main = window;
+		
 		setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
@@ -70,24 +79,9 @@ public class MenuPanel extends JPanel {
 	 * @param e the event parameters.
 	 */
 	private void onStartPressed(ActionEvent e) {
-		for (Runnable handler : startPressedHandlers) {
-			handler.run();
-		}
+		main.createGame();
 	}
-	
-	/**
-	 * Adds a callback that will be run when the start button is pressed.
-	 * @param r the callback to run
-	 */
-	public void addStartPressedListener(Runnable r) {
-		startPressedHandlers.add(r);
-	}
-	
-	/**
-	 * Removes a callback added with {@link MenuPanel#addStartPressedListener(Runnable)}.
-	 * @param r the callback to remove
-	 */
-	public void removeStartPressedListener(Runnable r) {
-		startPressedHandlers.remove(r);
-	}
+
+
+
 }

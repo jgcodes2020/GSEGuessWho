@@ -21,6 +21,8 @@ import ca.gse.guesswho.models.players.*;
  * Panel that displays and manages the game's state.
  */
 public class GamePanel extends JPanel {
+	private MainWindow main;
+	
 	private GameState state;
 	private JPanel boardPanel;
 	private JPanel questionPanel;
@@ -160,30 +162,12 @@ public class GamePanel extends JPanel {
 			// We can retrieve the corresponding question by index.
 			nextQuestion = DataCaches.getQuestionBank().get(selectedIndex).getQuestionObject();
 		}
-
-		errorMessage.setText("");
-		byte currentWinner;
-		
-		// set the current player's next question (it should be human)
+		// ask next question (it should be human)
 		((HumanPlayer) state.getCurrentPlayer()).setNextQuestion(nextQuestion);
-
-		state.doNextTurn();// Give the turn to the next person. (Assumed as AI)
-
-		currentWinner = state.getWinner();
-		// check if the player won.
-		if (currentWinner != GameState.WINNER_NONE)
-			fireGameWon(currentWinner == GameState.WINNER_P1);
-
-		if (!state.getCurrentPlayer().isHuman()) {
-			state.doNextTurn();
-			// addToResponse(state.getLastAnswer());
-
-			// check the winner again
-			currentWinner = state.getWinner();
-			if (currentWinner != GameState.WINNER_NONE)
-				fireGameWon(currentWinner == GameState.WINNER_P1);
-		}
-		questionList.clearSelection();
+		state.doNextTurn();
+		
+		// show AI response
+		// TODO: figure out how to show AI response HELLO WINSTON PLEASE HELP :PRAY:
 
 		updateUIState();
 		boardPanel.repaint();
@@ -240,33 +224,18 @@ public class GamePanel extends JPanel {
 	 * 
 	 * @param winnerIsP1 If true, signal that the winner was player 1.
 	 */
-	private void fireGameWon(boolean winnerIsP1) {
-		for (Consumer<GameWonEvent> handler : gameWonHandlers) {
-			handler.accept(new GameWonEvent(this, winnerIsP1));
-		}
-	}
-
-	/**
-	 * Adds the specified mouse listener to receive "game won" events from this
-	 * component. If listener {@code l} is {@code null}, no exception is thrown and
-	 * no action is performed.
-	 * 
-	 * @param handler the "Game Won" event handler
-	 */
-	public void addGameWonListener(Consumer<GameWonEvent> handler) {
-		addMouseListener(null);
-		if (handler == null)
-			return;
-		gameWonHandlers.add(handler);
+	private void onGameWon(boolean winnerIsP1) {
+		main.showWinScreen(winnerIsP1);
 	}
 
 	/**
 	 * Constructs a GamePanel for the provided players.
-	 * 
+	 * @param mainWindow the main window to link this game panel to
 	 * @param p1 the first player
 	 * @param p2 the second player
 	 */
-	public GamePanel(Player p1, Player p2) {
+	public GamePanel(MainWindow mainWindow, Player p1, Player p2) {
+		main = mainWindow;
 		state = new GameState(p1, p2);
 
 		boardPanel = buildBoard();
