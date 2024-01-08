@@ -4,13 +4,14 @@ import java.util.List;
 import ca.gse.guesswho.models.*;
 import ca.gse.guesswho.models.questions.*;
 
-public class SmartAIPlayer extends Player {
+public class SmartAIPlayer extends AIPlayer {
     private int[][] frequencyList;
 
     /**
      * Creates a new smart AI player.
      */
-    public SmartAIPlayer() {
+    public SmartAIPlayer(String name, GuessWhoCharacter secret) {
+		super(name, secret);
         frequencyList = new int[GuessWhoCharacter.ATTRIBUTE_NUM_VALS][];
         for (int i = 0; i < frequencyList.length; i++) {
             frequencyList[i] = new int[GuessWhoCharacter.attributeMaxValue(i)];

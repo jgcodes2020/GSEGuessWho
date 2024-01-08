@@ -60,7 +60,11 @@ public class GuessWho {
 	 */
 	private static void onGameStart() {
 		// initialize game panel
-		gamePanel = new GamePanel(new HumanPlayer("GSETestUser"), new DumbAIPlayer());
+		// TODO: improve name selection
+		gamePanel = new GamePanel(
+			new HumanPlayer("GSETestUser"), 
+			new DumbAIPlayer("leBigStupid", DataCaches.randomCharacter())
+		);
 		gamePanel.addGameWonListener(GuessWho::onGameWon);
 		// switch to game panel
 		rootPanel.add(gamePanel, CARD_GAME);

@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import javax.swing.ProgressMonitorInputStream;
 
@@ -24,6 +25,8 @@ import java.io.InputStreamReader;
 public class DataCaches {
 	private static List<GuessWhoCharacter> characterList = null;
 	private static List<QuestionBankEntry> questionBank = null;
+	
+	private static Random rng = new Random();
 
 	/**
 	 * Loads and parses the character list from a CSV file. This must be done before
@@ -115,6 +118,18 @@ public class DataCaches {
 	 */
 	public static List<QuestionBankEntry> getQuestionBank() {
 		return questionBank;
+	}
+	
+	// HELPER METHODS
+	//===============
+	
+	/**
+	 * Gets a random character.
+	 * @return the random character.
+	 */
+	public static GuessWhoCharacter randomCharacter() {
+		int randIndex = rng.nextInt(characterList.size());
+		return characterList.get(randIndex);
 	}
 
 	/**

@@ -98,10 +98,13 @@ public class GameState {
 		if (isAnswerPhase) {
 			// answer phase
 			lastAnswer = currentPlayer.answerQuestion(lastQuestion);
-			
+			// clear the other player's remaining indexes
 			BitSet remaining = otherPlayer.getRemainingIndexes();
 			for (int i = 0; i < remaining.length(); i++) {
-				
+				GuessWhoCharacter c = characterList.get(i);
+				if (!lastQuestion.match(c)) {
+					remaining.clear(i);
+				}
 			}
 			
 			isAnswerPhase = false;

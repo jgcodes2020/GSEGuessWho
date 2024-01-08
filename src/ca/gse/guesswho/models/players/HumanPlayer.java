@@ -7,9 +7,15 @@ public class HumanPlayer extends Player {
 	private String name;
 	private Question nextQuestion;
 	
+	private boolean nextAnswer;
+	private boolean hasNextAnswer;
+	
 	public HumanPlayer(String name) {
 		this.name = name;
 		this.nextQuestion = null;
+		
+		this.nextAnswer = false;
+		this.hasNextAnswer = false;
 	}
 	
 	public Question getNextQuestion() {
@@ -28,6 +34,19 @@ public class HumanPlayer extends Player {
 		Question result = nextQuestion;
 		nextQuestion = null;
 		return result;
+	}
+	
+	public void setNextAnswer(boolean answer) {
+		this.nextAnswer = answer;
+		this.hasNextAnswer = true;
+	}
+
+	@Override
+	public boolean answerQuestion(Question question) {
+		if (!hasNextAnswer)
+			throw new IllegalStateException("No next answer is queued");
+		hasNextAnswer = false;
+		return nextAnswer;
 	}
 
 	@Override

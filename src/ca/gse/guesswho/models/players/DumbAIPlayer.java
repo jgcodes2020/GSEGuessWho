@@ -12,7 +12,7 @@ import ca.gse.guesswho.models.Question;
 import ca.gse.guesswho.models.questions.AttributeQuestion;
 import ca.gse.guesswho.models.questions.CharacterQuestion;
 
-public class DumbAIPlayer extends Player {
+public class DumbAIPlayer extends AIPlayer {
 	private Random rng;
 	private HashSet<Question> previousQuestions;
 	
@@ -28,8 +28,8 @@ public class DumbAIPlayer extends Player {
 	/**
 	 * Creates a new dumb AI player.
 	 */
-	public DumbAIPlayer() {
-		
+	public DumbAIPlayer(String name, GuessWhoCharacter secret) {
+		super(name, secret);
 		rng = new Random();
 		previousQuestions = new HashSet<>();
 	}
