@@ -1,6 +1,7 @@
 package ca.gse.guesswho.views;
 
 import java.awt.BorderLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -15,6 +16,9 @@ import ca.gse.guesswho.models.Question;
 import ca.gse.guesswho.models.players.HumanPlayer;
 
 public class GameAnswerPanel extends JPanel {
+	private static final Font BUTTON_FONT = new Font("Dialog", Font.BOLD, 20);
+	private static final Font PROMPT_FONT = new Font("Dialog", Font.BOLD, 40);
+
     private GamePanel parent;
 	
     private JLabel questionLabel;	
@@ -57,6 +61,7 @@ public class GameAnswerPanel extends JPanel {
     private JPanel buildTopBar(){
         JPanel board = new JPanel();
         questionLabel = new JLabel("");
+		questionLabel.setFont(PROMPT_FONT);
         board.add(questionLabel);
         return board;
     }
@@ -72,7 +77,9 @@ public class GameAnswerPanel extends JPanel {
 		
 		yesButton.addActionListener(this::onResponseClicked);
 		noButton.addActionListener(this::onResponseClicked);
-		
+		yesButton.setFont(BUTTON_FONT);
+		noButton.setFont(BUTTON_FONT);
+
         board.add(yesButton);
         board.add(noButton);
         return board;

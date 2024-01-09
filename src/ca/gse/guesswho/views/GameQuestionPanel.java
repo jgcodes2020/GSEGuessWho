@@ -14,6 +14,8 @@ import javax.swing.event.ListSelectionListener;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
@@ -38,6 +40,7 @@ public class GameQuestionPanel extends JPanel {
         this.parent = parent;
 
         setLayout(new BorderLayout());
+		add(topBarPanel(),BorderLayout.NORTH);
         add(buildBoard(), BorderLayout.CENTER);
         add(buildBottomBar(), BorderLayout.SOUTH);
     }
@@ -77,6 +80,7 @@ public class GameQuestionPanel extends JPanel {
 		JPanel board = new JPanel();
 		board.setLayout(new BoxLayout(board, BoxLayout.X_AXIS));
 		JButton confirmButton = new JButton("Confirm");
+		JButton forfeitButton = new JButton("Forfeit");
 		errorMessage = new JLabel("");
 
 		// board.setBackground(Color.RED);
@@ -96,13 +100,16 @@ public class GameQuestionPanel extends JPanel {
 		questionScroll.setViewportView(questionList);
 		questionScroll.setPreferredSize(new Dimension(540, 210));
 		confirmButton.setPreferredSize(new Dimension(210, 210));
-
+		forfeitButton.setPreferredSize(new Dimension(210, 210));
+		forfeitButton.addActionListener(this::forfeitButtonPressed);
 		confirmButton.addActionListener(this::submitButtonPressed);
 
 		board.add(Box.createHorizontalGlue());
 		board.add(questionScroll);
 		board.add(confirmButton);
 		board.add(errorMessage);
+		board.add(forfeitButton);
+
 		board.add(Box.createHorizontalGlue());
 		return board;
 	}
@@ -144,7 +151,7 @@ public class GameQuestionPanel extends JPanel {
 	}
     /**
      * Internal method. Converted/passed as an {@link ActionListener} for
-     * the submit button on the bottom bar.
+     * any character cards.
      * 
      * @param e the event being handled.
      */
@@ -154,6 +161,15 @@ public class GameQuestionPanel extends JPanel {
         questionList.clearSelection();
     }
 
+    /**
+     * Internal method. Converted/passed as an {@link ActionListener} for
+     * the forfeit button on the bottom bar.
+     * 
+     * @param e the event being handled.
+     */
+	private void forfeitButtonPressed(ActionEvent e) {
+		parent.forfeit();		
+	}
     /**
      * Internal method. Converted/passed as a {@link ListSelectionListener} for
      * the question list in the bottom bar.
@@ -177,5 +193,14 @@ public class GameQuestionPanel extends JPanel {
 		for (int i = 0; i < cards.length; i++) {
 			cards[i].setCrossedOut(!playerRemainingIndexes.get(i));
 		}
+	}
+
+	private JPanel topBarPanel (){
+		final Font MSG_FONT = new Font("Dialog", Font.BOLD, 40);
+		JPanel board = new JPanel();
+		JLabel message = new JLabel("Please select a question or a character.");
+		message.setFont(MSG_FONT);
+        board.add(message);
+        return board;
 	}
 }

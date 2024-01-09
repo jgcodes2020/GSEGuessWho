@@ -3,6 +3,8 @@ package ca.gse.guesswho.views;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.*;
 import java.util.*;
@@ -32,7 +34,7 @@ public class GamePanel extends JPanel {
 	private JPanel boardPanel;
 	private GameQuestionPanel questionPanel;
 	private GameAnswerPanel answerPanel;
-
+	private JPanel topBarPanel;
 	private JPanel chatPanel;
 	private JPanel chatPanelContent;
 
@@ -180,6 +182,16 @@ public class GamePanel extends JPanel {
 		return true;
 	}
 
+	protected void forfeit(){
+		if (state.getPlayer1Turn()){
+			main.showWinScreen(!state.getPlayer1Turn());
+		}
+		else{
+			main.showWinScreen(state.getPlayer1Turn());
+		}
+	}
+
+
 	/**
 	 * Constructs a GamePanel for the provided players.
 	 * 
@@ -193,7 +205,6 @@ public class GamePanel extends JPanel {
 
 		boardPanel = buildBoard();
 		chatPanel = buildChatboard();
-
 		setLayout(new BorderLayout());
 		add(boardPanel, BorderLayout.CENTER);
 		add(chatPanel, BorderLayout.EAST);
