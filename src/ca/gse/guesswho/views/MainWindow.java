@@ -18,6 +18,7 @@ public class MainWindow extends JFrame {
 	static final String CARD_GAME = "game";
 	static final String CARD_WIN_SCREEN = "winScreen";
 	static final String CARD_ANSWER = "answer";
+	static final String CARD_TUTORIAL = "tutorial";
 	// UI ELEMENTS HERE
 	// ----------------
 	// thesse can be modified by the other view classes.
@@ -25,6 +26,7 @@ public class MainWindow extends JFrame {
 	JPanel rootPanel = null;
 	CardLayout rootLayout = null;
 	
+	TutorialPanel tutorialPanel = null;
 	MenuPanel menuPanel = null;
 	GamePanel gamePanel = null;
 	WinScreenPanel winPanel = null;
@@ -50,6 +52,10 @@ public class MainWindow extends JFrame {
 		winPanel = new WinScreenPanel(this);
 		rootPanel.add(winPanel, CARD_WIN_SCREEN);
 
+
+		tutorialPanel = new TutorialPanel(this);
+		rootPanel.add(tutorialPanel, CARD_TUTORIAL);
+
 		setContentPane(rootPanel);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
@@ -62,6 +68,8 @@ public class MainWindow extends JFrame {
 		rootPanel.add(gamePanel, MainWindow.CARD_GAME);
 		rootLayout.show(rootPanel, MainWindow.CARD_GAME);
 	}
+
+
 	
 	void showWinScreen(boolean isWinnerP1) {
 		GameWonEvent event = new GameWonEvent(this, isWinnerP1);

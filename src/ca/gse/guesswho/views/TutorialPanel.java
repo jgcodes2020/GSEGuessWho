@@ -3,29 +3,24 @@ package ca.gse.guesswho.views;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
-import ca.gse.guesswho.GuessWho;
-import ca.gse.guesswho.models.DataCaches;
-import ca.gse.guesswho.models.players.DumbAIPlayer;
-import ca.gse.guesswho.models.players.HumanPlayer;
 
-/**
- * Panel that displays and manages the main menu.
- */
-public class MenuPanel extends JPanel {
+public class TutorialPanel extends JPanel {
 	private static final Font TITLE_FONT = new Font("Dialog", Font.BOLD, 60);
 	private static final Font BUTTON_FONT = new Font("Dialog", Font.BOLD, 20);
 	
-	// Runnable represents a void-type method with no parameters.
-	// There is no additional information that needs to be carried.
-	private List<Runnable> startPressedHandlers = new ArrayList<>();
-	
 	private MainWindow main;
-	
+	private JLabel bigTitle;
+	private JLabel steps;
 	/**
 	 * Creates a menu button. All menu buttons have a bunch of shared properties,
 	 * so I'm putting this in a method.
@@ -42,10 +37,11 @@ public class MenuPanel extends JPanel {
 	}
 	
 	/**
-	 * Constructs a MenuPanel.
+	 * Sets up a win screen panel.
+	 * @param mainWindow the main window to link with this win screen panel
 	 */
-	public MenuPanel(MainWindow window) {
-		this.main = window;
+	public TutorialPanel(MainWindow mainWindow) {
+		main = mainWindow;
 		
 		setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -54,40 +50,34 @@ public class MenuPanel extends JPanel {
 		add(Box.createVerticalGlue());
 		
 		// create the title text (this could be replaced with actual logo art if we wanted)
-		JLabel bigTitle = new JLabel("GUESS WHO\u2122");
+		bigTitle = new JLabel("How to Play . . .");
 		bigTitle.setFont(TITLE_FONT);
 		bigTitle.setAlignmentX(CENTER_ALIGNMENT); // everything is centered anyways, so yeah.
 		add(bigTitle);
-		
-		this.getFontMetrics(TITLE_FONT).getStringBounds("foo", null);
+		add(Box.createVerticalStrut(50));
+
+        steps = new JLabel("<html>1) Do something<br>2) do something else!</hmtl>");
+		steps.setFont(BUTTON_FONT);
+		steps.setAlignmentX(CENTER_ALIGNMENT); // everything is centered anyways, so yeah.
+        steps.setHorizontalAlignment(JLabel.CENTER);
+		add(steps);
 		
 		add(Box.createVerticalStrut(50));
 		
 		// start button
-		JButton startButton = createMenuButton("START");
-		startButton.addActionListener(this::onStartPressed);
-		add(startButton);
-		
-		// how to play button
-		JButton howToPlayButton = createMenuButton("How to play?");
-		howToPlayButton.addActionListener(this::howToPlayButton);
-		add(howToPlayButton);
+		JButton backToMainMenuButton = createMenuButton("Back to main menu");
+		backToMainMenuButton.addActionListener(this::onBackToMainMenuPressed);
+		add(backToMainMenuButton);
 		
 		// this "vertical glue" fills up extra space at the bottom, the combined
 		// effects of the top and bottom will center everything else in the middle
 		add(Box.createVerticalGlue());
+		
 	}
 	
-	/**
-	 * Called whenever the start button is pressed.
-	 * @param e the event parameters.
-	 */
-	private void onStartPressed(ActionEvent e) {
-		main.createGame();
-	}
 
-	private void howToPlayButton(ActionEvent e) {
-		main.switchPanel("tutorial");
+	
+	private void onBackToMainMenuPressed(ActionEvent e) {
+		main.switchPanel(MainWindow.CARD_MENU);
 	}
-
 }
