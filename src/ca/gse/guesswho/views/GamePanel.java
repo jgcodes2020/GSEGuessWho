@@ -118,6 +118,8 @@ public class GamePanel extends JPanel {
 			String name = state.getCurrentPlayer().getName();
 
 			state.doNextTurn();
+			if (checkForWinner())
+				return;
 
 			String message;
 			if (isAnswer) {
@@ -143,6 +145,8 @@ public class GamePanel extends JPanel {
 		String name = state.getCurrentPlayer().getName();
 
 		state.doNextTurn();
+		if (checkForWinner())
+			return;
 
 		String message;
 		if (isAnswer) {
@@ -162,16 +166,18 @@ public class GamePanel extends JPanel {
 	 * direct parents so we have to chain upwards.
 	 * 
 	 * @param winnerIsP1 If true, signal that the winner was player 1.
-	
-	/**
-	 * Checks if someone wins and triggers the win screen.
+	 * 
+	 *                   /**
+	 *                   Checks if someone wins and triggers the win screen.
+	 * @return Whether somebody won.
 	 */
-	void checkForWinner() {
+	boolean checkForWinner() {
+		System.err.println("winner: " + state.getWinner());
 		if (state.getWinner() == GameState.WINNER_NONE)
-			return;
-		
+			return false;
 		boolean isWinnerP1 = state.getWinner() == GameState.WINNER_P1;
 		main.showWinScreen(isWinnerP1);
+		return true;
 	}
 
 	/**

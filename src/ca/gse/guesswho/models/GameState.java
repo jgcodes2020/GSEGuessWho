@@ -93,6 +93,19 @@ public class GameState {
 		if (isAnswerPhase) {
 			// answer phase
 			lastAnswer = currentPlayer.answerQuestion(lastQuestion);
+			// final questions either win or lose
+			if (lastQuestion.getIsFinal()) {
+				// cool logic thing. see note 1 in README.
+				boolean isP1Winner = isPlayer1Turn ^ lastAnswer;
+				if (isP1Winner) {
+					winner = WINNER_P1;
+				}
+				else {
+					winner = WINNER_P2;
+				}
+				// don't do anything, the winner is determined
+				return;
+			}
 			// clear the other player's remaining indexes
 			BitSet remaining = otherPlayer.getRemainingIndexes();
 			for (int i = 0; i < remaining.length(); i++) {
