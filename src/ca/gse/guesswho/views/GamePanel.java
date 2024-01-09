@@ -83,6 +83,7 @@ public class GamePanel extends JPanel {
 		board.setMinimumSize(new Dimension(900, 0));
 		return board;
 	}
+
 	/**
 	 * Adds a message to the chatboard.
 	 * 
@@ -100,7 +101,7 @@ public class GamePanel extends JPanel {
 		}
 		chatPanelContent.add(questions);
 	}
-	
+
 	/**
 	 * Runs all pending AI turns, then switches to the correct panel
 	 * for the next player to respond.
@@ -110,20 +111,19 @@ public class GamePanel extends JPanel {
 			boolean isAnswer = state.getIsAnswerPhase();
 			boolean isPlayer1 = state.getPlayer1Turn();
 			String name = state.getCurrentPlayer().getName();
-			
+
 			state.doNextTurn();
-			
+
 			String message;
 			if (isAnswer) {
 				if (state.getLastAnswer())
 					message = "Yes";
 				else
 					message = "No";
-			}
-			else {
+			} else {
 				message = DataCaches.getQuestionString(state.getLastQuestion());
 			}
-			
+
 			addChatMessage(message, isPlayer1, name);
 		}
 		if (state.getIsAnswerPhase())
@@ -132,9 +132,30 @@ public class GamePanel extends JPanel {
 			switchGamePanel(CARD_QUESTION);
 	}
 
+	public void runPlayerTurn() {
+		boolean isAnswer = state.getIsAnswerPhase();
+		boolean isPlayer1 = state.getPlayer1Turn();
+		String name = state.getCurrentPlayer().getName();
+
+		state.doNextTurn();
+
+		String message;
+		if (isAnswer) {
+			if (state.getLastAnswer())
+				message = "Yes";
+			else
+				message = "No";
+		} else {
+			message = DataCaches.getQuestionString(state.getLastQuestion());
+		}
+
+		addChatMessage(message, isPlayer1, name);
+	}
+
 	/**
 	 * Called to switch to the win screen. Subpanels only have access to
 	 * direct parents so we have to chain upwards.
+	 * 
 	 * @param winnerIsP1 If true, signal that the winner was player 1.
 	 */
 	void showWinScreen(boolean winnerIsP1) {
@@ -143,9 +164,10 @@ public class GamePanel extends JPanel {
 
 	/**
 	 * Constructs a GamePanel for the provided players.
+	 * 
 	 * @param mainWindow the main window to link this game panel to
-	 * @param p1 the first player
-	 * @param p2 the second player
+	 * @param p1         the first player
+	 * @param p2         the second player
 	 */
 	public GamePanel(MainWindow mainWindow, Player p1, Player p2) {
 		main = mainWindow;
@@ -163,12 +185,8 @@ public class GamePanel extends JPanel {
 		return state;
 	}
 
-
 	private void switchGamePanel(String boardString) {
 		cards.show(boardPanel, boardString);
 	}
-
-
-
 
 }
