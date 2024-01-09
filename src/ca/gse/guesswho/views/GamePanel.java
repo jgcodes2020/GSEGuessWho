@@ -157,9 +157,16 @@ public class GamePanel extends JPanel {
 	 * direct parents so we have to chain upwards.
 	 * 
 	 * @param winnerIsP1 If true, signal that the winner was player 1.
+	
+	/**
+	 * Checks if someone wins and triggers the win screen.
 	 */
-	void showWinScreen(boolean winnerIsP1) {
-		main.showWinScreen(winnerIsP1);
+	void checkForWinner() {
+		if (state.getWinner() == GameState.WINNER_NONE)
+			return;
+		
+		boolean isWinnerP1 = state.getWinner() == GameState.WINNER_P1;
+		main.showWinScreen(isWinnerP1);
 	}
 
 	/**

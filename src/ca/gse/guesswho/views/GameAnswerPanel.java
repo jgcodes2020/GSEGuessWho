@@ -69,6 +69,10 @@ public class GameAnswerPanel extends JPanel {
         JPanel board = new JPanel();
         yesButton = new JButton("Yes");
         noButton = new JButton("No");
+		
+		yesButton.addActionListener(this::onResponseClicked);
+		noButton.addActionListener(this::onResponseClicked);
+		
         board.add(yesButton);
         board.add(noButton);
         return board;
