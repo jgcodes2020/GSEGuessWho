@@ -78,7 +78,9 @@ public class GuessWhoCharacter {
 		String[] parts = row.split(",");
 		
 		// convert the stored path to a URL
-		URL imageURL = GuessWhoCharacter.class.getResource("/ca/gse/guesswho/" + parts[1]);
+		String path = "/ca/gse/guesswho/" + parts[1];
+		System.err.println("load image " + path);
+		URL imageURL = GuessWhoCharacter.class.getResource(path);
 		Image image = ImageIO.read(imageURL);
 		
 		return new GuessWhoCharacter(
