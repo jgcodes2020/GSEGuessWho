@@ -90,10 +90,10 @@ public class GamePanel extends JPanel {
 	 * @implNote TODO: make this look nicer; refactor to be less dependent on
 	 *           internal state
 	 */
-	public void addToResponse(String response) {
+	public void addToResponse(String response, boolean isPlayer1Turn, String name) {
 		JLabel questions = new JLabel();
-		questions.setText(response + " | " + state.getCurrentPlayer().getName());
-		if (state.getPlayer1Turn() == true) {
+		questions.setText(response + " | " + name);
+		if (isPlayer1Turn) {
 			questions.setHorizontalAlignment(SwingConstants.LEFT);
 		} else {
 			questions.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -137,4 +137,8 @@ public class GamePanel extends JPanel {
 	private void switchGamePanel(String boardString) {
 		cards.show(boardPanel, boardString);
 	}
+
+
+
+
 }
