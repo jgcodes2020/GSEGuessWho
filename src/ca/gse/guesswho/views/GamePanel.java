@@ -1,6 +1,7 @@
 package ca.gse.guesswho.views;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.*;
@@ -21,17 +22,19 @@ import ca.gse.guesswho.models.players.*;
  * Panel that displays and manages the game's state.
  */
 public class GamePanel extends JPanel {
-	private MainWindow main;
-	
-	private GameState state;
-	private JPanel boardPanel;
-	private JPanel questionPanel;
+	static final String CARD_QUESTION = "question";
+	static final String CARD_ANSWER = "answer";
 
-	private CharacterCard[] cards;
-	private ButtonGroup cardGroup;
-	private JList<String> questionList;
-	private JLabel errorMessage;
-	JPanel questionPanelContent;
+	private MainWindow main;
+	private CardLayout cards;
+	private GameState state;
+
+	private JPanel boardPanel;
+	private GameQuestionPanel questionPanel;
+	private GameAnswerPanel answerPanel;
+
+	private JPanel chatPanel;
+	private JPanel chatPanelContent;
 
 	// Consumer<GameWonEvent> represents a method that takes
 	// GameWonEvent and returns void
@@ -44,23 +47,16 @@ public class GamePanel extends JPanel {
 	 */
 	private JPanel buildBoard() {
 		JPanel board = new JPanel();
-		board.setLayout(new GridLayout(4, 6));
-		// board.setBackground(Color.RED);
-		// board.setBorder(BorderFactory.createLineBorder(Color.RED, 20));
+		cards = new CardLayout();
+		board.setLayout(cards);
 
-		final int characterAmt = 24;
-		cards = new CharacterCard[characterAmt];
+		questionPanel = new GameQuestionPanel(this);
+		answerPanel = new GameAnswerPanel(this);
 
-		cardGroup = new ButtonGroup();
+		board.add(questionPanel, CARD_QUESTION);
+		board.add(answerPanel, CARD_ANSWER);
 
-		for (int i = 0; i < characterAmt; i++) {
-			GuessWhoCharacter character = DataCaches.getCharacterList().get(i);
-
-			cards[i] = new CharacterCard(character);
-			cards[i].addActionListener(this::characterCardPressed);
-			cardGroup.add(cards[i]);
-			board.add(cards[i]);
-		}
+		cards.show(board, CARD_QUESTION);
 		return board;
 	}
 
@@ -72,134 +68,21 @@ public class GamePanel extends JPanel {
 	 */
 	private JPanel buildChatboard() {
 		JPanel board = new JPanel();
-		questionPanelContent = new GScrollConstrainedPanel(true, false);
-		questionPanelContent.setLayout(new GridLayout(20, 1));// Need to fix the layout but i want things to go down.
+		chatPanelContent = new GScrollConstrainedPanel(true, false);
+		chatPanelContent.setLayout(new GridLayout(20, 1));// Need to fix the layout but i want things to go down.
 		board.setLayout(new BoxLayout(board, BoxLayout.Y_AXIS));
 
 		board.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
 		JLabel questions = new JLabel("Questions");
-		JScrollPane scroller = new JScrollPane(questionPanelContent);
-		questionPanelContent.add(questions);
+		JScrollPane scroller = new JScrollPane(chatPanelContent);
+		chatPanelContent.add(questions);
 
 		board.add(scroller);
 
 		board.setMinimumSize(new Dimension(900, 0));
 		return board;
 	}
-
-	/**
-	 * Internal method. Creates a JPanel for the bottom bar.
-	 * 
-	 * @return a JPanel for the bottom bar.
-	 */
-	private JPanel buildBottomBar() {
-		JPanel board = new JPanel();
-		board.setLayout(new BoxLayout(board, BoxLayout.X_AXIS));
-		JButton confirmButton = new JButton("Confirm");
-		errorMessage = new JLabel("");
-
-		// board.setBackground(Color.RED);
-		// board.setBorder(BorderFactory.createLineBorder(Color.RED, 20));
-
-		ArrayList<String> questions = new ArrayList<String>();
-		for (QuestionBankEntry entry : DataCaches.getQuestionBank()) {
-			questions.add(entry.getText());
-		}
-
-		questionList = new JList<String>(questions.toArray(new String[0]));
-		questionList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		questionList.addListSelectionListener(this::questionListValueChanged);
-
-		JScrollPane questionScroll = new JScrollPane(questionList);
-
-		questionScroll.setViewportView(questionList);
-		questionScroll.setPreferredSize(new Dimension(540, 210));
-		confirmButton.setPreferredSize(new Dimension(210, 210));
-
-		confirmButton.addActionListener(this::submitButtonPressed);
-
-		board.add(Box.createHorizontalGlue());
-		board.add(questionScroll);
-		board.add(confirmButton);
-		board.add(errorMessage);
-		board.add(Box.createHorizontalGlue());
-		return board;
-	}
-
-	/**
-	 * Internal method. Updates the game board according to the
-	 * current player's remaining indices.
-	 */
-	private void updateUIState() {
-		BitSet playerRemainingIndexes = state.getCurrentPlayer().getRemainingIndexes();
-		for (int i = 0; i < cards.length; i++) {
-			cards[i].setCrossedOut(!playerRemainingIndexes.get(i));
-		}
-	}
-
-	/**
-	 * Internal method. Converted/passed as an {@link ActionListener} for
-	 * the submit button on the bottom bar.
-	 * 
-	 * @param e the event being handled.
-	 */
-	private void submitButtonPressed(ActionEvent e) {
-		Question nextQuestion;
-		
-		CharacterCard.Model selectedCard = (CharacterCard.Model) cardGroup.getSelection();
-		if (selectedCard != null) {
-			nextQuestion = new CharacterQuestion(selectedCard.getCharacter());
-		} else {
-			int selectedIndex = questionList.getSelectedIndex();
-			if (selectedIndex == -1) {
-				errorMessage.setText("You have to select a question");
-				return;
-			}
-
-			// The order of questions in the question list is exactly the same as the
-			// question bank.
-			// We can retrieve the corresponding question by index.
-			nextQuestion = DataCaches.getQuestionBank().get(selectedIndex).getQuestionObject();
-		}
-		// ask next question (it should be human)
-		((HumanPlayer) state.getCurrentPlayer()).setNextQuestion(nextQuestion);
-		state.doNextTurn();
-		
-		// show AI response
-		// TODO: figure out how to show AI response HELLO WINSTON PLEASE HELP :PRAY:
-
-		updateUIState();
-		boardPanel.repaint();
-		this.validate();
-	}
-
-	/**
-	 * Internal method. Converted/passed as an {@link ActionListener} for
-	 * the submit button on the bottom bar.
-	 * 
-	 * @param e the event being handled.
-	 */
-	private void characterCardPressed(ActionEvent e) {
-		// if we select a character, then deselect any question
-		// we might have selected
-		questionList.clearSelection();
-	}
-
-	/**
-	 * Internal method. Converted/passed as a {@link ListSelectionListener} for
-	 * the question list in the bottom bar.
-	 * 
-	 * @param e
-	 */
-	private void questionListValueChanged(ListSelectionEvent e) {
-		// if we select a question, then deselect any character
-		// we might have selected
-		if (!questionList.getSelectionModel().isSelectionEmpty()) {
-			cardGroup.clearSelection();
-		}
-	}
-
 	/**
 	 * Internal method. Adds a message to the chatboard.
 	 * 
@@ -215,16 +98,16 @@ public class GamePanel extends JPanel {
 		} else {
 			questions.setHorizontalAlignment(SwingConstants.RIGHT);
 		}
-		questionPanelContent.add(questions);
+		chatPanelContent.add(questions);
 
 	}
 
 	/**
-	 * Internal method. Fires a GameWonEvent for this GamePanel.
-	 * 
+	 * Called to switch to the win screen. Subpanels only have access to
+	 * direct parents so we have to chain upwards.
 	 * @param winnerIsP1 If true, signal that the winner was player 1.
 	 */
-	private void onGameWon(boolean winnerIsP1) {
+	void showWinScreen(boolean winnerIsP1) {
 		main.showWinScreen(winnerIsP1);
 	}
 
@@ -239,12 +122,19 @@ public class GamePanel extends JPanel {
 		state = new GameState(p1, p2);
 
 		boardPanel = buildBoard();
-		questionPanel = buildChatboard();
+		chatPanel = buildChatboard();
 
 		setLayout(new BorderLayout());
 		add(boardPanel, BorderLayout.CENTER);
-		add(buildBottomBar(), BorderLayout.SOUTH);
-		add(questionPanel, BorderLayout.EAST);
+		add(chatPanel, BorderLayout.EAST);
+	}
 
+	GameState getState() {
+		return state;
+	}
+
+
+	private void switchGamePanel(String boardString) {
+		cards.show(boardPanel, boardString);
 	}
 }
