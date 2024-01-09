@@ -97,7 +97,7 @@ public class GameState {
 			BitSet remaining = otherPlayer.getRemainingIndexes();
 			for (int i = 0; i < remaining.length(); i++) {
 				GuessWhoCharacter c = characterList.get(i);
-				if (!lastQuestion.match(c)) {
+				if (lastQuestion.match(c) != lastAnswer) {
 					remaining.clear(i);
 				}
 			}
