@@ -71,7 +71,7 @@ public class GameState {
 		return isPlayer1Turn;
 	}
 	
-	public boolean getAnswerPhase() {
+	public boolean getIsAnswerPhase() {
 		return isAnswerPhase;
 	}
 	/**

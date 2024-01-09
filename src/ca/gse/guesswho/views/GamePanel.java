@@ -84,13 +84,13 @@ public class GamePanel extends JPanel {
 		return board;
 	}
 	/**
-	 * Internal method. Adds a message to the chatboard.
+	 * Adds a message to the chatboard.
 	 * 
 	 * @param response The string to add to the chatboard.
 	 * @implNote TODO: make this look nicer; refactor to be less dependent on
 	 *           internal state
 	 */
-	public void addToResponse(String response, boolean isPlayer1Turn, String name) {
+	public void addChatMessage(String response, boolean isPlayer1Turn, String name) {
 		JLabel questions = new JLabel();
 		questions.setText(response + " | " + name);
 		if (isPlayer1Turn) {
@@ -99,7 +99,37 @@ public class GamePanel extends JPanel {
 			questions.setHorizontalAlignment(SwingConstants.RIGHT);
 		}
 		chatPanelContent.add(questions);
-
+	}
+	
+	/**
+	 * Runs all pending AI turns, then switches to the correct panel
+	 * for the next player to respond.
+	 */
+	public void runAITurnsAndSwitchPanel() {
+		while (!state.getCurrentPlayer().isHuman()) {
+			boolean isAnswer = state.getIsAnswerPhase();
+			boolean isPlayer1 = state.getPlayer1Turn();
+			String name = state.getCurrentPlayer().getName();
+			
+			state.doNextTurn();
+			
+			String message;
+			if (isAnswer) {
+				if (state.getLastAnswer())
+					message = "Yes";
+				else
+					message = "No";
+			}
+			else {
+				message = DataCaches.getQuestionString(state.getLastQuestion());
+			}
+			
+			addChatMessage(message, isPlayer1, name);
+		}
+		if (state.getIsAnswerPhase())
+			switchGamePanel(CARD_ANSWER);
+		else
+			switchGamePanel(CARD_QUESTION);
 	}
 
 	/**
