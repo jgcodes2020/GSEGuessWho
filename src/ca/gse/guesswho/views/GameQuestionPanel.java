@@ -79,12 +79,6 @@ public class GameQuestionPanel extends JPanel {
 	private JPanel buildBottomBar() {
 		JPanel board = new JPanel();
 		board.setLayout(new BoxLayout(board, BoxLayout.X_AXIS));
-		JButton confirmButton = new JButton("Confirm");
-		JButton forfeitButton = new JButton("Forfeit");
-		errorMessage = new JLabel("");
-
-		// board.setBackground(Color.RED);
-		// board.setBorder(BorderFactory.createLineBorder(Color.RED, 20));
 
 		ArrayList<String> questions = new ArrayList<String>();
 		for (QuestionBankEntry entry : DataCaches.getQuestionBank()) {
@@ -99,20 +93,45 @@ public class GameQuestionPanel extends JPanel {
 
 		questionScroll.setViewportView(questionList);
 		questionScroll.setPreferredSize(new Dimension(540, 210));
-		confirmButton.setPreferredSize(new Dimension(210, 210));
-		forfeitButton.setPreferredSize(new Dimension(210, 210));
-		forfeitButton.addActionListener(this::forfeitButtonPressed);
-		confirmButton.addActionListener(this::submitButtonPressed);
+
 
 		board.add(Box.createHorizontalGlue());
 		board.add(questionScroll);
-		board.add(confirmButton);
-		board.add(errorMessage);
-		board.add(forfeitButton);
+		board.add(buildBottomButtons());
 
 		board.add(Box.createHorizontalGlue());
 		return board;
 	}
+
+		/**
+	 * Internal method. Creates a JPanel for the bottom bar.
+	 * 
+	 * @return a JPanel for the bottom bar.
+	 */
+	private JPanel buildBottomButtons() {
+		JPanel board = new JPanel();
+		board.setLayout(new GridLayout(2,2));
+		JButton confirmButton = new JButton("Confirm");
+		JButton forfeitButton = new JButton("Forfeit");
+		errorMessage = new JLabel("");
+		confirmButton.setPreferredSize(new Dimension(210, 105));
+		forfeitButton.setPreferredSize(new Dimension(210, 105));
+		forfeitButton.addActionListener(this::forfeitButtonPressed);
+		confirmButton.addActionListener(this::submitButtonPressed);
+		errorMessage.setHorizontalAlignment(JLabel.CENTER);
+
+		board.add(confirmButton);
+		board.add(forfeitButton);
+		board.add(errorMessage);
+
+
+		board.add(Box.createHorizontalGlue());
+		return board;
+	}
+
+
+
+	
     /**
 	 * Internal method. Converted/passed as an {@link ActionListener} for
 	 * the submit button on the bottom bar.
