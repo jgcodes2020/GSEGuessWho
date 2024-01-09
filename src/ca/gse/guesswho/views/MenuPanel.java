@@ -2,6 +2,7 @@ package ca.gse.guesswho.views;
 
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.util.List;
 import java.util.ArrayList;
@@ -70,9 +71,14 @@ public class MenuPanel extends JPanel {
 		
 		// how to play button
 		JButton howToPlayButton = createMenuButton("How to play?");
-		howToPlayButton.addActionListener(this::howToPlayButton);
+		howToPlayButton.addActionListener(this::howToPlayButtonPressed);
 		add(howToPlayButton);
 		
+		// how to exit button
+		JButton exitButton = createMenuButton("Exit");
+		exitButton.addActionListener(this::exitButtonPressed);
+		add(exitButton);
+
 		// this "vertical glue" fills up extra space at the bottom, the combined
 		// effects of the top and bottom will center everything else in the middle
 		add(Box.createVerticalGlue());
@@ -86,8 +92,16 @@ public class MenuPanel extends JPanel {
 		main.createGame();
 	}
 
-	private void howToPlayButton(ActionEvent e) {
+	private void howToPlayButtonPressed(ActionEvent e) {
 		main.switchPanel("tutorial");
+	}
+
+
+	private void exitButtonPressed(ActionEvent e) {
+		Frame [] allFrames = Frame.getFrames();
+		for (int i = 0; i < allFrames.length; i++) {
+			allFrames[i].dispose();
+		}
 	}
 
 }
