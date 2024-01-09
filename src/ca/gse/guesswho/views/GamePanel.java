@@ -69,18 +69,19 @@ public class GamePanel extends JPanel {
 	private JPanel buildChatboard() {
 		JPanel board = new JPanel();
 		chatPanelContent = new GScrollConstrainedPanel(true, false);
-		chatPanelContent.setLayout(new GridLayout(20, 1));// Need to fix the layout but i want things to go down.
-		board.setLayout(new BoxLayout(board, BoxLayout.Y_AXIS));
+		chatPanelContent.setLayout(new BoxLayout(chatPanelContent, BoxLayout.Y_AXIS));// Need to fix the layout but i want things to go down.
+		board.setLayout(new BorderLayout());
 
 		board.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
 		JLabel questions = new JLabel("Questions");
 		JScrollPane scroller = new JScrollPane(chatPanelContent);
-		chatPanelContent.add(questions);
 
-		board.add(scroller);
+		chatPanelContent.add(questions, BorderLayout.NORTH);
+		board.add(scroller, BorderLayout.CENTER);
 
-		board.setMinimumSize(new Dimension(900, 0));
+		board.setMinimumSize(new Dimension(350, 0));
+		board.setPreferredSize(new Dimension(350, 100));
 		return board;
 	}
 
@@ -94,10 +95,14 @@ public class GamePanel extends JPanel {
 	public void addChatMessage(String response, boolean isPlayer1Turn, String name) {
 		JLabel questions = new JLabel();
 		questions.setText(response + " | " + name);
+		questions.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
+		System.out.println(isPlayer1Turn); 
+
 		if (isPlayer1Turn) {
-			questions.setHorizontalAlignment(SwingConstants.LEFT);
-		} else {
-			questions.setHorizontalAlignment(SwingConstants.RIGHT);
+			questions.setHorizontalAlignment(JLabel.LEFT);
+		}
+		else {
+			questions.setHorizontalAlignment(JLabel.RIGHT);
 		}
 		chatPanelContent.add(questions);
 	}
