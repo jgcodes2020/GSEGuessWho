@@ -118,7 +118,8 @@ public class GameQuestionPanel extends JPanel {
 		CharacterCard.Model selectedCard = (CharacterCard.Model) cardGroup.getSelection();
 		if (selectedCard != null) {
 			nextQuestion = new CharacterQuestion(selectedCard.getCharacter());
-		} else {
+		} 
+		else {
 			int selectedIndex = questionList.getSelectedIndex();
 			if (selectedIndex == -1) {
 				errorMessage.setText("You have to select a question");
@@ -133,7 +134,7 @@ public class GameQuestionPanel extends JPanel {
 		// ask next question (it should be human)
 		((HumanPlayer) parent.getState().getCurrentPlayer()).setNextQuestion(nextQuestion);
 		parent.getState().doNextTurn();
-		
+		parent.runAITurnsAndSwitchPanel();
 		// show AI response
 		// TODO: figure out how to show AI response HELLO WINSTON PLEASE HELP :PRAY:
 
