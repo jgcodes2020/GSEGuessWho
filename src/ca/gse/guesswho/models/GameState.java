@@ -2,13 +2,8 @@ package ca.gse.guesswho.models;
 
 import java.util.BitSet;
 import java.util.List;
-import java.util.Random;
-
-import ca.gse.guesswho.models.players.HumanPlayer;
 
 public class GameState {
-	private static Random rng = new Random();
-
 	private Player player1;
 	private Player player2;
 
@@ -117,10 +112,18 @@ public class GameState {
 		}
 	}
 
-	public boolean getLastAnswer() {//So turningn the awnser of the question to yes or no.
+	/**
+	 * Returns the last answer answered.
+	 * @return the last answer: true if yes, false if no.
+	 */
+	public boolean getLastAnswer() {
 		return lastAnswer;
 	}
 
+	/**
+	 * Returns the last question asked.
+	 * @return the last question.
+	 */
 	public Question getLastQuestion() {
 		return lastQuestion;
 	}

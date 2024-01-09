@@ -1,13 +1,11 @@
 package ca.gse.guesswho.models.players;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 
 import ca.gse.guesswho.models.DataCaches;
 import ca.gse.guesswho.models.GuessWhoCharacter;
-import ca.gse.guesswho.models.Player;
 import ca.gse.guesswho.models.Question;
 import ca.gse.guesswho.models.questions.AttributeQuestion;
 import ca.gse.guesswho.models.questions.CharacterQuestion;
@@ -15,15 +13,6 @@ import ca.gse.guesswho.models.questions.CharacterQuestion;
 public class DumbAIPlayer extends AIPlayer {
 	private Random rng;
 	private HashSet<Question> previousQuestions;
-	
-	/**
-	 * Initializes the question list. This provides O(1) access
-	 * to the questions in order, making it easy to track.
-	 */
-	private static void setupQuestionList() {
-		if (DataCaches.getQuestionBank() == null)
-			throw new IllegalStateException("");
-	}
 
 	/**
 	 * Creates a new dumb AI player.

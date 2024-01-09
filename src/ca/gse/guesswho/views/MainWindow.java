@@ -5,7 +5,6 @@ import java.awt.CardLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import ca.gse.guesswho.GuessWho;
 import ca.gse.guesswho.events.GameWonEvent;
 import ca.gse.guesswho.models.DataCaches;
 import ca.gse.guesswho.models.players.DumbAIPlayer;
@@ -29,7 +28,6 @@ public class MainWindow extends JFrame {
 	MenuPanel menuPanel = null;
 	GamePanel gamePanel = null;
 	WinScreenPanel winPanel = null;
-	AnswerPanel answerPanel = null;
 	/**
 	 * Constructs a new main window.
 	 */
