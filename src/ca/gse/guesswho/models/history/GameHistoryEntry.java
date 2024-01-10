@@ -1,5 +1,8 @@
 package ca.gse.guesswho.models.history;
 
+import javax.xml.crypto.Data;
+
+import ca.gse.guesswho.models.DataCaches;
 import ca.gse.guesswho.models.Question;
 
 /**
@@ -39,7 +42,7 @@ public class GameHistoryEntry {
 	@Override
 	public String toString() {
 		// example: Is your character male? -> Yes
-		
+		String questionText = DataCaches.getQuestionString(question);
 		String answerText;
 		if (answer) {
 			answerText = "Yes";
@@ -47,6 +50,6 @@ public class GameHistoryEntry {
 		else {
 			answerText = "No";
 		}
-		return String.format("%s -> %s", question, answerText);
+		return String.format("%s -> %s", questionText, answerText);
 	}
 }

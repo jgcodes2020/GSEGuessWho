@@ -11,6 +11,7 @@ public class GameState {
 	private Player player1;
 	private Player player2;
 
+
 	private byte winner;
 	private boolean isPlayer1Turn;
 	private boolean isAnswerPhase;
@@ -58,6 +59,21 @@ public class GameState {
 	 */
 	public byte getWinner() {
 		return winner;
+	}
+	
+	/**
+	 * Gets Player 1 for this game.
+	 * @return
+	 */
+	public Player getPlayer1() {
+		return player1;
+	}
+	/**
+	 * Gets Player 2 for this game.
+	 * @return Player 2
+	 */
+	public Player getPlayer2() {
+		return player2;
 	}
 
 	/**

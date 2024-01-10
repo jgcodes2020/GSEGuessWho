@@ -3,24 +3,18 @@ package ca.gse.guesswho.views;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.event.*;
 import java.util.*;
 import java.util.function.Consumer;
 import javax.swing.*;
 import javax.swing.Timer;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-
-import ca.gse.guesswho.components.CharacterCard;
 import ca.gse.guesswho.components.GScrollConstrainedPanel;
 import ca.gse.guesswho.events.*;
 import ca.gse.guesswho.models.*;
 import ca.gse.guesswho.models.history.GameHistory;
-import ca.gse.guesswho.models.questions.*;
-import ca.gse.guesswho.models.players.*;
+import ca.gse.guesswho.models.history.GameHistoryEntry;
+import ca.gse.guesswho.models.players.AIPlayer;
+import ca.gse.guesswho.models.questions.CharacterQuestion;
 
 /**
  * Panel that displays and manages the game's state.
@@ -81,22 +75,20 @@ public class GamePanel extends JPanel {
 		JPanel textBoard = new JPanel();
 		JPanel board = new JPanel();
 
-
-
-
 		chatPanelContent = new GScrollConstrainedPanel(true, false);
-		chatPanelContent.setLayout(new BoxLayout(chatPanelContent, BoxLayout.Y_AXIS));// Need to fix the layout but i want things to go down.
+		chatPanelContent.setLayout(new BoxLayout(chatPanelContent, BoxLayout.Y_AXIS));// Need to fix the layout but i
+																						// want things to go down.
 		board.setLayout(new BorderLayout());
 
 		board.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
 		timeLabel = new JLabel("Time: 00:00:00");
-		textBoard.add(timeLabel,BorderLayout.WEST);
+		textBoard.add(timeLabel, BorderLayout.WEST);
 
 		roundLabel = new JLabel("Turn "+state.getTurnCount());
 		textBoard.add(roundLabel,BorderLayout.EAST);
 
-		board.add(textBoard,BorderLayout.NORTH);
+		board.add(textBoard, BorderLayout.NORTH);
 		JLabel questions = new JLabel("Questions");
 		JScrollPane scroller = new JScrollPane(chatPanelContent);
 
@@ -117,12 +109,11 @@ public class GamePanel extends JPanel {
 		JLabel questions = new JLabel();
 		questions.setText(response + " | " + name);
 		questions.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
-		System.out.println(isPlayer1Turn); 
+		System.out.println(isPlayer1Turn);
 
 		if (isPlayer1Turn) {
 			questions.setHorizontalAlignment(JLabel.LEFT);
-		}
-		else {
+		} else {
 			questions.setHorizontalAlignment(JLabel.RIGHT);
 		}
 		chatPanelContent.add(questions);
@@ -134,7 +125,8 @@ public class GamePanel extends JPanel {
 	 */
 	public void runAITurnsAndSwitchPanel() {
 		while (!state.getCurrentPlayer().isHuman()) {
-			runOneTurn();
+			if (runOneTurn())
+				return;
 		}
 		if (state.getIsAnswerPhase())
 			switchGamePanel(CARD_ANSWER);
@@ -144,56 +136,99 @@ public class GamePanel extends JPanel {
 
 	/**
 	 * Runs a single phase of the next turn, pumping a message to chat.
+	 * 
+	 * @return true if someone won on this turn.
 	 */
-	public void runOneTurn() {
+	public boolean runOneTurn() {
 		roundUpdate();
 		boolean isAnswer = state.getIsAnswerPhase();
 		boolean isPlayer1 = state.getPlayer1Turn();
 		String name = state.getCurrentPlayer().getName();
 
 		state.doNextPhase();
-		if (checkForWinner())
-			return;
 
+		// setup the answer, push history
 		String message;
 		if (isAnswer) {
 			boolean answer = state.getLastAnswer();
 			history.push(answer);
+			// set chat message
 			if (answer)
 				message = "Yes";
 			else
 				message = "No";
 		} else {
 			Question question = state.getLastQuestion();
-			message = DataCaches.getQuestionString(question);
 			history.push(question);
+			// set chat message
+			message = DataCaches.getQuestionString(question);
 		}
-
 		addChatMessage(message, isPlayer1, name);
 		roundUpdate();
+		// check for winner
+		if (checkForWinner())
+			return true;
+
+		return false;
 	}
 
 	/**
 	 * Checks if someone wins and triggers the win screen.
+	 * 
 	 * @return Whether somebody won.
 	 */
 	boolean checkForWinner() {
-		System.err.println("winner: " + state.getWinner());
+		// if nobody wins, exit now
 		if (state.getWinner() == GameState.WINNER_NONE)
 			return false;
+
+		// update winner in history
 		boolean isWinnerP1 = state.getWinner() == GameState.WINNER_P1;
-		main.showWinScreen(isWinnerP1);
+		history.setIsWinnerP1(isWinnerP1);
+
+		Player player1 = state.getPlayer1();
+		Player player2 = state.getPlayer2();
+		
+		// Assuming the last question is a CharacterQuesetion, check if someone's secret can be found
+		List<GameHistoryEntry> entries = history.getEntries();
+		GameHistoryEntry lastEntry = entries.get(entries.size() - 1);
+		if (lastEntry.getAnswer()) {
+			CharacterQuestion lastQuestion = (CharacterQuestion) lastEntry.getQuestion();
+			if (isWinnerP1) {
+				history.setP2Secret(lastQuestion.getCharacter());
+			}
+			else {
+				history.setP1Secret(lastQuestion.getCharacter());
+			}
+		}
+		
+		// Set secrets for all AI players
+		if (!player1.isHuman() && history.getP1Secret() == null) {
+			// set the secret character for this AI
+			System.out.println("P1 is an AI");
+			AIPlayer aiPlayer1 = (AIPlayer) player1;
+			history.setP1Secret(aiPlayer1.getSecret());
+		}
+		if (!player2.isHuman() && history.getP2Secret() == null) {
+			// set the secret character for this AI
+			System.out.println("P2 is an AI");
+			AIPlayer aiPlayer2 = (AIPlayer) player2;
+			history.setP2Secret(aiPlayer2.getSecret());
+		}
+
+		main.showWinScreen(isWinnerP1, history);
 		return true;
 	}
 
 	/**
 	 * Causes the current player to instantly lose.
 	 */
-	protected void forfeit() {
-		// If it's player 1's turn they should lose, i.e. player 2 should win, vice versa.
-		main.showWinScreen(!state.getPlayer1Turn());
+	void forfeit() {
+		// If it's player 1's turn they should lose, i.e. player 2 should win, vice
+		// versa.
+		// since there is no history, we set it to null.
+		main.showWinScreen(!state.getPlayer1Turn(), history);
 	}
-
 
 	/**
 	 * Constructs a GamePanel for the provided players.
@@ -207,13 +242,12 @@ public class GamePanel extends JPanel {
 		main = mainWindow;
 		// start the timer
 		startTime = System.currentTimeMillis();
-		timer =  new Timer(1,this::timeUpdate);
+		timer = new Timer(1, this::timeUpdate);
 		timer.setInitialDelay(1);
 		timer.start();
 		// initialize game state
 		state = new GameState(p1, p2, isP1First);
 		history = new GameHistory(p1.getName(), p2.getName(), isP1First);
-		
 
 		state = new GameState(p1, p2, isP1First);
 		boardPanel = buildBoard();
@@ -225,7 +259,9 @@ public class GamePanel extends JPanel {
 	}
 
 	/**
-	 * Gets the current game state. This should only be used by other view classes, hence default access.
+	 * Gets the current game state. This should only be used by other view classes,
+	 * hence default access.
+	 * 
 	 * @return the game state.
 	 */
 	GameState getState() {
@@ -236,19 +272,17 @@ public class GamePanel extends JPanel {
 		roundLabel.setText("Turn "+(state.getTurnCount()));
 	}
 
-
-
-
 	private void timeUpdate(ActionEvent e) {
-		timeLabel.setText("Time: "+ Utilities.millisToString(System.currentTimeMillis() - startTime));
+		timeLabel.setText("Time: " + Utilities.millisToString(System.currentTimeMillis() - startTime));
 	}
 
-	public long getRunTime(){
+	public long getRunTime() {
 		return (System.currentTimeMillis() - startTime);
 	}
 
 	/**
 	 * INTERNAL: switches to a different card on the board panel.
+	 * 
 	 * @param boardString the board to switch to
 	 */
 	private void switchGamePanel(String boardString) {
