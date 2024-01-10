@@ -96,7 +96,7 @@ public class GameAnswerPanel extends JPanel {
 		else if (source == noButton) {
 			player.setNextAnswer(false);
 		}
-		parent.runPlayerTurn();
+		parent.runOneTurn();
 		parent.runAITurnsAndSwitchPanel();
 	}
 	

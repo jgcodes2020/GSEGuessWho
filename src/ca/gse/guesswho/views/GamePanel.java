@@ -134,7 +134,7 @@ public class GamePanel extends JPanel {
 	 */
 	public void runAITurnsAndSwitchPanel() {
 		while (!state.getCurrentPlayer().isHuman()) {
-			runPlayerTurn();
+			runOneTurn();
 		}
 		if (state.getIsAnswerPhase())
 			switchGamePanel(CARD_ANSWER);
@@ -145,7 +145,8 @@ public class GamePanel extends JPanel {
 	/**
 	 * Runs a single phase of the next turn, pumping a message to chat.
 	 */
-	public void runPlayerTurn() {
+	public void runOneTurn() {
+		roundUpdate();
 		boolean isAnswer = state.getIsAnswerPhase();
 		boolean isPlayer1 = state.getPlayer1Turn();
 		String name = state.getCurrentPlayer().getName();
@@ -157,6 +158,7 @@ public class GamePanel extends JPanel {
 		String message;
 		if (isAnswer) {
 			boolean answer = state.getLastAnswer();
+			history.push(answer);
 			if (answer)
 				message = "Yes";
 			else

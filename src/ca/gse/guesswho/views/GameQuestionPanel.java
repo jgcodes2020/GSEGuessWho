@@ -166,7 +166,7 @@ public class GameQuestionPanel extends JPanel {
 		}
 		// ask next question (it should be human)
 		((HumanPlayer) parent.getState().getCurrentPlayer()).setNextQuestion(nextQuestion);
-		parent.runPlayerTurn();
+		parent.runOneTurn();
 		parent.runAITurnsAndSwitchPanel();
 		// show AI response
 		// TODO: figure out how to show AI response HELLO WINSTON PLEASE HELP :PRAY:
