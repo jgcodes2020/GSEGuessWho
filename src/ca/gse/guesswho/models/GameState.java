@@ -3,6 +3,10 @@ package ca.gse.guesswho.models;
 import java.util.BitSet;
 import java.util.List;
 
+/**
+ * Holds the internal state of a Guess Who game. Handles all turn logic, serving as
+ * a frontend-agnostic model of a game of Guess Who.
+ */
 public class GameState {
 	private Player player1;
 	private Player player2;
@@ -19,15 +23,6 @@ public class GameState {
 	public static final byte WINNER_NONE = 0;
 	public static final byte WINNER_P1 = 1;
 	public static final byte WINNER_P2 = 2;
-
-	/**
-	 * Gets the global character list.
-	 * 
-	 * @return the global character list, or null if it hasn't been loaded
-	 */
-	// public static List<GuessWhoCharacter> getCharacterList() {
-	// 	return characterList;
-	// }
 
 	/**
 	 * Creates an instance of a Guess Who game with two players. The first player

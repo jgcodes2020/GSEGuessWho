@@ -5,12 +5,19 @@ import java.util.List;
 import ca.gse.guesswho.models.*;
 import ca.gse.guesswho.models.questions.*;
 
+/**
+ * Creates a smart AI that takes the optimal strategy to guess the opponent's character.
+ * (yes, it's optimal, see https://doi.org/10.1371/journal.pone.0247361)
+ */
 public class SmartAIPlayer extends AIPlayer {
 	// list of bitmasks representing the characters that match each question.
 	// each element corresponds to a question bank entry; each bit of that element
 	// corresponds to a character.
     private static BitSet[] questionPatterns = null;
 	
+	/**
+	 * Constructs a series of bitmasks
+	 */
 	public static void setupQuestionPatterns() {
 		List<QuestionBankEntry> questionBank = DataCaches.getQuestionBank();
 		List<GuessWhoCharacter> characters = DataCaches.getCharacterList();

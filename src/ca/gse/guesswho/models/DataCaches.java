@@ -16,15 +16,19 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * Class handling all data that is loaded from files. Also
- * handles some utility functions that heavily rely on the
- * data caches.
+ * Class with helper methods for loading and caching resource data.
+ * Also handles several utilities related to those resources.
+ * This class should not be instantiated, it is otherwise useless.
  */
 public class DataCaches {
 	private static List<GuessWhoCharacter> characterList = null;
 	private static List<QuestionBankEntry> questionBank = null;
 	
 	private static Random rng = new Random();
+	
+	// private constructor: prevents anyone from making DataCaches
+	private DataCaches() {}
+	
 
 	/**
 	 * Loads and parses the character list from a CSV file. This must be done before

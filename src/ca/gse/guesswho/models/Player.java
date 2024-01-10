@@ -4,7 +4,7 @@ import java.util.BitSet;
 import java.util.List;
 
 /**
- * Represents a player (actor within the game).
+ * Base class for all players (actors within the game).
  * Players are capable of asking and answering questions.
  */
 public abstract class Player {
