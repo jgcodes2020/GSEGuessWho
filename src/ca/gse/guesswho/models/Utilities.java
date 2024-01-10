@@ -76,6 +76,7 @@ public class Utilities {
 		// add days (if needed)
 		if (days > 0)
 			result = String.format("%dd+%s", days, result);
+		// example: 2d+16:32:59.231
 		return result;
 	}
 	

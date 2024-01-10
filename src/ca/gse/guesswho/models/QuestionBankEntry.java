@@ -63,12 +63,13 @@ public class QuestionBankEntry {
 	}
 
 	/**
-	 * Returns a string representation of this pair. It follows the
+	 * Returns a string representation of this entry. It follows the
 	 * format: {@code {a, b}}.
-	 * @return a string representation of this pair.
+	 * @return a string representation of this entry.
 	 */
 	@Override
 	public String toString() {
-		return String.format("{%s, %s}", text, questionObject);
+		// example: QuestionBankEntry {Is your character male?, AttributeQuestion {attr=1, value=0}}
+		return String.format("QuestionBankEntry {%s, %s}", text, questionObject);
 	}
 }
