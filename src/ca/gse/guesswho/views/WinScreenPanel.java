@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.sound.sampled.Clip;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -21,6 +22,7 @@ import ca.gse.guesswho.events.GameWonEvent;
 import ca.gse.guesswho.models.DataCaches;
 import ca.gse.guesswho.models.GuessWhoCharacter;
 import ca.gse.guesswho.models.history.GameHistory;
+import ca.gse.guesswho.sound.SoundEffects;
 
 public class WinScreenPanel extends JPanel {
 	private static final Font TITLE_FONT = new Font("Dialog", Font.BOLD, 60);
@@ -106,9 +108,13 @@ public class WinScreenPanel extends JPanel {
 	void updateView(GameWonEvent event) {
 		if (event.isWinnerP1()){
 			bigTitle.setText("YOU WIN! :D");
+			Clip sound = SoundEffects.getClip("winning.wav");
+			sound.start();
 		}
 		else{
 			bigTitle.setText("YOU LOSE! :c ");
+			Clip sound = SoundEffects.getClip("sad-trombone.wav");
+			sound.start();
 		}
 		
 		history = event.getHistory();
