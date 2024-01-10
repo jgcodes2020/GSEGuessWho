@@ -17,8 +17,7 @@ import javax.swing.JPanel;
 public class TutorialPanel extends JPanel {
 	private static final Font TITLE_FONT = new Font("Dialog", Font.BOLD, 60);
 	private static final Font BUTTON_FONT = new Font("Dialog", Font.BOLD, 20);
-	
-	private static final String[] INSTRUCTION_LINES = {
+	private static final String[] INSTRUCTION_LINES = { // variable
 		"1) DO SOMETHING",
 		"2) DO SOMETHING ELSE!!"
 	};
@@ -67,13 +66,14 @@ public class TutorialPanel extends JPanel {
 		// this "vertical glue" fills up extra space at the top
 		add(Box.createVerticalGlue());
 		
-		// create the title text (this could be replaced with actual logo art if we wanted)
+		// create the "title"
 		bigTitle = new JLabel("How to Play . . .");
 		bigTitle.setFont(TITLE_FONT);
 		bigTitle.setAlignmentX(CENTER_ALIGNMENT); // everything is centered anyways, so yeah.
 		add(bigTitle);
 		add(Box.createVerticalStrut(50));
 
+		// create the "steps"
         steps = new JLabel(INSTRUCTION_HTML);
 		steps.setFont(BUTTON_FONT);
 		steps.setAlignmentX(CENTER_ALIGNMENT); // everything is centered anyways, so yeah.
@@ -94,7 +94,10 @@ public class TutorialPanel extends JPanel {
 	}
 	
 
-	
+	/**
+	 * Basically just switch the panel back to the main menu.
+	 * @param e the event being handled.
+	 */
 	private void onBackToMainMenuPressed(ActionEvent e) {
 		main.switchPanel(MainWindow.CARD_MENU);
 	}

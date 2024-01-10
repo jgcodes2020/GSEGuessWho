@@ -64,17 +64,17 @@ public class MenuPanel extends JPanel {
 		
 		add(Box.createVerticalStrut(50));
 		
-		// start button
+		// creating and adding start button
 		JButton startButton = createMenuButton("START");
 		startButton.addActionListener(this::onStartPressed);
 		add(startButton);
 		
-		// how to play button
+		// creatings and adding how to play button
 		JButton howToPlayButton = createMenuButton("How to play?");
 		howToPlayButton.addActionListener(this::howToPlayButtonPressed);
 		add(howToPlayButton);
 		
-		// how to exit button
+		// creating and adding how to exit button
 		JButton exitButton = createMenuButton("Exit");
 		exitButton.addActionListener(this::exitButtonPressed);
 		add(exitButton);
@@ -85,18 +85,24 @@ public class MenuPanel extends JPanel {
 	}
 	
 	/**
-	 * Called whenever the start button is pressed.
+	 * Switches to GameSetupPanel after the start button is pressed.
 	 * @param e the event parameters.
 	 */
 	private void onStartPressed(ActionEvent e) {
 		main.switchPanel("setup");
 	}
-
+	/**
+	 * Switches the panel to TutorialPanel after clicking how to play button
+	 * @param e the event being handled.
+	 */
 	private void howToPlayButtonPressed(ActionEvent e) {
 		main.switchPanel("tutorial");
 	}
 
-
+	/**
+	 * Stops the program after exit button is clicked
+	 * @param e the event being handled.
+	 */
 	private void exitButtonPressed(ActionEvent e) {
 		Frame [] allFrames = Frame.getFrames();
 		for (int i = 0; i < allFrames.length; i++) {

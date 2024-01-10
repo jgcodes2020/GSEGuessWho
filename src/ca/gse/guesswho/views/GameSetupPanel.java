@@ -62,8 +62,8 @@ public class GameSetupPanel extends JPanel {
 	}
 	
 	/**
-	 * Sets up a win screen panel.
-	 * @param mainWindow the main window to link with this win screen panel
+	 * Sets up a game setup panel.
+	 * @param mainWindow the main window to link with this game setup panel
 	 */
 	public GameSetupPanel(MainWindow mainWindow) {
 		main = mainWindow;
@@ -82,71 +82,70 @@ public class GameSetupPanel extends JPanel {
 		
 		add(Box.createVerticalStrut(20));
 
-		// create step one text (this could be replaced with actual logo art if we wanted)
-		JLabel stepOne = new JLabel("1) Pick a character and remeber it in your brain. (Take a picture if you need to!)");
+		// create step one text
+		JLabel stepOne = new JLabel("1) Pick a character and remember it in your brain. (Take a picture if you need to!)");
 		stepOne.setFont(BUTTON_FONT);
 		stepOne.setAlignmentX(CENTER_ALIGNMENT); // everything is centered anyways, so yeah.
-		add(stepOne);
-        add(buildCharList());
+		add(stepOne);//add instruction of step 1
+        add(buildCharList()); //Add a grid of character
 
 
-		add(Box.createVerticalStrut(30));
+		add(Box.createVerticalStrut(30));//Seperations
 
 		// create step two text 
 		JLabel stepTwo = new JLabel("2) Enter your name!");
 		stepTwo.setFont(BUTTON_FONT);
 		stepTwo.setAlignmentX(CENTER_ALIGNMENT); // everything is centered anyways, so yeah.
-        add(stepTwo);
+        add(stepTwo);//Add instructions of step 2
         nameInput = new JTextField();
         nameInput.setMaximumSize(new Dimension(900, 100));
-        add(nameInput);
+        add(nameInput);// add space to let people type their name
 
 		// create step Three text 
 		JLabel stepThree = new JLabel("3) Pick the AI's diffcultity");
 		stepThree.setFont(BUTTON_FONT);
 		stepThree.setAlignmentX(CENTER_ALIGNMENT); //everything is centered anyways, so yeah.
-		add(stepThree);
-        add(buildAISelectionList());
+		add(stepThree);//adding instruction of step 3
+        add(buildAISelectionList());//Adding buttons to select
 
-		aiErrorLabel = new JLabel();
-		aiErrorLabel.setMaximumSize(new Dimension(900, 100));
+		aiErrorLabel = new JLabel();//Making a label for errors
+		aiErrorLabel.setMaximumSize(new Dimension(900, 100));//Setting MAX size of label
 
         aiErrorLabel.setFont(BUTTON_FONT);
         aiErrorLabel.setAlignmentX(CENTER_ALIGNMENT); //everything is centered anyways, so yeah.
 		aiErrorLabel.setHorizontalAlignment(JLabel.CENTER);
 		aiErrorLabel.setForeground(Color.RED);
-        add(aiErrorLabel);
+        add(aiErrorLabel);//Adding label.
 
 		// create step Four text 
 		JLabel stepFour = new JLabel("4) Pick who to go first!");
 		stepFour.setFont(BUTTON_FONT);
 		stepFour.setAlignmentX(CENTER_ALIGNMENT); //everything is centered anyways, so yeah.
-		add(stepFour);
-        add(buildTurnSelectionList());
+		add(stepFour);//Adding instruction of step 4
+        add(buildTurnSelectionList());//Adding buttons to selection
 
-        turnErrorLabel = new JLabel();
+        turnErrorLabel = new JLabel();//Making a label for errors
 		turnErrorLabel.setMaximumSize(new Dimension(900, 100));
 
         turnErrorLabel.setFont(BUTTON_FONT);
         turnErrorLabel.setAlignmentX(CENTER_ALIGNMENT); //everything is centered anyways, so yeah.
 		turnErrorLabel.setHorizontalAlignment(JLabel.CENTER);
 		turnErrorLabel.setForeground(Color.RED);
-        add(turnErrorLabel);
+        add(turnErrorLabel);//Adding label
 
-       // add(Box.createVerticalStrut(50));
 
-		// start button
+		// create start button
 		JButton startButton = createMenuButton("Start Game!");
 		startButton.addActionListener(this::startButtonPressed);
-		add(startButton);
+		add(startButton);//Adds start button
 		
-		add(Box.createVerticalStrut(5));
+		add(Box.createVerticalStrut(5));//Seperation
 
 
-		// back button
+		// Return button
         JButton menuButton = createMenuButton("Return to Menu");
 		menuButton.addActionListener(this::onBackToMainMenuPressed);
-		add(menuButton);
+		add(menuButton);//Add return button
 
 		add(Box.createVerticalStrut(15));
 		// this "vertical glue" fills up extra space at the bottom, the combined
@@ -154,18 +153,18 @@ public class GameSetupPanel extends JPanel {
 		
 	}
 	
-
+	/**
+	 * Creates the character list.
+	 * 
+	 * @return a JPanel for the character list.
+	 */
     private JPanel buildCharList(){
         JPanel board = new JPanel();
         CharacterCard[] cards;
         board.setLayout(new GridLayout(4, 6));
 
-        // board.setBackground(Color.RED);
-        // board.setBorder(BorderFactory.createLineBorder(Color.RED, 20));
-
         final int characterAmt = 24;
         cards = new CharacterCard[characterAmt];
-
 
         for (int i = 0; i < characterAmt; i++) {
             GuessWhoCharacter character = DataCaches.getCharacterList().get(i);
@@ -178,8 +177,13 @@ public class GameSetupPanel extends JPanel {
         return board;
     }
 
+	/**
+	 * Creates the buttons to select who goes first
+	 * 
+	 * @return a JPanel for the buttons selection (Turns).
+	 */
     private JPanel buildTurnSelectionList() {
-        turnGroup = new ButtonGroup();
+        turnGroup = new ButtonGroup();//Make a button group (Makes it so only one button can be selected)
         JPanel board = new JPanel();
         board.setLayout(new FlowLayout());
 		board.setMaximumSize(new Dimension(900, 100));
@@ -188,34 +192,45 @@ public class GameSetupPanel extends JPanel {
         JToggleButton p2Button = new JToggleButton(P2_BUTTON_TEXT);
 		
 		Font boldFont = p1Button.getFont().deriveFont(Font.BOLD);
-		p1Button.setFont(boldFont);
+		p1Button.setFont(boldFont);//Set fonts of button
 		p2Button.setFont(boldFont);
 		
-        turnGroup.add(p1Button);
+        turnGroup.add(p1Button);//Add button into button group
         turnGroup.add(p2Button);
 		
-        board.add(p1Button);
+        board.add(p1Button);//Add button into board
         board.add(p2Button);
         return board;
     }
-
+	/**
+	 * Creates the buttons to select who goes first
+	 * 
+	 * @return a JPanel for the buttons selection (AI).
+	 */
 	private JPanel buildAISelectionList() {
-        aiButtonGroup = new ButtonGroup();
+        aiButtonGroup = new ButtonGroup();//Make a button group (Makes it so only one button can be selected)
         JPanel board = new JPanel();
         board.setLayout(new FlowLayout());
 		board.setMaximumSize(new Dimension(900, 100));
 
-        // board.setBackground(Color.RED);
-        // board.setBorder(BorderFactory.createLineBorder(Color.RED, 20));
+
         easyAIButton = new JToggleButton(EASY_BUTTON_TEXT);
         JToggleButton hardAIButton = new JToggleButton(HARD_BUTTON_TEXT);
-        aiButtonGroup.add(easyAIButton);
+        aiButtonGroup.add(easyAIButton);//Add button into button group
         aiButtonGroup.add(hardAIButton);
-        board.add(easyAIButton);
+        board.add(easyAIButton);//Add button into board
         board.add(hardAIButton);
         return board;
     }
 
+
+	/**
+	 * A method which happens when the start button is pressed
+	 * It might send you errors if there is nothing selected for some things
+	 * else, it will start the game.
+	 * 
+	 * @param e the event being handled.
+	 */
 	private void startButtonPressed(ActionEvent e) {
 		// Check if *any* button was selected
         ButtonModel turnSelection = turnGroup.getSelection();
@@ -240,17 +255,24 @@ public class GameSetupPanel extends JPanel {
 
 		}
 	}
+
+
+
+	/**
+	 * Basically just switch the panel back to the main menu.
+	 * @param e the event being handled.
+	 */
     private void onBackToMainMenuPressed(ActionEvent e) {
 		main.switchPanel(MainWindow.CARD_MENU);
+		resetPanel();
 	}
-
+	/**
+	 * Resets the panel so everything will be resets next time the panel is called.
+	 * 
+	 */
 	private void resetPanel(){
 		turnGroup.clearSelection();
 		aiButtonGroup.clearSelection();
-
-
-
-
 	}
     
 

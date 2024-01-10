@@ -71,6 +71,14 @@ public class MainWindow extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	
+	/**
+	 * A method for creating and showing panels required to start game
+	 * 
+	 * 
+	 * @param playerName Name of player in String
+	 * @param isFirst	A boolean variable for whether P1 is the first player
+	 * @param isAISmart A boolean variable for whether the AI should be smart(hard)
+	 */
 	void createGame(String playerName, boolean isFirst, boolean isAISmart) {
 		// setup human player
 
@@ -88,7 +96,10 @@ public class MainWindow extends JFrame {
 	}
 
 
-	
+	/**
+	 * Switches the screen to the win screen and make a GameWonEvent
+	 * @param isWinnerP1 a variable representing whether the winner is Player 1
+	 */
 	void showWinScreen(boolean isWinnerP1) {
 		GameWonEvent event = new GameWonEvent(this, isWinnerP1);
 		winPanel.updateView(event);
@@ -98,5 +109,8 @@ public class MainWindow extends JFrame {
 	public void switchPanel(String panelString){
 		rootLayout.show(rootPanel, panelString);
 	}
+
+
+
 
 }

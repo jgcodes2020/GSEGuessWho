@@ -69,6 +69,11 @@ public class WinScreenPanel extends JPanel {
 		
 	}
 	
+	/**
+	 * Changes the text on the GUI to either a losing message or a winning message
+	 * 
+	 * @param event the events that basically just shows who won (When someone wins)
+	 */
 	void updateView(GameWonEvent event) {
 
 		if (event.isWinnerP1()){
@@ -78,7 +83,10 @@ public class WinScreenPanel extends JPanel {
 			bigTitle.setText("YOU LOSE! :D ");
 		}
 	}
-	
+	/**
+	 * Basically just switch the panel back to the main menu.
+	 * @param e the event being handled.
+	 */
 	private void onBackToMainMenuPressed(ActionEvent e) {
 		main.switchPanel(MainWindow.CARD_MENU);
 	}
