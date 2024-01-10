@@ -126,6 +126,7 @@ public class DataCaches {
 	 * @return the random character.
 	 */
 	public static GuessWhoCharacter randomCharacter() {
+		// pick a random index and grab from the character list
 		int randIndex = rng.nextInt(characterList.size());
 		return characterList.get(randIndex);
 	}

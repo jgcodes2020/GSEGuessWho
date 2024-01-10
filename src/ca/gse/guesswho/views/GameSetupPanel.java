@@ -171,6 +171,7 @@ public class GameSetupPanel extends JPanel {
             GuessWhoCharacter character = DataCaches.getCharacterList().get(i);
 
             cards[i] = new CharacterCard(character);
+			cards[i].setEnabled(false);
             board.add(cards[i]);
 
         }
@@ -183,12 +184,16 @@ public class GameSetupPanel extends JPanel {
         board.setLayout(new FlowLayout());
 		board.setMaximumSize(new Dimension(900, 100));
 
-        // board.setBackground(Color.RED);
-        // board.setBorder(BorderFactory.createLineBorder(Color.RED, 20));
         p1Button = new JToggleButton(P1_BUTTON_TEXT);
         JToggleButton p2Button = new JToggleButton(P2_BUTTON_TEXT);
-        turnGroup.add(p1Button);
-        turnGroup.add(p2Button);
+		
+		Font boldFont = p1Button.getFont().deriveFont(Font.BOLD);
+		p1Button.setFont(boldFont);
+		p2Button.setFont(boldFont);
+		
+        firstPlayerGroup.add(p1Button);
+        firstPlayerGroup.add(p2Button);
+		
         board.add(p1Button);
         board.add(p2Button);
         return board;

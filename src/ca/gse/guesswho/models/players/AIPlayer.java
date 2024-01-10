@@ -4,6 +4,10 @@ import ca.gse.guesswho.models.GuessWhoCharacter;
 import ca.gse.guesswho.models.Player;
 import ca.gse.guesswho.models.Question;
 
+/**
+ * Base class for AI players. AI players know their secret character and answer
+ * questions by matching against the database.
+ */
 public abstract class AIPlayer extends Player {
 	
 	private String name;

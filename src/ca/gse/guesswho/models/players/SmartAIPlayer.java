@@ -40,9 +40,14 @@ public class SmartAIPlayer extends AIPlayer {
     }
 
     /**
-     * Smart AIs attempt to pick the optimal question by checking which one
-	 * grants the most even split.
-     */
+	 * Asks the smart AI's next question.
+	 * 
+	 * @return the smart AI's next question
+	 * @implSpec The current implementation loops through all available questions,
+	 * selecting the one which gets closest to	a 50/50 split. This is the optimal 
+	 * strategy for a randomly-drawn card; if the selection is biased, it becomes
+	 * suboptimal.
+	 */
     @Override
     public Question askQuestion() {
 		int numRemaining = remainingIndexes.cardinality();
@@ -85,16 +90,6 @@ public class SmartAIPlayer extends AIPlayer {
 		
 		// ask the question
 		return DataCaches.getQuestionBank().get(bestIndex).getQuestionObject();
-    }
-
-    /**
-     * Always returns false, since this is an AI playe
-     * 
-     * @return false
-     */
-    @Override
-    public boolean isHuman() {
-        return false;
     }
 
 }
