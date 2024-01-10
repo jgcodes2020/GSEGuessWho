@@ -77,9 +77,8 @@ public class GuessWhoCharacter {
 	public static GuessWhoCharacter fromCsvRow(String row) throws NumberFormatException, IOException {
 		String[] parts = row.split(",");
 		
-		// convert the stored path to a URL
+		// convert the stored path to a URL referencing the relevant file or JAR path
 		String path = "/ca/gse/guesswho/" + parts[1];
-		System.err.println("load image " + path);
 		URL imageURL = GuessWhoCharacter.class.getResource(path);
 		Image image = ImageIO.read(imageURL);
 		

@@ -39,13 +39,11 @@ public class DumbAIPlayer extends AIPlayer {
 	}
 
 	/**
-	 * {@inheritDoc}
-	 * Dumb AI players are incredibly basic.
-	 * <ul>
-	 * <li>if there is only one option for them to pick, they make their guess.</li>
-	 * <li>otherwise, ask a random question that may or may not narrow down the set
-	 * of possible characters.</li>
-	 * </ul>
+	 * Asks the dumb AI's next question.
+	 * 
+	 * @return the dumb AI's next question
+	 * @implSpec The current implementation asks all the questions in the question bank, one by one in a randomized order.
+	 * 	If it is able to find exactly one remaining item, it asks for that item.
 	 */
 	@Override
 	public Question askQuestion() {
@@ -61,19 +59,10 @@ public class DumbAIPlayer extends AIPlayer {
 			int finalIndex = remainingIndexes.nextSetBit(0);
 			return new CharacterQuestion(characters.get(finalIndex));
 		}
-		
+		// use the predetermined order to get the next question
 		int nextIndex = order[index++];
 		Question next = DataCaches.getQuestionBank().get(nextIndex).getQuestionObject();
 		return next;
-	}
-
-	/**
-	 * Always returns false, since this is an AI playe
-	 * @return false
-	 */
-	@Override
-	public boolean isHuman() {
-		return false;
 	}
 
 }
