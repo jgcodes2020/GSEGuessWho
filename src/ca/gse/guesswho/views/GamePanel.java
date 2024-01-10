@@ -141,6 +141,9 @@ public class GamePanel extends JPanel {
 			switchGamePanel(CARD_QUESTION);
 	}
 
+	/**
+	 * Runs a player 
+	 */
 	public void runPlayerTurn() {
 		boolean isAnswer = state.getIsAnswerPhase();
 		boolean isPlayer1 = state.getPlayer1Turn();
@@ -164,13 +167,7 @@ public class GamePanel extends JPanel {
 	}
 
 	/**
-	 * Called to switch to the win screen. Subpanels only have access to
-	 * direct parents so we have to chain upwards.
-	 * 
-	 * @param winnerIsP1 If true, signal that the winner was player 1.
-	 * 
-	 *                   /**
-	 *                   Checks if someone wins and triggers the win screen.
+	 * Checks if someone wins and triggers the win screen.
 	 * @return Whether somebody won.
 	 */
 	boolean checkForWinner() {
@@ -182,13 +179,12 @@ public class GamePanel extends JPanel {
 		return true;
 	}
 
-	protected void forfeit(){
-		if (state.getPlayer1Turn()){
-			main.showWinScreen(!state.getPlayer1Turn());
-		}
-		else{
-			main.showWinScreen(state.getPlayer1Turn());
-		}
+	/**
+	 * Causes the current player to instantly lose.
+	 */
+	protected void forfeit() {
+		// If it's player 1's turn they should lose, i.e. player 2 should win, vice versa.
+		main.showWinScreen(!state.getPlayer1Turn());
 	}
 
 
@@ -214,10 +210,18 @@ public class GamePanel extends JPanel {
 		this.runAITurnsAndSwitchPanel();
 	}
 
+	/**
+	 * Gets the current game state. This should only be used by other view classes, hence default access.
+	 * @return the game state.
+	 */
 	GameState getState() {
 		return state;
 	}
 
+	/**
+	 * INTERNAL: switches to a different card on the board panel.
+	 * @param boardString the board to switch to
+	 */
 	private void switchGamePanel(String boardString) {
 		cards.show(boardPanel, boardString);
 	}
