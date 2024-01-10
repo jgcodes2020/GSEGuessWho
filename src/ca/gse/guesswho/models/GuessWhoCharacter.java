@@ -76,10 +76,13 @@ public class GuessWhoCharacter {
 	 */
 	public static GuessWhoCharacter fromCsvRow(String row) throws NumberFormatException, IOException {
 		String[] parts = row.split(",");
+		if (parts.length != 12)
+			throw new IllegalArgumentException("Invalid CSV row: not exactly 12 fields");
 		
 		// convert the stored path to a URL referencing the relevant file or JAR path
 		String path = "/ca/gse/guesswho/" + parts[1];
 		URL imageURL = GuessWhoCharacter.class.getResource(path);
+		// load that as an image
 		Image image = ImageIO.read(imageURL);
 		
 		return new GuessWhoCharacter(

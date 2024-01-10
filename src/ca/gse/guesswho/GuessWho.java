@@ -41,6 +41,7 @@ public class GuessWho {
 			System.out.println("Could not retrieve Nimbus theme, reverting to default theme");
 		}
 		
+		
 		MainWindow window = new MainWindow();
 		window.setVisible(true);
     }
