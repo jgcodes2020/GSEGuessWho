@@ -1,20 +1,14 @@
 package ca.gse.guesswho.models.players;
 
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
-
 import ca.gse.guesswho.models.Utilities;
 import ca.gse.guesswho.models.DataCaches;
 import ca.gse.guesswho.models.GuessWhoCharacter;
 import ca.gse.guesswho.models.Question;
 import ca.gse.guesswho.models.QuestionBankEntry;
-import ca.gse.guesswho.models.questions.AttributeQuestion;
 import ca.gse.guesswho.models.questions.CharacterQuestion;
 
 public class DumbAIPlayer extends AIPlayer {
-	private Random rng;
 	private int[] order;
 	private int index;
 
@@ -23,7 +17,6 @@ public class DumbAIPlayer extends AIPlayer {
 	 */
 	public DumbAIPlayer(String name, GuessWhoCharacter secret) {
 		super(name, secret);
-		rng = new Random();
 		List<QuestionBankEntry> questionList = DataCaches.getQuestionBank();
 		
 		// predetermine a random order to ask the questions in.
