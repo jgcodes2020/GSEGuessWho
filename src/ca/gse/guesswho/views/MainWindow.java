@@ -73,6 +73,7 @@ public class MainWindow extends JFrame {
 	
 	void createGame(String playerName, boolean isFirst, boolean isAISmart) {
 		// setup human player
+
 		Player player1 = new HumanPlayer(playerName);
 		// setup AI player (names are hardcoded)
 		Player player2;

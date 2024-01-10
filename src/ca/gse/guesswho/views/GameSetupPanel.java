@@ -31,14 +31,20 @@ public class GameSetupPanel extends JPanel {
 	private static final Font BUTTON_FONT = new Font("Dialog", Font.BOLD, 20);
     private static final String P1_BUTTON_TEXT = "Player 1 (You)";
     private static final String P2_BUTTON_TEXT = "Player 2 (Not You)";
-	
+	private static final String EASY_BUTTON_TEXT = "Easy";
+	private static final String HARD_BUTTON_TEXT = "Hard";
 	private MainWindow main;
-	private JLabel errorLabel;
+	private JLabel turnErrorLabel;
+	private JLabel aiErrorLabel;
     private CharacterCard[] cards;
     private ButtonGroup firstPlayerGroup;
+	private ButtonGroup turnGroup;
     private JToggleButton p1Button;
-    private JTextField nameInput;
 
+    private JTextField nameInput;
+	private JToggleButton easyAIButton;
+
+	
 
 	
 	/**
@@ -96,20 +102,36 @@ public class GameSetupPanel extends JPanel {
         add(nameInput);
 
 		// create step Three text 
-		JLabel stepThree = new JLabel("3) Pick who to go first!");
+		JLabel stepThree = new JLabel("3) Pick the AI's diffcultity");
 		stepThree.setFont(BUTTON_FONT);
 		stepThree.setAlignmentX(CENTER_ALIGNMENT); //everything is centered anyways, so yeah.
 		add(stepThree);
-        add(buildSelectionList());
+        add(buildAISelectionList());
 
-        errorLabel = new JLabel();
-		errorLabel.setMaximumSize(new Dimension(900, 100));
+		aiErrorLabel = new JLabel();
+		aiErrorLabel.setMaximumSize(new Dimension(900, 100));
 
-        errorLabel.setFont(BUTTON_FONT);
-        errorLabel.setAlignmentX(CENTER_ALIGNMENT); //everything is centered anyways, so yeah.
-		errorLabel.setHorizontalAlignment(JLabel.CENTER);
-		errorLabel.setForeground(Color.RED);
-        add(errorLabel);
+        aiErrorLabel.setFont(BUTTON_FONT);
+        aiErrorLabel.setAlignmentX(CENTER_ALIGNMENT); //everything is centered anyways, so yeah.
+		aiErrorLabel.setHorizontalAlignment(JLabel.CENTER);
+		aiErrorLabel.setForeground(Color.RED);
+        add(aiErrorLabel);
+
+		// create step Four text 
+		JLabel stepFour = new JLabel("4) Pick who to go first!");
+		stepFour.setFont(BUTTON_FONT);
+		stepFour.setAlignmentX(CENTER_ALIGNMENT); //everything is centered anyways, so yeah.
+		add(stepFour);
+        add(buildTurnSelectionList());
+
+        turnErrorLabel = new JLabel();
+		turnErrorLabel.setMaximumSize(new Dimension(900, 100));
+
+        turnErrorLabel.setFont(BUTTON_FONT);
+        turnErrorLabel.setAlignmentX(CENTER_ALIGNMENT); //everything is centered anyways, so yeah.
+		turnErrorLabel.setHorizontalAlignment(JLabel.CENTER);
+		turnErrorLabel.setForeground(Color.RED);
+        add(turnErrorLabel);
 
        // add(Box.createVerticalStrut(50));
 
@@ -155,8 +177,8 @@ public class GameSetupPanel extends JPanel {
         return board;
     }
 
-    private JPanel buildSelectionList() {
-        firstPlayerGroup = new ButtonGroup();
+    private JPanel buildTurnSelectionList() {
+        turnGroup = new ButtonGroup();
         JPanel board = new JPanel();
         board.setLayout(new FlowLayout());
 		board.setMaximumSize(new Dimension(900, 100));
@@ -165,28 +187,66 @@ public class GameSetupPanel extends JPanel {
         // board.setBorder(BorderFactory.createLineBorder(Color.RED, 20));
         p1Button = new JToggleButton(P1_BUTTON_TEXT);
         JToggleButton p2Button = new JToggleButton(P2_BUTTON_TEXT);
-        firstPlayerGroup.add(p1Button);
-        firstPlayerGroup.add(p2Button);
+        turnGroup.add(p1Button);
+        turnGroup.add(p2Button);
         board.add(p1Button);
         board.add(p2Button);
         return board;
     }
+
+	private JPanel buildAISelectionList() {
+        firstPlayerGroup = new ButtonGroup();
+        JPanel board = new JPanel();
+        board.setLayout(new FlowLayout());
+		board.setMaximumSize(new Dimension(900, 100));
+
+        // board.setBackground(Color.RED);
+        // board.setBorder(BorderFactory.createLineBorder(Color.RED, 20));
+        easyAIButton = new JToggleButton(EASY_BUTTON_TEXT);
+        JToggleButton hardAIButton = new JToggleButton(HARD_BUTTON_TEXT);
+        firstPlayerGroup.add(easyAIButton);
+        firstPlayerGroup.add(hardAIButton);
+        board.add(easyAIButton);
+        board.add(hardAIButton);
+        return board;
+    }
+
 	private void startButtonPressed(ActionEvent e) {
 		// Check if *any* button was selected
-        ButtonModel selection = firstPlayerGroup.getSelection();
-        if (selection != null){
+        ButtonModel turnSelection = turnGroup.getSelection();
+		ButtonModel aiSelection = firstPlayerGroup.getSelection();
+        if (turnSelection != null && aiSelection != null){
 			// P1 goes first if the P1 button is selected
-            main.createGame(nameInput.getText(), p1Button.isSelected(), true);
-        }
-        else{
-        	errorLabel.setText("Please select who goes first.");
-        }
+            main.createGame(nameInput.getText(), p1Button.isSelected() , (!easyAIButton.isSelected()));
+			resetPanel();
 
+        }
+		if (turnSelection == null){
+			turnErrorLabel.setText("Please select who goes first.");
+		}
+		else{
+			turnErrorLabel.setText("");
+		}
+		if (aiSelection == null){
+			aiErrorLabel.setText("Please select the AI's mode");
+		}
+		else{
+			aiErrorLabel.setText("");
+
+		}
 	}
     private void onBackToMainMenuPressed(ActionEvent e) {
 		main.switchPanel(MainWindow.CARD_MENU);
 	}
 
+	private void resetPanel(){
+		turnGroup.clearSelection();
+		firstPlayerGroup.clearSelection();
+
+
+
+
+	}
     
 
 
