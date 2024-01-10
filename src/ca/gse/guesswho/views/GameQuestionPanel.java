@@ -224,6 +224,8 @@ public class GameQuestionPanel extends JPanel {
 		}
 	}
 
+
+
 	/**
 	 * Builds the top bar, which contains a prompt.
 	 * @return the top bar.

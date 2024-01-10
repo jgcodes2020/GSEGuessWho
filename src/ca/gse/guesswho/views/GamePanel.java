@@ -10,6 +10,7 @@ import java.awt.event.*;
 import java.util.*;
 import java.util.function.Consumer;
 import javax.swing.*;
+import javax.swing.Timer;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -37,6 +38,12 @@ public class GamePanel extends JPanel {
 	private JPanel topBarPanel;
 	private JPanel chatPanel;
 	private JPanel chatPanelContent;
+
+	private long startTime;
+	private Timer timer;
+	private JLabel timeLabel;
+
+	private JLabel roundLabel;
 
 	// Consumer<GameWonEvent> represents a method that takes
 	// GameWonEvent and returns void
@@ -69,13 +76,25 @@ public class GamePanel extends JPanel {
 	 * @return a JPanel for the chatboard.
 	 */
 	private JPanel buildChatboard() {
+		JPanel textBoard = new JPanel();
 		JPanel board = new JPanel();
+
+
+
+
 		chatPanelContent = new GScrollConstrainedPanel(true, false);
 		chatPanelContent.setLayout(new BoxLayout(chatPanelContent, BoxLayout.Y_AXIS));// Need to fix the layout but i want things to go down.
 		board.setLayout(new BorderLayout());
 
 		board.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
+		timeLabel = new JLabel("Time: 0s");
+		textBoard.add(timeLabel,BorderLayout.WEST);
+
+		roundLabel = new JLabel("Turn 1");
+		textBoard.add(roundLabel,BorderLayout.EAST);
+
+		board.add(textBoard,BorderLayout.NORTH);
 		JLabel questions = new JLabel("Questions");
 		JScrollPane scroller = new JScrollPane(chatPanelContent);
 
@@ -198,15 +217,17 @@ public class GamePanel extends JPanel {
 	 */
 	public GamePanel(MainWindow mainWindow, Player p1, Player p2, boolean isP1First) {
 		main = mainWindow;
-		state = new GameState(p1, p2, isP1First);
-		
+		startTime = System.currentTimeMillis();
+		timer =  new Timer(1,this::timeUpdate);
+		timer.setInitialDelay(1);
+		timer.start();
 
+		state = new GameState(p1, p2, isP1First);
 		boardPanel = buildBoard();
 		chatPanel = buildChatboard();
 		setLayout(new BorderLayout());
 		add(boardPanel, BorderLayout.CENTER);
 		add(chatPanel, BorderLayout.EAST);
-		
 		this.runAITurnsAndSwitchPanel();
 	}
 
@@ -216,6 +237,21 @@ public class GamePanel extends JPanel {
 	 */
 	GameState getState() {
 		return state;
+	}
+
+	private void roundUpdate(){
+		roundLabel.setText("Round "+state.getTurnCount());
+	}
+
+
+
+
+	private void timeUpdate(ActionEvent e) {
+		timeLabel.setText("Time: "+ Utilities.millisToString(System.currentTimeMillis() - startTime));
+	}
+
+	public long getRunTime(){
+		return (System.currentTimeMillis() - startTime);
 	}
 
 	/**
