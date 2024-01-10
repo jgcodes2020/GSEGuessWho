@@ -18,6 +18,24 @@ public class TutorialPanel extends JPanel {
 	private static final Font TITLE_FONT = new Font("Dialog", Font.BOLD, 60);
 	private static final Font BUTTON_FONT = new Font("Dialog", Font.BOLD, 20);
 	
+	private static final String[] INSTRUCTION_LINES = {
+		"1) DO SOMETHING",
+		"2) DO SOMETHING ELSE!!"
+	};
+	private static final String INSTRUCTION_HTML;
+	
+	static {
+		StringBuilder text = new StringBuilder("<html><body>");
+		for (String line : INSTRUCTION_LINES) {
+			// these characters can mess up html, they need to be replaced with html entities
+			String escaped = line.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;");
+			text.append(escaped);
+			text.append("<br>");
+		}
+		text.append("</body></html>");
+		INSTRUCTION_HTML = text.toString();
+	}
+	
 	private MainWindow main;
 	private JLabel bigTitle;
 	private JLabel steps;
@@ -56,7 +74,7 @@ public class TutorialPanel extends JPanel {
 		add(bigTitle);
 		add(Box.createVerticalStrut(50));
 
-        steps = new JLabel("<html>1) Do something<br>2) do something else!</hmtl>");
+        steps = new JLabel(INSTRUCTION_HTML);
 		steps.setFont(BUTTON_FONT);
 		steps.setAlignmentX(CENTER_ALIGNMENT); // everything is centered anyways, so yeah.
         steps.setHorizontalAlignment(JLabel.CENTER);
