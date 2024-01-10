@@ -15,6 +15,7 @@ import ca.gse.guesswho.models.players.HumanPlayer;
  */
 public class MainWindow extends JFrame {
 	static final String CARD_MENU = "menu";
+	static final String CARD_SETUP = "setup";
 	static final String CARD_GAME = "game";
 	static final String CARD_WIN_SCREEN = "winScreen";
 	static final String CARD_ANSWER = "answer";
@@ -26,6 +27,7 @@ public class MainWindow extends JFrame {
 	JPanel rootPanel = null;
 	CardLayout rootLayout = null;
 	
+	GameSetupPanel setupPanel = null;
 	TutorialPanel tutorialPanel = null;
 	MenuPanel menuPanel = null;
 	GamePanel gamePanel = null;
@@ -52,9 +54,12 @@ public class MainWindow extends JFrame {
 		winPanel = new WinScreenPanel(this);
 		rootPanel.add(winPanel, CARD_WIN_SCREEN);
 
-
 		tutorialPanel = new TutorialPanel(this);
 		rootPanel.add(tutorialPanel, CARD_TUTORIAL);
+
+		setupPanel = new GameSetupPanel(this);
+		rootPanel.add(setupPanel, CARD_SETUP);
+
 
 		setContentPane(rootPanel);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

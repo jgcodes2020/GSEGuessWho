@@ -89,7 +89,7 @@ public class MenuPanel extends JPanel {
 	 * @param e the event parameters.
 	 */
 	private void onStartPressed(ActionEvent e) {
-		main.createGame();
+		main.switchPanel("setup");
 	}
 
 	private void howToPlayButtonPressed(ActionEvent e) {
