@@ -119,7 +119,7 @@ public class GamePanel extends JPanel {
 			boolean isPlayer1 = state.getPlayer1Turn();
 			String name = state.getCurrentPlayer().getName();
 
-			state.doNextTurn();
+			state.doNextPhase();
 			if (checkForWinner())
 				return;
 
@@ -146,7 +146,7 @@ public class GamePanel extends JPanel {
 		boolean isPlayer1 = state.getPlayer1Turn();
 		String name = state.getCurrentPlayer().getName();
 
-		state.doNextTurn();
+		state.doNextPhase();
 		if (checkForWinner())
 			return;
 
