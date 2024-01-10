@@ -1,6 +1,7 @@
 package ca.gse.guesswho.views;
 
 import java.awt.CardLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -106,6 +107,8 @@ public class GameSetupPanel extends JPanel {
 
         errorLabel.setFont(BUTTON_FONT);
         errorLabel.setAlignmentX(CENTER_ALIGNMENT); //everything is centered anyways, so yeah.
+		errorLabel.setHorizontalAlignment(JLabel.CENTER);
+		errorLabel.setForeground(Color.RED);
         add(errorLabel);
 
        // add(Box.createVerticalStrut(50));
@@ -176,7 +179,7 @@ public class GameSetupPanel extends JPanel {
             main.createGame(nameInput.getText(), p1Button.isSelected(), true);
         }
         else{
-        errorLabel.setText("Please select who goes first.");
+        	errorLabel.setText("Please select who goes first.");
         }
 
 	}
