@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import ca.gse.guesswho.events.GameWonEvent;
 import ca.gse.guesswho.models.DataCaches;
 import ca.gse.guesswho.models.Player;
+import ca.gse.guesswho.models.history.GameHistory;
 import ca.gse.guesswho.models.players.DumbAIPlayer;
 import ca.gse.guesswho.models.players.HumanPlayer;
 import ca.gse.guesswho.models.players.SmartAIPlayer;
@@ -105,8 +106,8 @@ public class MainWindow extends JFrame {
 	 * Switches the screen to the win screen and make a GameWonEvent
 	 * @param isWinnerP1 a variable representing whether the winner is Player 1
 	 */
-	void showWinScreen(boolean isWinnerP1) {
-		GameWonEvent event = new GameWonEvent(this, isWinnerP1);
+	void showWinScreen(boolean isWinnerP1, GameHistory history) {
+		GameWonEvent event = new GameWonEvent(this, isWinnerP1, history);
 		winPanel.updateView(event);
 		switchPanel(CARD_WIN_SCREEN);
 	}

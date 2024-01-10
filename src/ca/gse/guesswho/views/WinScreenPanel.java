@@ -3,6 +3,8 @@ package ca.gse.guesswho.views;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,17 +12,36 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import ca.gse.guesswho.events.GameWonEvent;
+import ca.gse.guesswho.models.DataCaches;
+import ca.gse.guesswho.models.GuessWhoCharacter;
+import ca.gse.guesswho.models.history.GameHistory;
 
 public class WinScreenPanel extends JPanel {
 	private static final Font TITLE_FONT = new Font("Dialog", Font.BOLD, 60);
 	private static final Font BUTTON_FONT = new Font("Dialog", Font.BOLD, 20);
 	
+	private static String[] characterNameList;
+	private static void setupCharacterNameList() {
+		List<GuessWhoCharacter> characters = DataCaches.getCharacterList();
+		if (characters == null)
+			throw new IllegalStateException("Character list is not loaded!");
+		
+		characterNameList = new String[characters.size()];
+		for (int i = 0; i < characterNameList.length; i++) {
+			characterNameList[i] = characters.get(i).getName();
+		}
+	}
+	
 	private MainWindow main;
 	private JLabel bigTitle;
+	
+	private GameHistory history;
 	
 	/**
 	 * Creates a menu button. All menu buttons have a bunch of shared properties,
@@ -44,6 +65,10 @@ public class WinScreenPanel extends JPanel {
 	public WinScreenPanel(MainWindow mainWindow) {
 		main = mainWindow;
 		
+		// this needs to be setup on first run
+		if (characterNameList == null)
+			setupCharacterNameList();
+		
 		setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
@@ -58,7 +83,11 @@ public class WinScreenPanel extends JPanel {
 		
 		add(Box.createVerticalStrut(50));
 		
-		// start button
+		JButton saveLogButton = createMenuButton("Save game log");
+		saveLogButton.addActionListener(this::onSaveLogPressed);
+		add(saveLogButton);
+		
+		// back to main menu button
 		JButton backToMainMenuButton = createMenuButton("Back to main menu");
 		backToMainMenuButton.addActionListener(this::onBackToMainMenuPressed);
 		add(backToMainMenuButton);
@@ -75,13 +104,14 @@ public class WinScreenPanel extends JPanel {
 	 * @param event the events that basically just shows who won (When someone wins)
 	 */
 	void updateView(GameWonEvent event) {
-
 		if (event.isWinnerP1()){
-			bigTitle.setText("YOU WIN!");
+			bigTitle.setText("YOU WIN! :D");
 		}
 		else{
-			bigTitle.setText("YOU LOSE! :D ");
+			bigTitle.setText("YOU LOSE! :c ");
 		}
+		
+		history = event.getHistory();
 	}
 	/**
 	 * Basically just switch the panel back to the main menu.
@@ -89,5 +119,51 @@ public class WinScreenPanel extends JPanel {
 	 */
 	private void onBackToMainMenuPressed(ActionEvent e) {
 		main.switchPanel(MainWindow.CARD_MENU);
+	}
+	
+	private void onSaveLogPressed(ActionEvent e) {
+		// Acquire unknown information for logs
+		if (history.getP1Secret() == null) {
+			// pop up a dialog to ask what the secret character is
+			String secretName = (String) JOptionPane.showInputDialog(
+				this.getTopLevelAncestor(), 
+				String.format("%s, what was your secret character?", history.getP1Name()),
+				"Missing log data",
+				JOptionPane.QUESTION_MESSAGE, null,
+				characterNameList,
+				characterNameList[0]
+			);
+			history.setP1Secret(DataCaches.getCharacterByName(secretName));
+		}
+		if (history.getP2Secret() == null) {
+			String secretName = (String) JOptionPane.showInputDialog(
+				this.getTopLevelAncestor(), 
+				String.format("%s, what was your secret character?", history.getP2Name()),
+				"Missing log data",
+				JOptionPane.QUESTION_MESSAGE, null,
+				characterNameList,
+				characterNameList[0]
+			);
+			history.setP2Secret(DataCaches.getCharacterByName(secretName));
+		}
+		
+		
+		JFileChooser chooser = new JFileChooser();
+		chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+		chooser.setMultiSelectionEnabled(false);
+		
+		// prompt the user to pick a file to save
+		int result = chooser.showSaveDialog(this.getTopLevelAncestor());
+		if (result != JFileChooser.APPROVE_OPTION)
+			return;
+		
+		// save the log
+		File savePath = chooser.getSelectedFile();
+		try {
+			history.saveHistoryTo(savePath);
+		}
+		catch (IOException exc) {
+			JOptionPane.showMessageDialog(this.getTopLevelAncestor(), "An error occurred saving the file! Try again...");
+		}
 	}
 }

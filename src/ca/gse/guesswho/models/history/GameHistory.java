@@ -16,17 +16,22 @@ import ca.gse.guesswho.models.Question;
  */
 public class GameHistory {
 	private String p1Name;
+
 	private String p2Name;
+
 	private boolean isP1First;
 	
 	private Question nextQuestion;
 	private List<GameHistoryEntry> entryList;
 	
-	private boolean isP1Winner;
+	private boolean isWinnerP1;
 
 	private GuessWhoCharacter p1Secret;
+
 	private GuessWhoCharacter p2Secret;
 	
+	
+
 	/**
 	 * Constructs a new GameHistory.
 	 * @param p1Name the name assigned to player 1.
@@ -112,7 +117,7 @@ public class GameHistory {
 			}
 			
 			pw.println();
-			if (isP1Winner)
+			if (isWinnerP1)
 				pw.println("Winner: P1");
 			else
 				pw.println("Winner: P2");
@@ -121,12 +126,33 @@ public class GameHistory {
 	}
 	
 	/**
-	 * Sets both secret characters as part of this history.
-	 * @param p1Secret Player 1's secret character
-	 * @param p2Secret Player 2's secret character
+	 * Gets Player 1's secret character.
+	 * @return Player 1's secret character, or null if one wasn't set
 	 */
-	public void setSecretCharacters(GuessWhoCharacter p1Secret, GuessWhoCharacter p2Secret) {
+	public GuessWhoCharacter getP1Secret() {
+		return p1Secret;
+	}
+
+	/**
+	 * Sets Player 1's secret character.
+	 * @param p2Secret Player 1's secret character.
+	 */
+	public void setP1Secret(GuessWhoCharacter p1Secret) {
 		this.p1Secret = p1Secret;
+	}
+	/**
+	 * Gets Player 2's secret character.
+	 * @return Player 2's secret character, or null if one wasn't set
+	 */
+	public GuessWhoCharacter getP2Secret() {
+		return p2Secret;
+	}
+
+	/**
+	 * Sets Player 2's secret character.
+	 * @param p2Secret Player 2's secret character.
+	 */
+	public void setP2Secret(GuessWhoCharacter p2Secret) {
 		this.p2Secret = p2Secret;
 	}
 	
@@ -134,15 +160,30 @@ public class GameHistory {
 	 * Checks if Player 1 won this game.
 	 * @return if Player 1 won this game.
 	 */
-	public boolean isP1Winner() {
-		return isP1Winner;
+	public boolean isWinnerP1() {
+		return isWinnerP1;
 	}
 	
 	/**
 	 * Sets whether Player 1 won this game.
 	 * @param isP1Winner true if Player 1 is the winner, false if Player 2 is the winner.
 	 */
-	public void setP1Winner(boolean isP1Winner) {
-		this.isP1Winner = isP1Winner;
+	public void setIsWinnerP1(boolean isP1Winner) {
+		this.isWinnerP1 = isP1Winner;
+	}
+	
+	/**
+	 * Gets player 1's name.
+	 * @return player 1's name.
+	 */
+	public String getP1Name() {
+		return p1Name;
+	}
+	/**
+	 * Gets player 2's name
+	 * @return player 2's name
+	 */
+	public String getP2Name() {
+		return p2Name;
 	}
 }
