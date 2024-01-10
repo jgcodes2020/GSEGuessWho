@@ -29,6 +29,9 @@ import ca.gse.guesswho.models.QuestionBankEntry;
 import ca.gse.guesswho.models.players.HumanPlayer;
 import ca.gse.guesswho.models.questions.CharacterQuestion;
 
+/**
+ * A subpanel inside the game panel that prompts the user for a question.
+ */
 public class GameQuestionPanel extends JPanel {
     private GamePanel parent;
     private CharacterCard[] cards;
@@ -36,6 +39,10 @@ public class GameQuestionPanel extends JPanel {
     private JList<String> questionList;
     private JLabel errorMessage;
 
+	/**
+	 * Creates a game question panel.
+	 * @param parent The game panel this GameQuestionPanel is linked to.
+	 */
     public GameQuestionPanel(GamePanel parent) {
         this.parent = parent;
 
@@ -103,7 +110,7 @@ public class GameQuestionPanel extends JPanel {
 		return board;
 	}
 
-		/**
+	/**
 	 * Internal method. Creates a JPanel for the bottom bar.
 	 * 
 	 * @return a JPanel for the bottom bar.
@@ -193,7 +200,7 @@ public class GameQuestionPanel extends JPanel {
      * Internal method. Converted/passed as a {@link ListSelectionListener} for
      * the question list in the bottom bar.
      * 
-     * @param e
+     * @param e the event.
      */
     private void questionListValueChanged(ListSelectionEvent e) {
         // if we select a question, then deselect any character
@@ -210,11 +217,18 @@ public class GameQuestionPanel extends JPanel {
 	private void updateUIState() {
 		BitSet playerRemainingIndexes = parent.getState().getCurrentPlayer().getRemainingIndexes();
 		for (int i = 0; i < cards.length; i++) {
-			cards[i].setCrossedOut(!playerRemainingIndexes.get(i));
+			boolean isActive = playerRemainingIndexes.get(i);
+			// crossed-out buttons shouldn't be clickable
+			cards[i].setCrossedOut(!isActive);
+			cards[i].setEnabled(isActive);
 		}
 	}
 
-	private JPanel topBarPanel (){
+	/**
+	 * Builds the top bar, which contains a prompt.
+	 * @return the top bar.
+	 */
+	private JPanel topBarPanel() {
 		final Font MSG_FONT = new Font("Dialog", Font.BOLD, 40);
 		JPanel board = new JPanel();
 		JLabel message = new JLabel("Please select a question or a character.");

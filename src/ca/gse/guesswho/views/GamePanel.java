@@ -110,7 +110,7 @@ public class GamePanel extends JPanel {
 	}
 
 	/**
-	 * Runs all pending AI turns, then switches to the correct panel
+	 * Runs all pending AI phases, then switches to the correct panel
 	 * for the next player to respond.
 	 */
 	public void runAITurnsAndSwitchPanel() {
@@ -142,7 +142,7 @@ public class GamePanel extends JPanel {
 	}
 
 	/**
-	 * Runs a player 
+	 * Runs a single phase of the next turn, pumping a message to chat.
 	 */
 	public void runPlayerTurn() {
 		boolean isAnswer = state.getIsAnswerPhase();
