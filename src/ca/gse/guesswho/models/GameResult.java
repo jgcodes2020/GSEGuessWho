@@ -49,6 +49,7 @@ public class GameResult {
 	 * @return a row of CSV for the leaderboard entry.
 	 */
 	public String toCsvRow() {
+		// example: Chapman,true,8,00:03:02.105
 		return String.format("%s,%s,%s,%s", name, isAISmart, turnCount, Utilities.millisToString(winTime));
 	}
 	
