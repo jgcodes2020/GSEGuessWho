@@ -45,7 +45,7 @@ public class GameState {
 		isPlayer1Turn = isP1First;
 		isAnswerPhase = false;
 		
-		turnCount = 0;
+		turnCount = 1;
 	}
 
 	/**

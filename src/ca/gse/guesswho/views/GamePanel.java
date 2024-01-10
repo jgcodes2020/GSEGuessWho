@@ -93,7 +93,7 @@ public class GamePanel extends JPanel {
 		timeLabel = new JLabel("Time: 00:00:00");
 		textBoard.add(timeLabel,BorderLayout.WEST);
 
-		roundLabel = new JLabel("Turn 1");
+		roundLabel = new JLabel("Turn "+state.getTurnCount());
 		textBoard.add(roundLabel,BorderLayout.EAST);
 
 		board.add(textBoard,BorderLayout.NORTH);
@@ -170,6 +170,7 @@ public class GamePanel extends JPanel {
 		}
 
 		addChatMessage(message, isPlayer1, name);
+		roundUpdate();
 	}
 
 	/**
@@ -232,7 +233,7 @@ public class GamePanel extends JPanel {
 	}
 
 	private void roundUpdate(){
-		roundLabel.setText("Round "+state.getTurnCount());
+		roundLabel.setText("Turn "+(state.getTurnCount()));
 	}
 
 
