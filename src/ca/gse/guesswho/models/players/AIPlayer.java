@@ -12,7 +12,7 @@ public abstract class AIPlayer extends Player {
 	
 	private String name;
 	private GuessWhoCharacter secret;
-	
+
 	/**
 	 * Creates a new AIPlayer
 	 * @param name Their name
@@ -58,4 +58,11 @@ public abstract class AIPlayer extends Player {
 		return name;
 	}
 	
+	/**
+	 * Gets the secret character for this AI player.
+	 * @return the secret character for this AI player.
+	 */
+	public GuessWhoCharacter getSecret() {
+		return secret;
+	}
 }
