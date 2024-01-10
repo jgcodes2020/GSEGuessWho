@@ -108,7 +108,8 @@ public class GameState {
 			}
 			// clear the other player's remaining indexes
 			BitSet remaining = otherPlayer.getRemainingIndexes();
-			for (int i = 0; i < remaining.length(); i++) {
+			int remainingLength = remaining.length();
+			for (int i = 0; i < remainingLength; i++) {
 				GuessWhoCharacter c = characterList.get(i);
 				if (lastQuestion.match(c) != lastAnswer) {
 					remaining.clear(i);

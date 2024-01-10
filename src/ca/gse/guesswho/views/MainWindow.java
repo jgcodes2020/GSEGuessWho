@@ -9,6 +9,7 @@ import ca.gse.guesswho.events.GameWonEvent;
 import ca.gse.guesswho.models.DataCaches;
 import ca.gse.guesswho.models.players.DumbAIPlayer;
 import ca.gse.guesswho.models.players.HumanPlayer;
+import ca.gse.guesswho.models.players.SmartAIPlayer;
 
 /**
  * Frame for the main window, manages transitions between panels.
@@ -68,7 +69,7 @@ public class MainWindow extends JFrame {
 	void createGame(String playerName) {
 		// initialize game panel
 		// TODO: improve name selection
-		gamePanel = new GamePanel(this, new HumanPlayer(playerName), new DumbAIPlayer("John", DataCaches.randomCharacter()));
+		gamePanel = new GamePanel(this, new HumanPlayer("GSETestUser"), new SmartAIPlayer("John", DataCaches.randomCharacter()));
 		// switch to game panel
 		rootPanel.add(gamePanel, MainWindow.CARD_GAME);
 		rootLayout.show(rootPanel, MainWindow.CARD_GAME);

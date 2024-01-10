@@ -1,18 +1,11 @@
 package ca.gse.guesswho;
 
-import java.awt.CardLayout;
 import java.io.IOException;
 
 import javax.swing.*;
 
-import ca.gse.guesswho.events.GameWonEvent;
 import ca.gse.guesswho.models.DataCaches;
-import ca.gse.guesswho.models.players.DumbAIPlayer;
-import ca.gse.guesswho.models.players.HumanPlayer;
-import ca.gse.guesswho.views.GamePanel;
 import ca.gse.guesswho.views.MainWindow;
-import ca.gse.guesswho.views.MenuPanel;
-import ca.gse.guesswho.views.WinScreenPanel;
 
 /**
  * Main class for the game. Manages the main window, and switches

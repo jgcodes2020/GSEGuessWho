@@ -1,85 +1,90 @@
 package ca.gse.guesswho.models.players;
 
+import java.util.BitSet;
 import java.util.List;
 import ca.gse.guesswho.models.*;
 import ca.gse.guesswho.models.questions.*;
 
 public class SmartAIPlayer extends AIPlayer {
-    private int[][] frequencyList;
+	// list of bitmasks representing the characters that match each question.
+	// each element corresponds to a question bank entry; each bit of that element
+	// corresponds to a character.
+    private static BitSet[] questionPatterns = null;
+	
+	public static void setupQuestionPatterns() {
+		List<QuestionBankEntry> questionBank = DataCaches.getQuestionBank();
+		List<GuessWhoCharacter> characters = DataCaches.getCharacterList();
+		
+		if (questionBank == null)
+			throw new IllegalStateException("Question bank is not loaded!");
+		
+		questionPatterns = new BitSet[questionBank.size()];
+		for (int i = 0; i < questionPatterns.length; i++) {
+			AttributeQuestion question = questionBank.get(i).getQuestionObject();
+			questionPatterns[i] = new BitSet(characters.size());
+			
+			// evaluate the question for each character and record the ones that match
+			for (int j = 0; j < characters.size(); j++) {
+				questionPatterns[i].set(j, question.match(characters.get(j)));
+			}
+		}
+	}
 
     /**
      * Creates a new smart AI player.
      */
     public SmartAIPlayer(String name, GuessWhoCharacter secret) {
 		super(name, secret);
-		// jagged 2D array for frequency counting. Reset on each turn but
-		// saves allocations to reuse the one array
-        frequencyList = new int[GuessWhoCharacter.ATTRIBUTE_NUM_VALS][];
-        for (int i = 0; i < frequencyList.length; i++) {
-            frequencyList[i] = new int[GuessWhoCharacter.attributeMaxValue(i)];
-        }
+		if (questionPatterns == null)
+			setupQuestionPatterns();
     }
 
     /**
-     * {@inheritDoc}
-     * Dumb AI players are incredibly basic.
-     * <ul>
-     * <li>if there is only one option for them to pick, they make their guess.</li>
-     * <li>otherwise, ask a random question that may or may not narrow down the set
-     * of possible characters.</li>
-     * </ul>
+     * Smart AIs attempt to pick the optimal question by checking which one
+	 * grants the most even split.
      */
     @Override
     public Question askQuestion() {
-        List<GuessWhoCharacter> characters = DataCaches.getCharacterList();
-
-        // if we're down to one option, use that one
-        if (remainingIndexes.cardinality() == 1) {
-            int finalIndex = remainingIndexes.nextSetBit(0);
-            return new CharacterQuestion(characters.get(finalIndex));
-        }
-
-        // reset the frequency list values to 0
-        for (int i = 0; i < frequencyList.length; i++) {
-            for (int j = 0; j < frequencyList.length; j++) {
-                frequencyList[i][j] = 0;
-            }
-        }
-
-        // iterate over set bits (i.e. remaining characters)
-        for (int c = remainingIndexes.nextSetBit(0); c != Integer.MAX_VALUE; c = remainingIndexes.nextSetBit(c + 1)) {
-            GuessWhoCharacter character = characters.get(c);
-            for (int a = 0; a < frequencyList.length; a++) {
-                // increase frequency of (attribute, value) pair
-                frequencyList[a][character.getAttribute(a)]++;
-            }
-        }
-        
-        // best question will split the set of remaining elements in two
-        final int EVEN_SPLIT = remainingIndexes.cardinality() / 2;
-        // track the best attribute and value
-        int bestAttribute = 0;
-        byte bestValue = 0;
-        // Loop over the frequency list, search for the best attribute and value to play
-        outerLoop:
-        for (int a = 0; a < frequencyList.length; a++) {
-            // this is a jagged 2D array, so we can't simply assume that
-            // each row is the same length
-            for (byte v = 0; v < frequencyList[a].length; v++) {
-                // this value will be better if it's closer 
-                if (Math.abs(frequencyList[a][v] - EVEN_SPLIT) < 
-                    Math.abs(frequencyList[bestAttribute][bestValue] - EVEN_SPLIT)) {
-                    bestAttribute = a;
-                    bestValue = v;
-                    
-                    // shortcut: if we have exactly the even split, we can't go lower
-                    if (frequencyList[a][v] == EVEN_SPLIT)
-                        break outerLoop;
-                }
-            }
-        }
-        
-        return new AttributeQuestion(bestAttribute, bestValue);
+		int numRemaining = remainingIndexes.cardinality();
+		// if we have no options, then logical contradiction!
+		if (numRemaining == 0) {
+			throw new IllegalStateException("Logical contradiction!");
+		}
+		// if we're down to one option, guess that one
+		if (numRemaining == 1) {
+			int finalIndex = remainingIndexes.nextSetBit(0);
+			return new CharacterQuestion(DataCaches.getCharacterList().get(finalIndex));
+		}
+		
+		// the optimal split will cut our character count in half each time.
+		int halfRemaining = numRemaining / 2;
+		
+		// find the best question to ask.
+		int bestIndex = 0;
+		int bestSplitDiff;
+		{
+			// compute the set of remaining characters if the answer is yes.
+			BitSet tempBits = (BitSet) questionPatterns[0].clone();
+			tempBits.and(remainingIndexes);
+			// compute how close to perfectly even the split is.
+			bestSplitDiff = Math.abs(halfRemaining - tempBits.cardinality());
+		}	
+		
+		for (int i = 1; i < questionPatterns.length; i++) {
+			// compute the set of remaining characters if the answer is yes.
+			BitSet tempBits = (BitSet) questionPatterns[i].clone();
+			tempBits.and(remainingIndexes);
+			// compute how close to perfectly even the split is.
+			int splitDiff = Math.abs(halfRemaining - tempBits.cardinality());
+			// check if this is the best split so far.
+			if (splitDiff < bestSplitDiff) {
+				bestIndex = i;
+				bestSplitDiff = splitDiff;
+			}
+		}
+		
+		// ask the question
+		return DataCaches.getQuestionBank().get(bestIndex).getQuestionObject();
     }
 
     /**
