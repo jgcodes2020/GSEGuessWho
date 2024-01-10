@@ -1,7 +1,7 @@
 package ca.gse.guesswho.models;
 
 /**
- * Abstract class representing a question asked in a Guess Who game.
+ * Base class for all Guess Who questions.
  */
 public abstract class Question {
 	/**

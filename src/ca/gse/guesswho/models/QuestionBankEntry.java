@@ -4,41 +4,44 @@ import java.util.Objects;
 
 import ca.gse.guesswho.models.questions.AttributeQuestion;
 
+/**
+ * An entry in the question bank.
+ */
 public class QuestionBankEntry {
 	String text;
 	AttributeQuestion questionObject;
 
 	/**
-	 * Constructs a new pair with the specified elements.
+	 * Constructs a new question bank entry with the specified elements.
 	 * 
-	 * @param first  the first element.
-	 * @param second the second element.
+	 * @param text  the text to associate with this entry.
+	 * @param question the question to associate with this entry.
 	 */
-	public QuestionBankEntry(String first, AttributeQuestion second) {
-		this.text = first;
-		this.questionObject = second;
+	public QuestionBankEntry(String text, AttributeQuestion question) {
+		this.text = text;
+		this.questionObject = question;
 	}
 
 	/**
-	 * Constructs a new pair with both values set to null.
+	 * Constructs a new question bank entry with both values set to null.
 	 */
 	public QuestionBankEntry() {
 		this(null, null);
 	}
 
 	/**
-	 * Gets the first value.
+	 * Gets the text for this entry.
 	 * 
-	 * @return the first value.
+	 * @return the text for this entry.
 	 */
 	public String getText() {
 		return text;
 	}
 
 	/**
-	 * Gets the second value.
+	 * Gets the question object for this entry.
 	 * 
-	 * @return the second value.
+	 * @return the question object for this entry.
 	 */
 	public AttributeQuestion getQuestionObject() {
 		return questionObject;

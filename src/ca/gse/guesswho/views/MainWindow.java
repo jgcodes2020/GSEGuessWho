@@ -70,7 +70,6 @@ public class MainWindow extends JFrame {
 		setContentPane(rootPanel);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
-	
 	void createGame(String playerName, boolean isFirst, boolean isAISmart) {
 		// setup human player
 

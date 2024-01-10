@@ -6,7 +6,7 @@ import ca.gse.guesswho.models.GuessWhoCharacter;
 import ca.gse.guesswho.models.Question;
 
 /**
- * Represents a question about a specific attribute of a character.
+ * A question about a specific attribute of a character. It does not end the game.
  */
 public class AttributeQuestion extends Question {
 	private int attribute;

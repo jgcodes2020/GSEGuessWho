@@ -6,6 +6,13 @@ import java.awt.*;
  * Utility class for geometric operations.
  */
 public class Geometry {
+	/**
+	 * Returns a rectangle whose aspect ratio is the same as {@code imageSize} while
+	 * fitting inside and being centred in a box of size {@code boxSize}.
+	 * @param boxSize the containing box
+	 * @param imageSize the image size
+	 * @return a rectangle that sizes {@code imageSize} to fit {@code boxSize}.
+	 */
 	public static Rectangle sizeToFitBounds(Dimension boxSize, Dimension imageSize) {
 		// Compare the aspect ratio of the two boxes.
 		// (a / b > c / d) is equivalent to (a * d > b * c), and the multiply version

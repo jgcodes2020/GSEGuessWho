@@ -4,7 +4,7 @@ import ca.gse.guesswho.models.GuessWhoCharacter;
 import ca.gse.guesswho.models.Question;
 
 /**
- * Represents a question that guesses a specific character.
+ * A question that guesses a specific character. Ends the game immediately.
  */
 public class CharacterQuestion extends Question {
 	private GuessWhoCharacter character;

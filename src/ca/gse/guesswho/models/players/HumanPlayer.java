@@ -13,6 +13,10 @@ public class HumanPlayer extends Player {
 	private boolean nextAnswer;
 	private boolean hasNextAnswer;
 	
+	/**
+	 * Creates a new human player with the given name.
+	 * @param name the name
+	 */
 	public HumanPlayer(String name) {
 		this.name = name;
 		this.nextQuestion = null;
@@ -20,17 +24,20 @@ public class HumanPlayer extends Player {
 		this.nextAnswer = false;
 		this.hasNextAnswer = false;
 	}
-	
-	public Question getNextQuestion() {
-		return this.nextQuestion;
-	}
 
+	/**
+	 * Queues the next question. Only one question may be queued,
+	 * setting the next question while one is queued overrides it.
+	 * @param question the question to queue.
+	 */
 	public void setNextQuestion(Question question) {
 		nextQuestion = question;
 	}
 	
 	/**
-	 * Asks the next
+	 * Asks the next queued question if there is one, or throws if not.
+	 * @return the next question
+	 * @throws IllegalStateException if no next question has been queued.
 	 */
 	@Override
 	public Question askQuestion() {
