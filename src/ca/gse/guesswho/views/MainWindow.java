@@ -22,6 +22,7 @@ public class MainWindow extends JFrame {
 	static final String CARD_WIN_SCREEN = "winScreen";
 	static final String CARD_ANSWER = "answer";
 	static final String CARD_TUTORIAL = "tutorial";
+	static final String CARD_CREDIT = "credit";
 	
 	private static final String SMART_AI_NAME = "John";
 	private static final String DUMB_AI_NAME = "Gina";
@@ -37,6 +38,7 @@ public class MainWindow extends JFrame {
 	MenuPanel menuPanel = null;
 	GamePanel gamePanel = null;
 	WinScreenPanel winPanel = null;
+	CreditPanel creditPanel = null;
 	
 	/**
 	 * Constructs a new main window.
@@ -65,6 +67,9 @@ public class MainWindow extends JFrame {
 
 		setupPanel = new GameSetupPanel(this);
 		rootPanel.add(setupPanel, CARD_SETUP);
+
+		creditPanel = new CreditPanel(this);
+		rootPanel.add(creditPanel,CARD_CREDIT);
 
 
 		setContentPane(rootPanel);

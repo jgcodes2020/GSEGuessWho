@@ -1,14 +1,12 @@
 package ca.gse.guesswho.views;
 
-import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.List;
+
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -22,7 +20,6 @@ import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 
 import ca.gse.guesswho.components.CharacterCard;
-import ca.gse.guesswho.events.GameWonEvent;
 import ca.gse.guesswho.models.DataCaches;
 import ca.gse.guesswho.models.GuessWhoCharacter;
 
@@ -36,7 +33,6 @@ public class GameSetupPanel extends JPanel {
 	private MainWindow main;
 	private JLabel turnErrorLabel;
 	private JLabel aiErrorLabel;
-    private CharacterCard[] cards;
     private ButtonGroup aiButtonGroup;
 	private ButtonGroup turnGroup;
     private JToggleButton p1Button;

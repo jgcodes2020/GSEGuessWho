@@ -73,6 +73,10 @@ public class MenuPanel extends JPanel {
 		JButton howToPlayButton = createMenuButton("How to play?");
 		howToPlayButton.addActionListener(this::howToPlayButtonPressed);
 		add(howToPlayButton);
+
+		JButton creditButton = createMenuButton("Credits");
+		creditButton.addActionListener(this::creditButtonPressed);
+		add(creditButton);
 		
 		// creating and adding how to exit button
 		JButton exitButton = createMenuButton("Exit");
@@ -97,6 +101,10 @@ public class MenuPanel extends JPanel {
 	 */
 	private void howToPlayButtonPressed(ActionEvent e) {
 		main.switchPanel("tutorial");
+	}
+
+	private void creditButtonPressed(ActionEvent e){
+		main.switchPanel("credit");
 	}
 
 	/**
