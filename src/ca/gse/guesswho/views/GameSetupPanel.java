@@ -65,7 +65,7 @@ public class GameSetupPanel extends JPanel {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		
 		// this "vertical glue" fills up extra space at the top
-		add(Box.createVerticalStrut(30));
+		add(Box.createVerticalStrut(15));
 		
 		// create the title text (this could be replaced with actual logo art if we wanted)
 		JLabel bigTitle = new JLabel("Game Setup . . .");
@@ -73,7 +73,7 @@ public class GameSetupPanel extends JPanel {
 		bigTitle.setAlignmentX(CENTER_ALIGNMENT); // everything is centered anyways, so yeah.
 		add(bigTitle);
 		
-		add(Box.createVerticalStrut(50));
+		add(Box.createVerticalStrut(20));
 
 		// create step one text (this could be replaced with actual logo art if we wanted)
 		JLabel stepOne = new JLabel("1) Pick a character and remeber it in your brain. (Take a picture if you need to!)");
@@ -97,34 +97,35 @@ public class GameSetupPanel extends JPanel {
 		// create step Three text 
 		JLabel stepThree = new JLabel("3) Pick who to go first!");
 		stepThree.setFont(BUTTON_FONT);
-		stepThree.setAlignmentX(CENTER_ALIGNMENT); // everything is centered anyways, so yeah.
+		stepThree.setAlignmentX(CENTER_ALIGNMENT); //everything is centered anyways, so yeah.
 		add(stepThree);
         add(buildSelectionList());
 
-		add(Box.createVerticalStrut(5));
         errorLabel = new JLabel();
-        errorLabel.setFont(BUTTON_FONT);
-        errorLabel.setAlignmentX(CENTER_ALIGNMENT); // everything is centered anyways, so yeah.
+		errorLabel.setMaximumSize(new Dimension(900, 100));
 
+        errorLabel.setFont(BUTTON_FONT);
+        errorLabel.setAlignmentX(CENTER_ALIGNMENT); //everything is centered anyways, so yeah.
         add(errorLabel);
 
-        add(Box.createVerticalStrut(50));
+       // add(Box.createVerticalStrut(50));
 
 		// start button
 		JButton startButton = createMenuButton("Start Game!");
 		startButton.addActionListener(this::startButtonPressed);
 		add(startButton);
 		
-		add(Box.createVerticalStrut(50));
+		add(Box.createVerticalStrut(5));
 
 
 		// back button
         JButton menuButton = createMenuButton("Return to Menu");
 		menuButton.addActionListener(this::onBackToMainMenuPressed);
 		add(menuButton);
+
+		add(Box.createVerticalStrut(15));
 		// this "vertical glue" fills up extra space at the bottom, the combined
 		// effects of the top and bottom will center everything else in the middle
-		add(Box.createVerticalGlue());
 		
 	}
 	
@@ -133,6 +134,7 @@ public class GameSetupPanel extends JPanel {
         JPanel board = new JPanel();
         CharacterCard[] cards;
         board.setLayout(new GridLayout(4, 6));
+
         // board.setBackground(Color.RED);
         // board.setBorder(BorderFactory.createLineBorder(Color.RED, 20));
 
@@ -145,6 +147,7 @@ public class GameSetupPanel extends JPanel {
 
             cards[i] = new CharacterCard(character);
             board.add(cards[i]);
+
         }
         return board;
     }
@@ -153,6 +156,8 @@ public class GameSetupPanel extends JPanel {
         cardGroup = new ButtonGroup();
         JPanel board = new JPanel();
         board.setLayout(new FlowLayout());
+		board.setMaximumSize(new Dimension(900, 100));
+
         // board.setBackground(Color.RED);
         // board.setBorder(BorderFactory.createLineBorder(Color.RED, 20));
         p1Button = new JToggleButton(p1ButtonText);
