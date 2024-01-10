@@ -37,7 +37,7 @@ public class GameSetupPanel extends JPanel {
 	private JLabel turnErrorLabel;
 	private JLabel aiErrorLabel;
     private CharacterCard[] cards;
-    private ButtonGroup firstPlayerGroup;
+    private ButtonGroup aiButtonGroup;
 	private ButtonGroup turnGroup;
     private JToggleButton p1Button;
 
@@ -191,8 +191,8 @@ public class GameSetupPanel extends JPanel {
 		p1Button.setFont(boldFont);
 		p2Button.setFont(boldFont);
 		
-        firstPlayerGroup.add(p1Button);
-        firstPlayerGroup.add(p2Button);
+        turnGroup.add(p1Button);
+        turnGroup.add(p2Button);
 		
         board.add(p1Button);
         board.add(p2Button);
@@ -200,7 +200,7 @@ public class GameSetupPanel extends JPanel {
     }
 
 	private JPanel buildAISelectionList() {
-        firstPlayerGroup = new ButtonGroup();
+        aiButtonGroup = new ButtonGroup();
         JPanel board = new JPanel();
         board.setLayout(new FlowLayout());
 		board.setMaximumSize(new Dimension(900, 100));
@@ -209,8 +209,8 @@ public class GameSetupPanel extends JPanel {
         // board.setBorder(BorderFactory.createLineBorder(Color.RED, 20));
         easyAIButton = new JToggleButton(EASY_BUTTON_TEXT);
         JToggleButton hardAIButton = new JToggleButton(HARD_BUTTON_TEXT);
-        firstPlayerGroup.add(easyAIButton);
-        firstPlayerGroup.add(hardAIButton);
+        aiButtonGroup.add(easyAIButton);
+        aiButtonGroup.add(hardAIButton);
         board.add(easyAIButton);
         board.add(hardAIButton);
         return board;
@@ -219,7 +219,7 @@ public class GameSetupPanel extends JPanel {
 	private void startButtonPressed(ActionEvent e) {
 		// Check if *any* button was selected
         ButtonModel turnSelection = turnGroup.getSelection();
-		ButtonModel aiSelection = firstPlayerGroup.getSelection();
+		ButtonModel aiSelection = aiButtonGroup.getSelection();
         if (turnSelection != null && aiSelection != null){
 			// P1 goes first if the P1 button is selected
             main.createGame(nameInput.getText(), p1Button.isSelected() , (!easyAIButton.isSelected()));
@@ -246,7 +246,7 @@ public class GameSetupPanel extends JPanel {
 
 	private void resetPanel(){
 		turnGroup.clearSelection();
-		firstPlayerGroup.clearSelection();
+		aiButtonGroup.clearSelection();
 
 
 
