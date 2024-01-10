@@ -28,13 +28,13 @@ import ca.gse.guesswho.models.GuessWhoCharacter;
 public class GameSetupPanel extends JPanel {
 	private static final Font TITLE_FONT = new Font("Dialog", Font.BOLD, 60);
 	private static final Font BUTTON_FONT = new Font("Dialog", Font.BOLD, 20);
+    private static final String P1_BUTTON_TEXT = "Player 1 (You)";
+    private static final String P2_BUTTON_TEXT = "Player 2 (Not You)";
 	
 	private MainWindow main;
 	private JLabel errorLabel;
     private CharacterCard[] cards;
-    private ButtonGroup cardGroup;
-    private String p1ButtonText = "Player 1 (You)";
-    private String p2ButtonText = "Player 2 (Not You)";
+    private ButtonGroup firstPlayerGroup;
     private JToggleButton p1Button;
     private JTextField nameInput;
 
@@ -153,35 +153,27 @@ public class GameSetupPanel extends JPanel {
     }
 
     private JPanel buildSelectionList() {
-        cardGroup = new ButtonGroup();
+        firstPlayerGroup = new ButtonGroup();
         JPanel board = new JPanel();
         board.setLayout(new FlowLayout());
 		board.setMaximumSize(new Dimension(900, 100));
 
         // board.setBackground(Color.RED);
         // board.setBorder(BorderFactory.createLineBorder(Color.RED, 20));
-        p1Button = new JToggleButton(p1ButtonText);
-        JToggleButton p2Button = new JToggleButton(p2ButtonText);
-        cardGroup.add(p1Button);
-        cardGroup.add(p2Button);
+        p1Button = new JToggleButton(P1_BUTTON_TEXT);
+        JToggleButton p2Button = new JToggleButton(P2_BUTTON_TEXT);
+        firstPlayerGroup.add(p1Button);
+        firstPlayerGroup.add(p2Button);
         board.add(p1Button);
         board.add(p2Button);
         return board;
     }
-
-    
 	private void startButtonPressed(ActionEvent e) {
-        ButtonModel selection = cardGroup.getSelection();
-        System.out.println(selection);
+		// Check if *any* button was selected
+        ButtonModel selection = firstPlayerGroup.getSelection();
         if (selection != null){
-            if (p1Button.isSelected()){
-                main.createGame(nameInput.getText());
-                System.out.println("p1");
-            }
-            else{
-                main.createGame(nameInput.getText());
-                System.out.println("p2");
-            }
+			// P1 goes first if the P1 button is selected
+            main.createGame(nameInput.getText(), p1Button.isSelected(), true);
         }
         else{
         errorLabel.setText("Please select who goes first.");

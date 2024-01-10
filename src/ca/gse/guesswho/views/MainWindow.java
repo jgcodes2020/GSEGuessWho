@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 
 import ca.gse.guesswho.events.GameWonEvent;
 import ca.gse.guesswho.models.DataCaches;
+import ca.gse.guesswho.models.Player;
 import ca.gse.guesswho.models.players.DumbAIPlayer;
 import ca.gse.guesswho.models.players.HumanPlayer;
 import ca.gse.guesswho.models.players.SmartAIPlayer;
@@ -21,6 +22,9 @@ public class MainWindow extends JFrame {
 	static final String CARD_WIN_SCREEN = "winScreen";
 	static final String CARD_ANSWER = "answer";
 	static final String CARD_TUTORIAL = "tutorial";
+	
+	private static final String SMART_AI_NAME = "John";
+	private static final String DUMB_AI_NAME = "Gina";
 	// UI ELEMENTS HERE
 	// ----------------
 	// thesse can be modified by the other view classes.
@@ -33,6 +37,7 @@ public class MainWindow extends JFrame {
 	MenuPanel menuPanel = null;
 	GamePanel gamePanel = null;
 	WinScreenPanel winPanel = null;
+	
 	/**
 	 * Constructs a new main window.
 	 */
@@ -66,10 +71,16 @@ public class MainWindow extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	
-	void createGame(String playerName) {
-		// initialize game panel
-		// TODO: improve name selection
-		gamePanel = new GamePanel(this, new HumanPlayer("GSETestUser"), new SmartAIPlayer("John", DataCaches.randomCharacter()));
+	void createGame(String playerName, boolean isFirst, boolean isAISmart) {
+		// setup human player
+		Player player1 = new HumanPlayer(playerName);
+		// setup AI player (names are hardcoded)
+		Player player2;
+		if (isAISmart)
+			player2 = new SmartAIPlayer(SMART_AI_NAME, DataCaches.randomCharacter());
+		else
+			player2 = new DumbAIPlayer(DUMB_AI_NAME, DataCaches.randomCharacter());
+		gamePanel = new GamePanel(this, player1, player2, isFirst);
 		// switch to game panel
 		rootPanel.add(gamePanel, MainWindow.CARD_GAME);
 		rootLayout.show(rootPanel, MainWindow.CARD_GAME);

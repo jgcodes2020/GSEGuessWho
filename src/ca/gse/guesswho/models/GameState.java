@@ -34,7 +34,7 @@ public class GameState {
 	 * @param player1 the first player
 	 * @param player2 the second player
 	 */
-	public GameState(Player player1, Player player2) {
+	public GameState(Player player1, Player player2, boolean isP1First) {
 		List<GuessWhoCharacter> characterList = DataCaches.getCharacterList();
 		if (characterList == null) {
 			throw new IllegalStateException("Character list must be loaded before starting a game!");
@@ -44,7 +44,7 @@ public class GameState {
 		this.player2 = player2;
 
 		winner = WINNER_NONE;
-		isPlayer1Turn = true;
+		isPlayer1Turn = isP1First;
 		isAnswerPhase = false;
 	}
 

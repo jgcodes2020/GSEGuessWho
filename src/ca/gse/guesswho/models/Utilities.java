@@ -26,6 +26,15 @@ public class Utilities {
 	}
 	
 	/**
+	 * Selects a random element of an array.
+	 * @param array the array
+	 * @return a random element of the array
+	 */
+	public static <T> T pickRandom(T[] array) {
+		return array[rng.nextInt(array.length)];
+	}
+	
+	/**
 	 * Copies the bits of one bitset to another
 	 * @param src
 	 * @param dst

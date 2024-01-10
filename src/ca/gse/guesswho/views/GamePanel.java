@@ -198,16 +198,20 @@ public class GamePanel extends JPanel {
 	 * @param mainWindow the main window to link this game panel to
 	 * @param p1         the first player
 	 * @param p2         the second player
+	 * @param isP1First  if true, player 1 goes first, otherwise player 2 goes first
 	 */
-	public GamePanel(MainWindow mainWindow, Player p1, Player p2) {
+	public GamePanel(MainWindow mainWindow, Player p1, Player p2, boolean isP1First) {
 		main = mainWindow;
-		state = new GameState(p1, p2);
+		state = new GameState(p1, p2, isP1First);
+		
 
 		boardPanel = buildBoard();
 		chatPanel = buildChatboard();
 		setLayout(new BorderLayout());
 		add(boardPanel, BorderLayout.CENTER);
 		add(chatPanel, BorderLayout.EAST);
+		
+		this.runAITurnsAndSwitchPanel();
 	}
 
 	GameState getState() {
