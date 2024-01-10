@@ -65,10 +65,10 @@ public class MainWindow extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	
-	void createGame() {
+	void createGame(String playerName) {
 		// initialize game panel
 		// TODO: improve name selection
-		gamePanel = new GamePanel(this, new HumanPlayer("GSETestUser"), new DumbAIPlayer("John", DataCaches.randomCharacter()));
+		gamePanel = new GamePanel(this, new HumanPlayer(playerName), new DumbAIPlayer("John", DataCaches.randomCharacter()));
 		// switch to game panel
 		rootPanel.add(gamePanel, MainWindow.CARD_GAME);
 		rootLayout.show(rootPanel, MainWindow.CARD_GAME);

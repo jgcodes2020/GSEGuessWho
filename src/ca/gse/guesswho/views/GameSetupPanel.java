@@ -17,6 +17,7 @@ import javax.swing.ButtonModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 
 import ca.gse.guesswho.components.CharacterCard;
@@ -35,7 +36,7 @@ public class GameSetupPanel extends JPanel {
     private String p1ButtonText = "Player 1 (You)";
     private String p2ButtonText = "Player 2 (Not You)";
     private JToggleButton p1Button;
-
+    private JTextField nameInput;
 
 
 	
@@ -84,11 +85,20 @@ public class GameSetupPanel extends JPanel {
 
 		add(Box.createVerticalStrut(30));
 
-		// create step two text (this could be replaced with actual logo art if we wanted)
-		JLabel stepTwo = new JLabel("2) Pick who to go first!");
+		// create step two text 
+		JLabel stepTwo = new JLabel("2) Enter your name!");
 		stepTwo.setFont(BUTTON_FONT);
 		stepTwo.setAlignmentX(CENTER_ALIGNMENT); // everything is centered anyways, so yeah.
-		add(stepTwo);
+        add(stepTwo);
+        nameInput = new JTextField();
+        nameInput.setMaximumSize(new Dimension(900, 100));
+        add(nameInput);
+
+		// create step Three text 
+		JLabel stepThree = new JLabel("3) Pick who to go first!");
+		stepThree.setFont(BUTTON_FONT);
+		stepThree.setAlignmentX(CENTER_ALIGNMENT); // everything is centered anyways, so yeah.
+		add(stepThree);
         add(buildSelectionList());
 
 		add(Box.createVerticalStrut(5));
@@ -160,11 +170,11 @@ public class GameSetupPanel extends JPanel {
         System.out.println(selection);
         if (selection != null){
             if (p1Button.isSelected()){
-                main.createGame();
+                main.createGame(nameInput.getText());
                 System.out.println("p1");
             }
             else{
-                main.createGame();
+                main.createGame(nameInput.getText());
                 System.out.println("p2");
             }
         }
