@@ -22,6 +22,8 @@ public class GameHistory {
 	private Question nextQuestion;
 	private List<GameHistoryEntry> entryList;
 	
+	private boolean isP1Winner;
+
 	private GuessWhoCharacter p1Secret;
 	private GuessWhoCharacter p2Secret;
 	
@@ -108,7 +110,14 @@ public class GameHistory {
 				pw.printf("%s: %s\n", playerString, entry);
 				isP1Turn = !isP1Turn;
 			}
+			
+			pw.println();
+			if (isP1Winner)
+				pw.println("Winner: P1");
+			else
+				pw.println("Winner: P2");
 		}
+		
 	}
 	
 	/**
@@ -119,5 +128,21 @@ public class GameHistory {
 	public void setSecretCharacters(GuessWhoCharacter p1Secret, GuessWhoCharacter p2Secret) {
 		this.p1Secret = p1Secret;
 		this.p2Secret = p2Secret;
+	}
+	
+	/**
+	 * Checks if Player 1 won this game.
+	 * @return if Player 1 won this game.
+	 */
+	public boolean isP1Winner() {
+		return isP1Winner;
+	}
+	
+	/**
+	 * Sets whether Player 1 won this game.
+	 * @param isP1Winner true if Player 1 is the winner, false if Player 2 is the winner.
+	 */
+	public void setP1Winner(boolean isP1Winner) {
+		this.isP1Winner = isP1Winner;
 	}
 }

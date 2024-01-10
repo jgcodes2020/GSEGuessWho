@@ -72,7 +72,7 @@ public class Utilities {
 		// left over: days
 		long days = t;
 		// add hours/minutes/seconds
-		String result = String.format("%2d:%2d:%2d.%3d", hours, minutes, seconds, millis);
+		String result = String.format("%02d:%02d:%02d.%03d", hours, minutes, seconds, millis);
 		// add days (if needed)
 		if (days > 0)
 			result = String.format("%dd+%s", days, result);

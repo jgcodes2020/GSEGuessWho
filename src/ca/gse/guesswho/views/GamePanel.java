@@ -18,6 +18,7 @@ import ca.gse.guesswho.components.CharacterCard;
 import ca.gse.guesswho.components.GScrollConstrainedPanel;
 import ca.gse.guesswho.events.*;
 import ca.gse.guesswho.models.*;
+import ca.gse.guesswho.models.history.GameHistory;
 import ca.gse.guesswho.models.questions.*;
 import ca.gse.guesswho.models.players.*;
 
@@ -31,6 +32,7 @@ public class GamePanel extends JPanel {
 	private MainWindow main;
 	private CardLayout cards;
 	private GameState state;
+	private GameHistory history;
 
 	private JPanel boardPanel;
 	private GameQuestionPanel questionPanel;
@@ -88,7 +90,7 @@ public class GamePanel extends JPanel {
 
 		board.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-		timeLabel = new JLabel("Time: 0s");
+		timeLabel = new JLabel("Time: 00:00:00");
 		textBoard.add(timeLabel,BorderLayout.WEST);
 
 		roundLabel = new JLabel("Turn 1");
@@ -110,8 +112,6 @@ public class GamePanel extends JPanel {
 	 * Adds a message to the chatboard.
 	 * 
 	 * @param response The string to add to the chatboard.
-	 * @implNote TODO: make this look nicer; refactor to be less dependent on
-	 *           internal state
 	 */
 	public void addChatMessage(String response, boolean isPlayer1Turn, String name) {
 		JLabel questions = new JLabel();
@@ -134,25 +134,7 @@ public class GamePanel extends JPanel {
 	 */
 	public void runAITurnsAndSwitchPanel() {
 		while (!state.getCurrentPlayer().isHuman()) {
-			boolean isAnswer = state.getIsAnswerPhase();
-			boolean isPlayer1 = state.getPlayer1Turn();
-			String name = state.getCurrentPlayer().getName();
-
-			state.doNextPhase();
-			if (checkForWinner())
-				return;
-
-			String message;
-			if (isAnswer) {
-				if (state.getLastAnswer())
-					message = "Yes";
-				else
-					message = "No";
-			} else {
-				message = DataCaches.getQuestionString(state.getLastQuestion());
-			}
-
-			addChatMessage(message, isPlayer1, name);
+			runPlayerTurn();
 		}
 		if (state.getIsAnswerPhase())
 			switchGamePanel(CARD_ANSWER);
@@ -174,12 +156,15 @@ public class GamePanel extends JPanel {
 
 		String message;
 		if (isAnswer) {
-			if (state.getLastAnswer())
+			boolean answer = state.getLastAnswer();
+			if (answer)
 				message = "Yes";
 			else
 				message = "No";
 		} else {
-			message = DataCaches.getQuestionString(state.getLastQuestion());
+			Question question = state.getLastQuestion();
+			message = DataCaches.getQuestionString(question);
+			history.push(question);
 		}
 
 		addChatMessage(message, isPlayer1, name);
@@ -217,10 +202,15 @@ public class GamePanel extends JPanel {
 	 */
 	public GamePanel(MainWindow mainWindow, Player p1, Player p2, boolean isP1First) {
 		main = mainWindow;
+		// start the timer
 		startTime = System.currentTimeMillis();
 		timer =  new Timer(1,this::timeUpdate);
 		timer.setInitialDelay(1);
 		timer.start();
+		// initialize game state
+		state = new GameState(p1, p2, isP1First);
+		history = new GameHistory(p1.getName(), p2.getName(), isP1First);
+		
 
 		state = new GameState(p1, p2, isP1First);
 		boardPanel = buildBoard();
