@@ -69,10 +69,12 @@ public class Leaderboard extends AbstractTableModel {
                 results.add(GameResult.fromCsvRow(line));
             }
 		}
+		System.out.println("rows: " + results.size());
 		// sort the results according to leaderboard order.
 		Utilities.sort(results, SCORE_ORDER);
 		// let the model know that we loaded everything
 		this.fireTableRowsInserted(0, results.size() - 1);
+		System.out.println("results");
 	}
 	
 	public void save() throws IOException {
@@ -85,16 +87,18 @@ public class Leaderboard extends AbstractTableModel {
 
 	@Override
 	public int getColumnCount() {
-		return results.size();
-	}
-
-	@Override
-	public int getRowCount() {
 		return 4;
 	}
 
 	@Override
+	public int getRowCount() {
+		return results.size();
+	}
+
+	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
+		if (rowIndex >= results.size())
+			return null;
 		GameResult row = results.get(rowIndex);
 		
 		switch (columnIndex) {

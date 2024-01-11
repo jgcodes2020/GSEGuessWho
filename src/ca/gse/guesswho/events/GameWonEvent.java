@@ -21,7 +21,6 @@ public class GameWonEvent extends EventObject {
 	public GameWonEvent(Object source, GameHistory history) {
 		super(source);
 		this.history = history;
-		System.err.println("w");
 	}
 	
 

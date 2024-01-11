@@ -22,7 +22,9 @@ public class GuessWho {
 		// use Java NIO paths, as it provides more intuitive ways to combine path
 		// 
 		Path homePath = Paths.get(System.getProperty("user.home"));
-		return homePath.resolve("GSEGuessWho_Leaderboard.csv").toFile();
+		File leaderboardFile = homePath.resolve("GSEGuessWho_Leaderboard.csv").toFile();
+		System.out.println("Leaderboard: " + leaderboardFile);
+		return leaderboardFile;
 	}
 	
 	

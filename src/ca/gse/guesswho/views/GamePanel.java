@@ -14,6 +14,7 @@ import ca.gse.guesswho.models.*;
 import ca.gse.guesswho.models.history.GameHistory;
 import ca.gse.guesswho.models.history.GameHistoryEntry;
 import ca.gse.guesswho.models.players.AIPlayer;
+import ca.gse.guesswho.models.players.SmartAIPlayer;
 import ca.gse.guesswho.models.questions.CharacterQuestion;
 
 /**
@@ -107,7 +108,6 @@ public class GamePanel extends JPanel {
 		JLabel questions = new JLabel();
 		questions.setText(response + " | " + name);
 		questions.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
-		System.out.println(isPlayer1Turn);
 
 		if (isPlayer1Turn) {
 			questions.setHorizontalAlignment(JLabel.LEFT);
@@ -183,10 +183,26 @@ public class GamePanel extends JPanel {
 		// if nobody wins, exit now
 		if (state.getWinner() == GameState.WINNER_NONE)
 			return false;
-
+		// measure the time now and take that as the win time
+		long winTime = System.currentTimeMillis() - startTime;
+			
+		// if we're doing player vs AI, then save a leaderboard entry
+		if (!state.getPlayer2().isHuman()) {
+			main.getLeaderboard().addEntry(new GameResult(
+				// player name
+				state.getPlayer1().getName(), 
+				// played against smart AI?
+				state.getPlayer2() instanceof SmartAIPlayer, 
+				// number of turns
+				history.getTurnCount(), 
+				// win time
+				winTime));
+		}
 		// update winner in history
 		boolean isWinnerP1 = state.getWinner() == GameState.WINNER_P1;
 		history.setIsWinnerP1(isWinnerP1);
+		// update win time in history
+		history.setWinTime(winTime);
 		// check everyone's secret characters
 		inferSecretCharacters(false);
 		// show the win screen.
@@ -200,10 +216,10 @@ public class GamePanel extends JPanel {
 	void forfeit() {
 		// If it's player 1's turn they should lose, i.e. player 2 should win, vice
 		// versa.
-
 		history.setIsWinnerP1(!state.getPlayer1Turn());
-		// infer any secret characters. The game did not end properly, so we can't
-		// use Character Questions.
+		// measure the time now and take that as the win time.
+		history.setWinTime(System.currentTimeMillis() - startTime);
+		// infer any secret characters.
 		inferSecretCharacters(true);
 		// show the win screen
 		main.showWinScreen(history);
@@ -228,18 +244,14 @@ public class GamePanel extends JPanel {
 			}
 		}
 
-		System.out.print(!player1.isHuman() + " a " + history.getP1Secret());
-
 		// Set secrets for all AI players
 		if (!player1.isHuman() && history.getP1Secret() == null) {
 			// set the secret character for this AI
-			System.out.println("P1 is an AI");
 			AIPlayer aiPlayer1 = (AIPlayer) player1;
 			history.setP1Secret(aiPlayer1.getSecret());
 		}
 		if (!player2.isHuman() && history.getP2Secret() == null) {
 			// set the secret character for this AI
-			System.out.println("P2 is an AI");
 			AIPlayer aiPlayer2 = (AIPlayer) player2;
 			history.setP2Secret(aiPlayer2.getSecret());
 		}
@@ -257,8 +269,7 @@ public class GamePanel extends JPanel {
 		main = mainWindow;
 		// start the timer
 		startTime = System.currentTimeMillis();
-		timer = new Timer(1, this::timeUpdate);
-		timer.setInitialDelay(1);
+		timer = new Timer(16, this::timeUpdate);
 		timer.start();
 		// initialize game state
 		state = new GameState(p1, p2, isP1First);

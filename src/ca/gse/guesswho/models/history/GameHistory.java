@@ -12,24 +12,26 @@ import ca.gse.guesswho.models.GuessWhoCharacter;
 import ca.gse.guesswho.models.Question;
 
 /**
- * Object recording all actions in a game.
+ * Object recording all questions and answers, plus various statistics.
  */
 public class GameHistory {
 	private String p1Name;
-
+	private GuessWhoCharacter p1Secret;
+	private boolean p1IsAI;
+	
+	
 	private String p2Name;
+	private GuessWhoCharacter p2Secret;
+	private boolean p2IsAI;
 
+	
 	private boolean isP1First;
+	private boolean isWinnerP1;
+	
+	private long winTime;
 	
 	private Question nextQuestion;
 	private List<GameHistoryEntry> entryList;
-	
-	private boolean isWinnerP1;
-
-	private GuessWhoCharacter p1Secret;
-
-	private GuessWhoCharacter p2Secret;
-	
 	
 
 	/**
@@ -47,7 +49,13 @@ public class GameHistory {
 		entryList = new ArrayList<>();
 		
 		p1Secret = null;
+		p1IsAI = false;
+		
 		p2Secret = null;
+		p2IsAI = false;
+		
+		
+		winTime = -1L;
 	}
 	
 	/**
@@ -96,11 +104,25 @@ public class GameHistory {
 				p2CharacterName = p2Secret.getName();
 			else
 				p2CharacterName = "???";
+			String p1Type, p2Type;
+			if (p1IsAI)
+				p1Type = "AI";
+			else
+				p1Type = "Human";
+			if (p2IsAI)
+				p2Type = "AI";
+			else
+				p2Type = "Human";
 			pw.printf(
-				"P1 (%s) chose %s\n" +
-				"P2 (%s) chose %s\n\n", 
-				p1Name, p1CharacterName, p2Name, p2CharacterName);
-			
+				"P1 (%s, %s) chose %s\n" +
+				"P2 (%s, %s) chose %s\n\n", 
+				p1Name, p1Type, p1CharacterName, 
+				p2Name, p2Type, p2CharacterName);
+			// print stats
+			pw.printf(
+				"Total turns taken: %s\n" +
+				"Time to win: %s\n\n", 
+				entryList.size(), winTime);
 			// write question log
 			boolean isP1Turn = isP1First;
 			String playerString;
@@ -185,5 +207,43 @@ public class GameHistory {
 	 */
 	public String getP2Name() {
 		return p2Name;
+	}
+	
+	/**
+	 * Gets the number of turns taken during the game.
+	 * @return the number of turns taken during the game.
+	 */
+	public int getTurnCount() {
+		return entryList.size();
+	}
+	/**
+	 * Gets the time taken to win the game.
+	 * @return the time taken to win in milliseconds, or -1 if not set
+	 */
+	public long getWinTime() {
+		return winTime;
+	}
+	/**
+	 * Sets the time taken to win the game.
+	 * @param winTime the time taken to win, in milliseconds
+	 */
+	public void setWinTime(long winTime) {
+		this.winTime = winTime;
+	}
+	
+	public boolean isP1IsAI() {
+		return p1IsAI;
+	}
+
+	public void setP1IsAI(boolean p1IsAI) {
+		this.p1IsAI = p1IsAI;
+	}
+	
+	public boolean isP2IsAI() {
+		return p2IsAI;
+	}
+
+	public void setP2IsAI(boolean p2IsAI) {
+		this.p2IsAI = p2IsAI;
 	}
 }

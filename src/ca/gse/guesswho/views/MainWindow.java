@@ -77,8 +77,9 @@ public class MainWindow extends JFrame {
 		// save the leaderboard when the window closes
 		addWindowListener(new WindowAdapter() {
 			@Override
-			public void windowClosed(WindowEvent e) {
+			public void windowClosing(WindowEvent e) {
 				try {
+					System.out.println("Save leaderboard");
 					leaderboard.save();
 				} catch (IOException e1) {
 					// show a dialog to inform the user
