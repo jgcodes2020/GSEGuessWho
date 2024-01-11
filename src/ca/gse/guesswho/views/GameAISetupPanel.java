@@ -149,6 +149,7 @@ public class GameAISetupPanel extends JPanel {
 		// Return button
         JButton menuButton = createMenuButton("Return to Menu");
 		menuButton.addActionListener(this::onBackToMainMenuPressed);
+    menuButton.setBackground(new Color(0xffffff));
 		add(menuButton);//Add return button
 
 		add(Box.createVerticalStrut(15));

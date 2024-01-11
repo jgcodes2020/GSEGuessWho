@@ -70,10 +70,14 @@ public class MenuPanel extends JPanel {
 		// creating and adding start button
 		JButton aiSetupButton = createMenuButton("Play vs AI");
 		aiSetupButton.addActionListener(this::aiSetupButtonPressed);
+    aiSetupButton.setBackground(new Color(0xff5224));
+    aiSetupButton.setForeground(Color.WHITE);
 		add(aiSetupButton);
 
 		JButton pvpSetupButton = createMenuButton("Player vs Player");
 		pvpSetupButton.addActionListener(this::pvpSetupButtonPressed);
+    pvpSetupButton.setBackground(new Color(0x218dcc));
+    pvpSetupButton.setForeground(Color.WHITE);
 		add(pvpSetupButton);
 		
 		// creating and adding leaderboard button
@@ -96,6 +100,7 @@ public class MenuPanel extends JPanel {
 		// creating and adding how to exit button
 		JButton exitButton = createMenuButton("Exit");
 		exitButton.addActionListener(this::exitButtonPressed);
+    exitButton.setBackground(new Color(0xffffff));
 		add(exitButton);
 
 		// this "vertical glue" fills up extra space at the bottom, the combined

@@ -6,6 +6,7 @@ Java version: 8
 */
 package ca.gse.guesswho.views;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -96,6 +97,7 @@ public class TutorialPanel extends JPanel {
 
     // Add next button
     JButton nextButton = createMenuButton("Next step");
+    nextButton.setBackground(new Color(0x809451));
     nextButton.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -111,6 +113,7 @@ public class TutorialPanel extends JPanel {
     // start button
 		JButton backToMainMenuButton = createMenuButton("Back to main menu");
 		backToMainMenuButton.addActionListener(this::onBackToMainMenuPressed);
+    backToMainMenuButton.setBackground(new Color(0xffffff));
 		add(backToMainMenuButton);
 
     // this "vertical glue" fills up extra space at the bottom

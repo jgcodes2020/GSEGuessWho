@@ -129,7 +129,9 @@ public class GamePvpSetupPanel extends JPanel {
 
 
 		// create start button
-		JButton startButton = createMenuButton("Start Game!");
+		JButton startButton = createMenuButton("Start PVP Game!");
+    startButton.setBackground(Color.RED);
+    startButton.setForeground(Color.WHITE);
 		startButton.addActionListener(this::startButtonPressed);
 		add(startButton);//Adds start button
 		
@@ -139,6 +141,7 @@ public class GamePvpSetupPanel extends JPanel {
 		// Return button
         JButton menuButton = createMenuButton("Return to Menu");
 		menuButton.addActionListener(this::onBackToMainMenuPressed);
+    menuButton.setBackground(new Color(0xffffff));
 		add(menuButton);//Add return button
 
 		add(Box.createVerticalStrut(15));
