@@ -1,5 +1,10 @@
+/*
+DataCaches.java
+Author: Jacky Guo
+Date: Jan. 11, 2024
+Java version: 8
+*/
 package ca.gse.guesswho.models;
-
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;

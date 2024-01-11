@@ -1,3 +1,9 @@
+/*
+GuessWho.java
+Authors: Jacky Guo, Winston Zhao
+Date: Jan. 11, 2024
+Java version: 8
+*/
 package ca.gse.guesswho;
 
 import java.io.File;

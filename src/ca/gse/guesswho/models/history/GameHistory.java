@@ -1,3 +1,9 @@
+/*
+GameHistory.java
+Authors: Jacky Guo, Chapman Yu
+Date: Jan. 11, 2024
+Java version: 8
+*/
 package ca.gse.guesswho.models.history;
 
 import java.io.File;

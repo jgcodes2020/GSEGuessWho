@@ -1,3 +1,9 @@
+/*
+GameAISetupPanel.java
+Authors: Jacky Guo, Chapman Yu
+Date: Jan. 11, 2024
+Java version: 8
+*/
 package ca.gse.guesswho.views;
 
 import java.awt.Color;
