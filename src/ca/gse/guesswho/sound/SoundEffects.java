@@ -13,7 +13,9 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class SoundEffects {
 	private static final String[] CLIP_LIST = {
-			"sad-trombone.wav", "winning.wav"
+			"sad-trombone.wav", 
+			"winning.wav",
+			"ding.wav"
 	};
 
 	private static Map<String, Clip> clipBank = new HashMap<>();
@@ -54,5 +56,11 @@ public class SoundEffects {
 	 */
 	public static Clip getClip(String fileName) {
 		return clipBank.get(fileName);
+	}
+	
+	public static void playClip(String fileName) {
+		Clip c = clipBank.get(fileName);
+		c.setFramePosition(0);
+		c.start();
 	}
 }

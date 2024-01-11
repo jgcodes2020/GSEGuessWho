@@ -115,22 +115,16 @@ public class WinScreenPanel extends JPanel {
 		if (event.getHistory().getP1IsAI() || event.getHistory().getP2IsAI()){
 			if (event.isWinnerP1()){
 				bigTitle.setText("YOU WIN! :D");
-				Clip sound = SoundEffects.getClip("winning.wav");
-				sound.setFramePosition(0);
-				sound.start();
+				SoundEffects.playClip("winning.wav");
 			}
 			else{
 				bigTitle.setText("YOU LOSE! :c ");
-				Clip sound = SoundEffects.getClip("sad-trombone.wav");
-				sound.setFramePosition(0);
-				sound.start();
+				SoundEffects.playClip("sad-trombone.wav");
 			}
 		}
 		else{
 			bigTitle.setText(event.getWinnerName() +" WINS! :D");
-			Clip sound = SoundEffects.getClip("winning.wav");
-			sound.setFramePosition(0);
-			sound.start();
+			SoundEffects.playClip("winning.wav");
 		}
 		history = event.getHistory();
 	}
