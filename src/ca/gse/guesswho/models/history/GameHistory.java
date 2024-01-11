@@ -10,6 +10,7 @@ import java.util.List;
 
 import ca.gse.guesswho.models.GuessWhoCharacter;
 import ca.gse.guesswho.models.Question;
+import ca.gse.guesswho.models.Utilities;
 
 /**
  * Object recording all questions and answers, plus various statistics.
@@ -122,7 +123,7 @@ public class GameHistory {
 			pw.printf(
 				"Total turns taken: %s\n" +
 				"Time to win: %s\n\n", 
-				entryList.size(), winTime);
+				entryList.size(), Utilities.millisToString(winTime));
 			// write question log
 			boolean isP1Turn = isP1First;
 			String playerString;
