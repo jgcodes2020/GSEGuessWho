@@ -61,18 +61,24 @@ public class MenuPanel extends JPanel {
 		
 		// creating and adding start button
 		JButton aiSetupButton = createMenuButton("Play vs AI");
-		aiSetupButton.addActionListener(this::aiStepupButtonPressed);
+		aiSetupButton.addActionListener(this::aiSetupButtonPressed);
 		add(aiSetupButton);
 
 		JButton pvpSetupButton = createMenuButton("Player vs Player");
 		pvpSetupButton.addActionListener(this::pvpSetupButtonPressed);
 		add(pvpSetupButton);
 		
+		// creating and adding leaderboard button
+		JButton leaderboardButton = createMenuButton("Leaderboard");
+		leaderboardButton.addActionListener(this::leaderboardButtonPressed);
+		add(leaderboardButton);
+		
 		// creatings and adding how to play button
 		JButton howToPlayButton = createMenuButton("How to play?");
 		howToPlayButton.addActionListener(this::howToPlayButtonPressed);
 		add(howToPlayButton);
-
+			
+		// credits button
 		JButton creditButton = createMenuButton("Credits");
 		creditButton.addActionListener(this::creditButtonPressed);
 		add(creditButton);
@@ -91,24 +97,35 @@ public class MenuPanel extends JPanel {
 	 * Switches to GameSetupPanel after the start button is pressed.
 	 * @param e the event parameters.
 	 */
-	private void aiStepupButtonPressed(ActionEvent e) {
-		main.switchPanel("aisetup");
+	private void aiSetupButtonPressed(ActionEvent e) {
+		main.switchPanel(MainWindow.CARD_AI_SETUP);
 	}
 	/**
 	 * Switches the panel to TutorialPanel after clicking how to play button
 	 * @param e the event being handled.
 	 */
 	private void howToPlayButtonPressed(ActionEvent e) {
-		main.switchPanel("tutorial");
+		main.switchPanel(MainWindow.CARD_TUTORIAL);
 	}
 
+	/**
+	 * Switches the panel to CreditPanel when the credits button is pressed.
+	 * @param e the event being handled.
+	 */
 	private void creditButtonPressed(ActionEvent e){
-		main.switchPanel("credit");
+		main.switchPanel(MainWindow.CARD_CREDIT);
+	}
+	
+	/**
+	 * Switches the panel to LeaderboardPanel when the leaderboard button is pressed.
+	 * @param e the event being handled
+	 */
+	private void leaderboardButtonPressed(ActionEvent e) {
+		main.switchPanel(MainWindow.CARD_LEADERBOARD);
 	}
 	
 	private void pvpSetupButtonPressed(ActionEvent e){
-		main.switchPanel("pvpsetup");
-		System.out.println("wo");
+		main.switchPanel(MainWindow.CARD_PVP_SETUP);
 	}
 
 	/**
@@ -116,7 +133,7 @@ public class MenuPanel extends JPanel {
 	 * @param e the event being handled.
 	 */
 	private void exitButtonPressed(ActionEvent e) {
-		Frame [] allFrames = Frame.getFrames();
+		Frame[] allFrames = Frame.getFrames();
 		for (int i = 0; i < allFrames.length; i++) {
 			allFrames[i].dispose();
 		}

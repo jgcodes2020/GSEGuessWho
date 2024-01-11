@@ -1,6 +1,9 @@
 package ca.gse.guesswho;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
@@ -15,6 +18,13 @@ import ca.gse.guesswho.views.MainWindow;
  * between the various panels that comprise the main layout.
  */
 public class GuessWho {
+	private static File getLeaderboardPath() {
+		// use Java NIO paths, as it provides more intuitive ways to combine path
+		// 
+		Path homePath = Paths.get(System.getProperty("user.home"));
+		return homePath.resolve("GSEGuessWho_Leaderboard.csv").toFile();
+	}
+	
 	
 	/**
 	 * The program's main method. Loads data, sets up the theme, and starts the application.
@@ -48,7 +58,7 @@ public class GuessWho {
 		}
 		
 		
-		MainWindow window = new MainWindow();
+		MainWindow window = new MainWindow(getLeaderboardPath());
 		window.setVisible(true);
     }
 }

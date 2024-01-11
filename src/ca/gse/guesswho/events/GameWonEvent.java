@@ -2,7 +2,6 @@ package ca.gse.guesswho.events;
 
 import java.util.EventObject;
 
-import ca.gse.guesswho.models.GameState;
 import ca.gse.guesswho.models.history.GameHistory;
 
 /**
@@ -10,7 +9,6 @@ import ca.gse.guesswho.models.history.GameHistory;
  * though the object remains as it's useful in its own right.
  */
 public class GameWonEvent extends EventObject {
-	boolean winnerP1;
 	GameHistory history;
 	String winner;
 	
@@ -20,9 +18,8 @@ public class GameWonEvent extends EventObject {
 	 * @param winnerP1 If true, the winner is player 1.
 	 * @param history the game history
 	 */
-	public GameWonEvent(Object source, boolean winnerP1, GameHistory history) {
+	public GameWonEvent(Object source, GameHistory history) {
 		super(source);
-		this.winnerP1 = winnerP1;
 		this.history = history;
 		System.err.println("w");
 	}
@@ -35,15 +32,14 @@ public class GameWonEvent extends EventObject {
 	 * @param history the game history
 	 * @param state the state of the game
 	 */
-	public GameWonEvent(Object source, boolean winnerP1, GameHistory history, GameState state) {
+	public GameWonEvent(Object source, boolean winnerP1, GameHistory history) {
 		super(source);
-		if (winnerP1 == true){
-			winner = state.getPlayer1().getName();
+		if (winnerP1){
+			winner = history.getP1Name();
 		}
 		else{
-			winner = state.getPlayer2().getName();
+			winner = history.getP2Name();
 		}
-		System.out.println(winner);
 		this.history = history;
 	}
 
@@ -52,7 +48,7 @@ public class GameWonEvent extends EventObject {
 	 * @return true if player 1 was the winner, false if player 2 was the winner
 	 */
 	public boolean isWinnerP1() {
-		return winnerP1;
+		return history.isWinnerP1();
 	}
 	
 	public GameHistory getHistory() {

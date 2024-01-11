@@ -83,8 +83,8 @@ public class GamePanel extends JPanel {
 		timeLabel = new JLabel("Time: 00:00:00");
 		textBoard.add(timeLabel, BorderLayout.WEST);
 
-		roundLabel = new JLabel("Turn "+state.getTurnCount());
-		textBoard.add(roundLabel,BorderLayout.EAST);
+		roundLabel = new JLabel("Turn " + state.getTurnCount());
+		textBoard.add(roundLabel, BorderLayout.EAST);
 
 		board.add(textBoard, BorderLayout.NORTH);
 		JLabel questions = new JLabel("Questions");
@@ -123,15 +123,14 @@ public class GamePanel extends JPanel {
 	 */
 	public void runAITurnsAndSwitchPanel() {
 		while (!state.getCurrentPlayer().isHuman()) {
-			if (runOneTurn()){
+			if (runOneTurn()) {
 				return;
 			}
 		}
-		if (state.getIsAnswerPhase()){
+		if (state.getIsAnswerPhase()) {
 			doSwitcher();
 			switchGamePanel(CARD_ANSWER);
-		}
-		else{
+		} else {
 			switchGamePanel(CARD_QUESTION);
 		}
 
@@ -188,24 +187,48 @@ public class GamePanel extends JPanel {
 		// update winner in history
 		boolean isWinnerP1 = state.getWinner() == GameState.WINNER_P1;
 		history.setIsWinnerP1(isWinnerP1);
+		// check everyone's secret characters
+		inferSecretCharacters(false);
+		// show the win screen.
+		main.showWinScreen(history);
+		return true;
+	}
 
+	/**
+	 * Causes the current player to instantly lose.
+	 */
+	void forfeit() {
+		// If it's player 1's turn they should lose, i.e. player 2 should win, vice
+		// versa.
+
+		history.setIsWinnerP1(!state.getPlayer1Turn());
+		// infer any secret characters. The game did not end properly, so we can't
+		// use Character Questions.
+		inferSecretCharacters(true);
+		// show the win screen
+		main.showWinScreen(history);
+	}
+
+	private void inferSecretCharacters(boolean isForfeit) {
+		boolean isWinnerP1 = state.getWinner() == GameState.WINNER_P1;
 		Player player1 = state.getPlayer1();
 		Player player2 = state.getPlayer2();
-		
-		// Assuming the last question is a CharacterQuesetion, check if someone's secret can be found
-		List<GameHistoryEntry> entries = history.getEntries();
-		GameHistoryEntry lastEntry = entries.get(entries.size() - 1);
-		if (lastEntry.getAnswer()) {
-			CharacterQuestion lastQuestion = (CharacterQuestion) lastEntry.getQuestion();
-			if (isWinnerP1) {
-				history.setP2Secret(lastQuestion.getCharacter());
-			}
-			else {
-				history.setP1Secret(lastQuestion.getCharacter());
+		// Assuming the last question is a CharacterQuesetion, check if someone's secret
+		// can be found
+		if (!isForfeit) {
+			List<GameHistoryEntry> entries = history.getEntries();
+			GameHistoryEntry lastEntry = entries.get(entries.size() - 1);
+			if (lastEntry.getAnswer()) {
+				CharacterQuestion lastQuestion = (CharacterQuestion) lastEntry.getQuestion();
+				if (isWinnerP1) {
+					history.setP2Secret(lastQuestion.getCharacter());
+				} else {
+					history.setP1Secret(lastQuestion.getCharacter());
+				}
 			}
 		}
-		
-		System.out.print(!player1.isHuman()+" a "+ history.getP1Secret());
+
+		System.out.print(!player1.isHuman() + " a " + history.getP1Secret());
 
 		// Set secrets for all AI players
 		if (!player1.isHuman() && history.getP1Secret() == null) {
@@ -219,45 +242,6 @@ public class GamePanel extends JPanel {
 			System.out.println("P2 is an AI");
 			AIPlayer aiPlayer2 = (AIPlayer) player2;
 			history.setP2Secret(aiPlayer2.getSecret());
-		}
-
-
-		if (player1.isHuman() == true && player2.isHuman() == true){
-			main.showWinScreen(isWinnerP1, history,state);
-		}
-		else{
-			main.showWinScreen(isWinnerP1, history);
-		}
-		return true;
-	}
-
-	/**
-	 * Causes the current player to instantly lose.
-	 */
-	void forfeit() {
-		// If it's player 1's turn they should lose, i.e. player 2 should win, vice
-		// versa.
-		// since there is no history, we set it to null.
-
-		// Set secrets for all AI players
-		if (!(state.getPlayer1().isHuman()) && history.getP1Secret() == null) {
-			// set the secret character for this AI
-			System.out.println("P1 is an AI");
-			AIPlayer aiPlayer1 = (AIPlayer) state.getPlayer2();
-			history.setP1Secret(aiPlayer1.getSecret());
-		}
-		if (!(state.getPlayer2().isHuman()) && history.getP2Secret() == null) {
-			// set the secret character for this AI
-			System.out.println("P2 is an AI");
-			AIPlayer aiPlayer2 = (AIPlayer) state.getPlayer2();
-			history.setP2Secret(aiPlayer2.getSecret());
-		}
-
-		if (state.getPlayer1().isHuman() == true && state.getPlayer1().isHuman() == true){
-			main.showWinScreen(!state.getPlayer1Turn(), history,state);
-		}
-		else{
-			main.showWinScreen(!state.getPlayer1Turn(), history);
 		}
 	}
 
@@ -299,8 +283,8 @@ public class GamePanel extends JPanel {
 		return state;
 	}
 
-	private void roundUpdate(){
-		roundLabel.setText("Turn "+(state.getTurnCount()));
+	private void roundUpdate() {
+		roundLabel.setText("Turn " + (state.getTurnCount()));
 	}
 
 	private void timeUpdate(ActionEvent e) {
@@ -311,15 +295,14 @@ public class GamePanel extends JPanel {
 		return (System.currentTimeMillis() - startTime);
 	}
 
-	private void doSwitcher(){
-		if (state.getPlayer1().isHuman() == true && state.getPlayer2().isHuman() == true){
-				main.switchPanel("switch");
-				main.switchConfirmPanel.setText(state.getPlayer1().getName(), state.getPlayer2().getName(), state.getPlayer1Turn());
-		}
-		else{
+	private void doSwitcher() {
+		if (state.getPlayer1().isHuman() == true && state.getPlayer2().isHuman() == true) {
+			main.showSwitchScreen(state.getPlayer1().getName(), state.getPlayer2().getName(), state.getPlayer1Turn());
+		} else {
 			return;
 		}
 	}
+
 	/**
 	 * INTERNAL: switches to a different card on the board panel.
 	 * 
