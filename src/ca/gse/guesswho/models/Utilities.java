@@ -2,6 +2,8 @@ package ca.gse.guesswho.models;
 
 import java.time.Duration;
 import java.util.BitSet;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -10,49 +12,110 @@ import java.util.regex.Pattern;
  * Utility functions that don't exist in the Java standard library.
  */
 public class Utilities {
-	// This is a regular expression. Regular expressions are very powerful tools for parsing strings,
+	// This is a regular expression. Regular expressions are very powerful tools for
+	// parsing strings,
 	// so this makes my life a bit easier. See note 2 in README for explanation.
-	private static final Pattern TIME_REGEX = Pattern.compile("^(?:(\\d|[1-9]\\d+)d\\+)?(\\d{2}):(\\d{2}):(\\d{2})(?:\\.(\\d{3}))?$");
-	
+	private static final Pattern TIME_REGEX = Pattern
+			.compile("^(?:(\\d|[1-9]\\d+)d\\+)?(\\d{2}):(\\d{2}):(\\d{2})(?:\\.(\\d{3}))?$");
+
 	private static Random rng = new Random();
-	
+
 	/**
 	 * Shuffles an array of integers.
+	 * 
 	 * @param array the array of integers
 	 */
 	public static void shuffle(int[] array) {
-		// Standard Fisher-Yates shuffle algorithm. Pick one element, swaps it to the front.
+		// Standard Fisher-Yates shuffle algorithm. Pick one element, swaps it to the
+		// front.
 		// Do the same for the remaining elements.
 		for (int i = 0; i < array.length - 1; i++) {
 			int swapIndex = i + rng.nextInt(array.length - i);
-			
+
 			int temp = array[i];
 			array[i] = array[swapIndex];
 			array[swapIndex] = temp;
 		}
 	}
-	
+
 	/**
 	 * Selects a random element of an array.
+	 * 
 	 * @param array the array
 	 * @return a random element of the array
 	 */
 	public static <T> T pickRandom(T[] array) {
 		return array[rng.nextInt(array.length)];
 	}
-	
+
 	/**
-	 * Copies the bits of one bitset to another
-	 * @param src
-	 * @param dst
+	 * Sorts a list by the specified comparator.
+	 * 
+	 * @param <T>  the type being sorted
+	 * @param list the list to sort
+	 * @param cmp  the comparator to order elements by
 	 */
-	public static void copy(BitSet src, BitSet dst) {
-		dst.clear();
-		dst.or(src);
+	public static <T> void sort(List<T> list, Comparator<T> cmp) {
+		// this is just insertion sort for now, it should be fairly efficient for small
+		// lists.
+		// Insertion sort works by repeatedly adding elements to a sorted list.
+		for (int i = 1; i < list.size(); i++) {
+			for (int j = i; j > 0 && cmp.compare(list.get(j - 1), list.get(j)) > 1; j++) {
+				T temp = list.get(j - 1);
+				list.set(j - 1, list.get(j));
+				list.set(j, temp);
+			}
+		}
+	}
+
+	/**
+	 * Sorts a list according to the element's natural order
+	 * 
+	 * @param <T>  the type being sorted, it must be comparable to itself.
+	 * @param list the list to sort
+	 */
+	public static <T extends Comparable<T>> void sort(List<T> list) {
+		sort(list, new Comparator<T>() {
+			@Override
+			public int compare(T o1, T o2) {
+				// use the default comparison between the two objects
+				return o1.compareTo(o2);
+			}
+		});
+	}
+
+	/**
+	 * Inserts an element into a sorted list according to a comparator.
+	 * 
+	 * @param <T>  the type being sorted
+	 * @param list the list to insert
+	 * @param item the item to insert
+	 * @param cmp  the comparator to use
+	 */
+	public static <T> void insertIntoSorted(List<T> list, T item, Comparator<T> cmp) {
+		// this works like a single pass of insertion sort: put the item at the end
+		// and move it to the left until it is greater than the item to its left.
+		list.add(item);
+		for (int i = list.size() - 1; i > 0 && cmp.compare(list.get(i - 1), list.get(i)) > 0; i--) {
+			T temp = list.get(i - 1);
+			list.set(i - 1, list.get(i));
+			list.set(i, temp);
+		}
 	}
 	
+	public static <T extends Comparable<T>> void insertIntoSorted(List<T> list, T item) {
+		insertIntoSorted(list, item, new Comparator<T>() {
+			@Override
+			public int compare(T o1, T o2) {
+				// use the default comparison between the two objects
+				return o1.compareTo(o2);
+			}
+		});
+	}
+
 	/**
 	 * Converts a number of milliseconds to a more readable time format.
+	 * 
 	 * @param t the number of milliseconds
 	 * @return a string representing that number of milliseconds
 	 */
@@ -79,10 +142,11 @@ public class Utilities {
 		// example: 2d+16:32:59.231
 		return result;
 	}
-	
+
 	/**
 	 * Converts a string formatted by {@link Utilities#millisToString(long)} back
 	 * to a number of milliseconds.
+	 * 
 	 * @param s the time string.
 	 * @return the number of milliseconds this string corresponds to.
 	 */
@@ -96,7 +160,7 @@ public class Utilities {
 		String minsStr = match.group(3);
 		String secsStr = match.group(4);
 		String millisStr = match.group(5);
-		
+
 		long time = 0;
 		// add days (optional) (1 d = 86 400 s = 86 400 000 ms)
 		if (daysStr != null)
@@ -110,7 +174,7 @@ public class Utilities {
 		// add milliseconds (optional)
 		if (millisStr != null)
 			time += Integer.parseInt(millisStr);
-		
+
 		return time;
 	}
 }
