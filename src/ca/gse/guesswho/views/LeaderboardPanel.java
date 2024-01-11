@@ -52,7 +52,10 @@ public class LeaderboardPanel extends JPanel {
 		bigTitle.setFont(TITLE_FONT);
 		add(bigTitle, BorderLayout.NORTH);
 		
+		// big table for all leaderboard entries.
 		bigTable = new JTable(main.getLeaderboard());
+		bigTable.getTableHeader().setReorderingAllowed(false);
+		// wrapped in scroll area, in case we ever get that many leaderboard entries.
 		JScrollPane scroller = new JScrollPane(bigTable);
 		add(scroller, BorderLayout.CENTER);
 		

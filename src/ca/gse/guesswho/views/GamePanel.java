@@ -81,13 +81,14 @@ public class GamePanel extends JPanel {
 		board.setLayout(new BorderLayout());
 
 		board.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-
+		// tickers for time and round on top
 		timeLabel = new JLabel("Time: 00:00:00");
 		textBoard.add(timeLabel, BorderLayout.WEST);
 
 		roundLabel = new JLabel("Turn " + state.getTurnCount());
 		textBoard.add(roundLabel, BorderLayout.EAST);
-
+		
+		// questions panel
 		board.add(textBoard, BorderLayout.NORTH);
 		JLabel questions = new JLabel("Questions");
 		JScrollPane scroller = new JScrollPane(chatPanelContent);
@@ -187,8 +188,8 @@ public class GamePanel extends JPanel {
 		// measure the time now and take that as the win time
 		long winTime = System.currentTimeMillis() - startTime;
 			
-		// if we're doing player vs AI, then save a leaderboard entry
-		if (!state.getPlayer2().isHuman()) {
+		// if we're doing player vs AI and we won, then save a leaderboard entry
+		if (!state.getPlayer2().isHuman() && state.getWinner() == GameState.WINNER_P1) {
 			main.getLeaderboard().addEntry(new GameResult(
 				// player name
 				state.getPlayer1().getName(), 
