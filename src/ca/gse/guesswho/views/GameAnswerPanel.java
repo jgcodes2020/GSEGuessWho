@@ -87,7 +87,7 @@ public class GameAnswerPanel extends JPanel {
 	
 	private void onResponseClicked(ActionEvent e) {
 		Object source = e.getSource();
-		
+		boolean check;
 		GameState state = parent.getState();
 		HumanPlayer player = (HumanPlayer) state.getCurrentPlayer();
 		if (source == yesButton) {
@@ -96,8 +96,11 @@ public class GameAnswerPanel extends JPanel {
 		else if (source == noButton) {
 			player.setNextAnswer(false);
 		}
-		parent.runOneTurn();
-		parent.runAITurnsAndSwitchPanel();
+		check = parent.runOneTurn();
+		if (check == false){
+			parent.runAITurnsAndSwitchPanel();
+
+		}
 	}
 	
 	/**

@@ -9,11 +9,6 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
-import ca.gse.guesswho.GuessWho;
-import ca.gse.guesswho.models.DataCaches;
-import ca.gse.guesswho.models.players.DumbAIPlayer;
-import ca.gse.guesswho.models.players.HumanPlayer;
-
 /**
  * Panel that displays and manages the main menu.
  */
@@ -65,9 +60,13 @@ public class MenuPanel extends JPanel {
 		add(Box.createVerticalStrut(50));
 		
 		// creating and adding start button
-		JButton startButton = createMenuButton("START");
-		startButton.addActionListener(this::onStartPressed);
-		add(startButton);
+		JButton aiSetupButton = createMenuButton("Play vs AI");
+		aiSetupButton.addActionListener(this::aiStepupButtonPressed);
+		add(aiSetupButton);
+
+		JButton pvpSetupButton = createMenuButton("Player vs Player");
+		pvpSetupButton.addActionListener(this::pvpSetupButtonPressed);
+		add(pvpSetupButton);
 		
 		// creatings and adding how to play button
 		JButton howToPlayButton = createMenuButton("How to play?");
@@ -92,8 +91,8 @@ public class MenuPanel extends JPanel {
 	 * Switches to GameSetupPanel after the start button is pressed.
 	 * @param e the event parameters.
 	 */
-	private void onStartPressed(ActionEvent e) {
-		main.switchPanel("setup");
+	private void aiStepupButtonPressed(ActionEvent e) {
+		main.switchPanel("aisetup");
 	}
 	/**
 	 * Switches the panel to TutorialPanel after clicking how to play button
@@ -105,6 +104,11 @@ public class MenuPanel extends JPanel {
 
 	private void creditButtonPressed(ActionEvent e){
 		main.switchPanel("credit");
+	}
+	
+	private void pvpSetupButtonPressed(ActionEvent e){
+		main.switchPanel("pvpsetup");
+		System.out.println("wo");
 	}
 
 	/**

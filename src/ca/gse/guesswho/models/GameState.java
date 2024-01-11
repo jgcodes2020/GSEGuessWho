@@ -3,6 +3,8 @@ package ca.gse.guesswho.models;
 import java.util.BitSet;
 import java.util.List;
 
+import ca.gse.guesswho.views.MainWindow;
+
 /**
  * Holds the internal state of a Guess Who game. Handles all turn logic, serving as
  * a frontend-agnostic model of a game of Guess Who.

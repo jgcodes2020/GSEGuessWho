@@ -106,19 +106,31 @@ public class WinScreenPanel extends JPanel {
 	 * @param event the events that basically just shows who won (When someone wins)
 	 */
 	void updateView(GameWonEvent event) {
-		if (event.isWinnerP1()){
-			bigTitle.setText("YOU WIN! :D");
+		if (event.getWinnerName() == null){
+			if (event.isWinnerP1()){
+				bigTitle.setText("YOU WIN! :D");
+				Clip sound = SoundEffects.getClip("winning.wav");
+				sound.start();
+			}
+			else{
+				bigTitle.setText("YOU LOSE! :c ");
+				Clip sound = SoundEffects.getClip("sad-trombone.wav");
+				sound.start();
+			}
+		}
+		else{
+			bigTitle.setText(event.getWinnerName()+" WINS! :D");
 			Clip sound = SoundEffects.getClip("winning.wav");
 			sound.start();
 		}
-		else{
-			bigTitle.setText("YOU LOSE! :c ");
-			Clip sound = SoundEffects.getClip("sad-trombone.wav");
-			sound.start();
-		}
-		
 		history = event.getHistory();
 	}
+
+
+
+
+
+
 	/**
 	 * Basically just switch the panel back to the main menu.
 	 * @param e the event being handled.

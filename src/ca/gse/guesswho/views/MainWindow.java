@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 
 import ca.gse.guesswho.events.GameWonEvent;
 import ca.gse.guesswho.models.DataCaches;
+import ca.gse.guesswho.models.GameState;
 import ca.gse.guesswho.models.Player;
 import ca.gse.guesswho.models.history.GameHistory;
 import ca.gse.guesswho.models.players.DumbAIPlayer;
@@ -18,13 +19,15 @@ import ca.gse.guesswho.models.players.SmartAIPlayer;
  */
 public class MainWindow extends JFrame {
 	static final String CARD_MENU = "menu";
-	static final String CARD_SETUP = "setup";
+	static final String CARD_AI_SETUP = "aisetup";
 	static final String CARD_GAME = "game";
 	static final String CARD_WIN_SCREEN = "winScreen";
 	static final String CARD_ANSWER = "answer";
 	static final String CARD_TUTORIAL = "tutorial";
 	static final String CARD_CREDIT = "credit";
-	
+	static final String CARD_PVP_SETUP = "pvpsetup";
+	static final String CARD_SWITCH_CONFIRM = "switch";
+
 	private static final String SMART_AI_NAME = "John";
 	private static final String DUMB_AI_NAME = "Gina";
 	// UI ELEMENTS HERE
@@ -34,12 +37,14 @@ public class MainWindow extends JFrame {
 	JPanel rootPanel = null;
 	CardLayout rootLayout = null;
 	
-	GameSetupPanel setupPanel = null;
+	GameAISetupPanel aiSetupPanel = null;
 	TutorialPanel tutorialPanel = null;
 	MenuPanel menuPanel = null;
 	GamePanel gamePanel = null;
 	WinScreenPanel winPanel = null;
 	CreditPanel creditPanel = null;
+	GamePvpSetupPanel pvpSetupPanel = null;
+	SwitchConfirmPanel switchConfirmPanel = null;
 	
 	/**
 	 * Constructs a new main window.
@@ -66,8 +71,14 @@ public class MainWindow extends JFrame {
 		tutorialPanel = new TutorialPanel(this);
 		rootPanel.add(tutorialPanel, CARD_TUTORIAL);
 
-		setupPanel = new GameSetupPanel(this);
-		rootPanel.add(setupPanel, CARD_SETUP);
+		aiSetupPanel = new GameAISetupPanel(this);
+		rootPanel.add(aiSetupPanel, CARD_AI_SETUP);
+
+		pvpSetupPanel = new GamePvpSetupPanel(this);
+		rootPanel.add(pvpSetupPanel, CARD_PVP_SETUP);
+
+		switchConfirmPanel = new SwitchConfirmPanel(this);
+		rootPanel.add(switchConfirmPanel, CARD_SWITCH_CONFIRM);
 
 		creditPanel = new CreditPanel(this);
 		rootPanel.add(creditPanel,CARD_CREDIT);
@@ -85,7 +96,7 @@ public class MainWindow extends JFrame {
 	 * @param isFirst	A boolean variable for whether P1 is the first player
 	 * @param isAISmart A boolean variable for whether the AI should be smart(hard)
 	 */
-	void createGame(String playerName, boolean isFirst, boolean isAISmart) {
+	void createGameAI(String playerName, boolean isFirst, boolean isAISmart) {
 		// setup human player
 
 		Player player1 = new HumanPlayer(playerName);
@@ -101,15 +112,41 @@ public class MainWindow extends JFrame {
 		rootLayout.show(rootPanel, MainWindow.CARD_GAME);
 	}
 
+	void createGamePvp(String p1Name, String p2Name, boolean isFirst){
+		Player player1 = new HumanPlayer(p1Name);
+		// setup AI player (names are hardcoded)
+		Player player2 = new HumanPlayer(p2Name);
+		gamePanel = new GamePanel(this, player1, player2, isFirst);
+		// switch to game panel
+		rootPanel.add(gamePanel, MainWindow.CARD_GAME);
+		switchPanel("switch");
+		switchConfirmPanel.setText(p1Name, p2Name, isFirst);
+	}
+
+
+
 
 	/**
 	 * Switches the screen to the win screen and make a GameWonEvent
 	 * @param isWinnerP1 a variable representing whether the winner is Player 1
 	 */
 	void showWinScreen(boolean isWinnerP1, GameHistory history) {
-		GameWonEvent event = new GameWonEvent(this, isWinnerP1, history);
+		GameWonEvent event = new GameWonEvent(this, isWinnerP1,history);
 		winPanel.updateView(event);
 		switchPanel(CARD_WIN_SCREEN);
+		System.out.println("yo");
+
+	}
+
+	/**
+	 * Switches the screen to the win screen and make a GameWonEvent
+	 * @param isWinnerP1 a variable representing whether the winner is Player 1
+	 */
+	void showWinScreen(boolean isWinnerP1, GameHistory history,GameState state) {
+		GameWonEvent event = new GameWonEvent(this, isWinnerP1,history, state);
+		winPanel.updateView(event);
+		switchPanel(CARD_WIN_SCREEN);
+		System.out.println("yo");
 	}
 
 	public void switchPanel(String panelString){
