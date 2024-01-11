@@ -1,3 +1,9 @@
+/*
+GamePanel.java
+Authors: Jacky Guo, Chapman Yu, Winston Zhao
+Date: Jan. 11, 2024
+Java version: 8
+*/
 package ca.gse.guesswho.views;
 
 import java.awt.BorderLayout;
@@ -14,6 +20,7 @@ import ca.gse.guesswho.models.*;
 import ca.gse.guesswho.models.history.GameHistory;
 import ca.gse.guesswho.models.history.GameHistoryEntry;
 import ca.gse.guesswho.models.players.AIPlayer;
+import ca.gse.guesswho.models.players.SmartAIPlayer;
 import ca.gse.guesswho.models.questions.CharacterQuestion;
 
 /**
@@ -31,7 +38,6 @@ public class GamePanel extends JPanel {
 	private JPanel boardPanel;
 	private GameQuestionPanel questionPanel;
 	private GameAnswerPanel answerPanel;
-	private JPanel topBarPanel;
 	private JPanel chatPanel;
 	private JPanel chatPanelContent;
 
@@ -40,10 +46,6 @@ public class GamePanel extends JPanel {
 	private JLabel timeLabel;
 
 	private JLabel roundLabel;
-
-	// Consumer<GameWonEvent> represents a method that takes
-	// GameWonEvent and returns void
-	private ArrayList<Consumer<GameWonEvent>> gameWonHandlers = new ArrayList<>();
 
 	/**
 	 * Internal method. Creates a JPanel for the game board.
@@ -57,10 +59,8 @@ public class GamePanel extends JPanel {
 
 		questionPanel = new GameQuestionPanel(this);
 		answerPanel = new GameAnswerPanel(this);
-
 		board.add(questionPanel, CARD_QUESTION);
 		board.add(answerPanel, CARD_ANSWER);
-
 		cards.show(board, CARD_QUESTION);
 		return board;
 	}
@@ -85,8 +85,8 @@ public class GamePanel extends JPanel {
 		timeLabel = new JLabel("Time: 00:00:00");
 		textBoard.add(timeLabel, BorderLayout.WEST);
 
-		roundLabel = new JLabel("Turn "+state.getTurnCount());
-		textBoard.add(roundLabel,BorderLayout.EAST);
+		roundLabel = new JLabel("Turn " + state.getTurnCount());
+		textBoard.add(roundLabel, BorderLayout.EAST);
 
 		board.add(textBoard, BorderLayout.NORTH);
 		JLabel questions = new JLabel("Questions");
@@ -109,7 +109,6 @@ public class GamePanel extends JPanel {
 		JLabel questions = new JLabel();
 		questions.setText(response + " | " + name);
 		questions.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
-		System.out.println(isPlayer1Turn);
 
 		if (isPlayer1Turn) {
 			questions.setHorizontalAlignment(JLabel.LEFT);
@@ -125,13 +124,17 @@ public class GamePanel extends JPanel {
 	 */
 	public void runAITurnsAndSwitchPanel() {
 		while (!state.getCurrentPlayer().isHuman()) {
-			if (runOneTurn())
+			if (runOneTurn()) {
 				return;
+			}
 		}
-		if (state.getIsAnswerPhase())
+		if (state.getIsAnswerPhase()) {
+			doSwitcher();
 			switchGamePanel(CARD_ANSWER);
-		else
+		} else {
 			switchGamePanel(CARD_QUESTION);
+		}
+
 	}
 
 	/**
@@ -181,42 +184,30 @@ public class GamePanel extends JPanel {
 		// if nobody wins, exit now
 		if (state.getWinner() == GameState.WINNER_NONE)
 			return false;
-
+		// measure the time now and take that as the win time
+		long winTime = System.currentTimeMillis() - startTime;
+			
+		// if we're doing player vs AI, then save a leaderboard entry
+		if (!state.getPlayer2().isHuman()) {
+			main.getLeaderboard().addEntry(new GameResult(
+				// player name
+				state.getPlayer1().getName(), 
+				// played against smart AI?
+				state.getPlayer2() instanceof SmartAIPlayer, 
+				// number of turns
+				history.getTurnCount(), 
+				// win time
+				winTime));
+		}
 		// update winner in history
 		boolean isWinnerP1 = state.getWinner() == GameState.WINNER_P1;
 		history.setIsWinnerP1(isWinnerP1);
-
-		Player player1 = state.getPlayer1();
-		Player player2 = state.getPlayer2();
-		
-		// Assuming the last question is a CharacterQuesetion, check if someone's secret can be found
-		List<GameHistoryEntry> entries = history.getEntries();
-		GameHistoryEntry lastEntry = entries.get(entries.size() - 1);
-		if (lastEntry.getAnswer()) {
-			CharacterQuestion lastQuestion = (CharacterQuestion) lastEntry.getQuestion();
-			if (isWinnerP1) {
-				history.setP2Secret(lastQuestion.getCharacter());
-			}
-			else {
-				history.setP1Secret(lastQuestion.getCharacter());
-			}
-		}
-		
-		// Set secrets for all AI players
-		if (!player1.isHuman() && history.getP1Secret() == null) {
-			// set the secret character for this AI
-			System.out.println("P1 is an AI");
-			AIPlayer aiPlayer1 = (AIPlayer) player1;
-			history.setP1Secret(aiPlayer1.getSecret());
-		}
-		if (!player2.isHuman() && history.getP2Secret() == null) {
-			// set the secret character for this AI
-			System.out.println("P2 is an AI");
-			AIPlayer aiPlayer2 = (AIPlayer) player2;
-			history.setP2Secret(aiPlayer2.getSecret());
-		}
-
-		main.showWinScreen(isWinnerP1, history);
+		// update win time in history
+		history.setWinTime(winTime);
+		// check everyone's secret characters
+		computeStatistics(false);
+		// show the win screen.
+		main.showWinScreen(history);
 		return true;
 	}
 
@@ -226,8 +217,51 @@ public class GamePanel extends JPanel {
 	void forfeit() {
 		// If it's player 1's turn they should lose, i.e. player 2 should win, vice
 		// versa.
-		// since there is no history, we set it to null.
-		main.showWinScreen(!state.getPlayer1Turn(), history);
+		history.setIsWinnerP1(!state.getPlayer1Turn());
+		// measure the time now and take that as the win time.
+		history.setWinTime(System.currentTimeMillis() - startTime);
+		// infer any secret characters.
+		computeStatistics(true);
+		// show the win screen
+		main.showWinScreen(history);
+	}
+
+	/**
+	 * Computes various items to be included in the game log.
+	 * @param isForfeit Whether the game was forfeited.
+	 */
+	private void computeStatistics(boolean isForfeit) {
+		boolean isWinnerP1 = state.getWinner() == GameState.WINNER_P1;
+		Player player1 = state.getPlayer1();
+		Player player2 = state.getPlayer2();
+		// Assuming the last question is a CharacterQuesetion, check if someone's secret
+		// can be found
+		if (!isForfeit) {
+			List<GameHistoryEntry> entries = history.getEntries();
+			GameHistoryEntry lastEntry = entries.get(entries.size() - 1);
+			if (lastEntry.getAnswer()) {
+				CharacterQuestion lastQuestion = (CharacterQuestion) lastEntry.getQuestion();
+				if (isWinnerP1) {
+					history.setP2Secret(lastQuestion.getCharacter());
+				} else {
+					history.setP1Secret(lastQuestion.getCharacter());
+				}
+			}
+		}
+		history.setP1IsAI(!player1.isHuman());
+		history.setP2IsAI(!player2.isHuman());
+
+		// Set secrets for all AI players
+		if (!player1.isHuman() && history.getP1Secret() == null) {
+			// set the secret character for this AI
+			AIPlayer aiPlayer1 = (AIPlayer) player1;
+			history.setP1Secret(aiPlayer1.getSecret());
+		}
+		if (!player2.isHuman() && history.getP2Secret() == null) {
+			// set the secret character for this AI
+			AIPlayer aiPlayer2 = (AIPlayer) player2;
+			history.setP2Secret(aiPlayer2.getSecret());
+		}
 	}
 
 	/**
@@ -242,8 +276,7 @@ public class GamePanel extends JPanel {
 		main = mainWindow;
 		// start the timer
 		startTime = System.currentTimeMillis();
-		timer = new Timer(1, this::timeUpdate);
-		timer.setInitialDelay(1);
+		timer = new Timer(16, this::timeUpdate);
 		timer.start();
 		// initialize game state
 		state = new GameState(p1, p2, isP1First);
@@ -268,8 +301,8 @@ public class GamePanel extends JPanel {
 		return state;
 	}
 
-	private void roundUpdate(){
-		roundLabel.setText("Turn "+(state.getTurnCount()));
+	private void roundUpdate() {
+		roundLabel.setText("Turn " + (state.getTurnCount()));
 	}
 
 	private void timeUpdate(ActionEvent e) {
@@ -280,12 +313,20 @@ public class GamePanel extends JPanel {
 		return (System.currentTimeMillis() - startTime);
 	}
 
+	private void doSwitcher() {
+		if (state.getPlayer1().isHuman() == true && state.getPlayer2().isHuman() == true) {
+			main.showSwitchScreen(state.getPlayer1().getName(), state.getPlayer2().getName(), state.getPlayer1Turn());
+		} else {
+			return;
+		}
+	}
+
 	/**
 	 * INTERNAL: switches to a different card on the board panel.
 	 * 
 	 * @param boardString the board to switch to
 	 */
-	private void switchGamePanel(String boardString) {
+	protected void switchGamePanel(String boardString) {
 		cards.show(boardPanel, boardString);
 	}
 

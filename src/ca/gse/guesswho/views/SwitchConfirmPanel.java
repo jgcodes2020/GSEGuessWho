@@ -1,5 +1,5 @@
 /*
-CreditPanel.java
+SwitchConfirmPanel.java
 Authors: Chapman Yu
 Date: Jan. 11, 2024
 Java version: 8
@@ -18,34 +18,17 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import ca.gse.guesswho.models.Player;
 
-public class CreditPanel extends JPanel {
+
+public class SwitchConfirmPanel extends JPanel {
 	private static final Font TITLE_FONT = new Font("Dialog", Font.BOLD, 60);
-	private static final Font BUTTON_FONT = new Font("Dialog", Font.BOLD, 20);
-	private static final String[] INSTRUCTION_LINES = { // variable
-		"Chapman Yu",
-		"Jacky Guo",
-        "Winston Zhao"
-	};
-	private static final String INSTRUCTION_HTML;
-	
-	static {
-		StringBuilder text = new StringBuilder("<html><body>");
-		for (String line : INSTRUCTION_LINES) {
-			// these characters can mess up html, they need to be replaced with html entities
-			String escaped = line.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;");
-			text.append(escaped);
-			text.append("<br>");
-		}
-		text.append("</body></html>");
-		INSTRUCTION_HTML = text.toString();
-	}
-	
+	private static final Font BUTTON_FONT = new Font("Dialog", Font.BOLD, 30);
 	private MainWindow main;
 	private JLabel bigTitle;
-	private JLabel steps;
+
 	/**
-	 * Creates a menu button. All menu buttons have a bunch of shared properties,
+	 * Creates a continue button. All menu buttons have a bunch of shared properties,
 	 * so I'm putting this in a method.
 	 * @param text the text to put on the button.
 	 * @return the mostly set-up button.
@@ -63,7 +46,7 @@ public class CreditPanel extends JPanel {
 	 * Sets up a win screen panel.
 	 * @param mainWindow the main window to link with this win screen panel
 	 */
-	public CreditPanel(MainWindow mainWindow) {
+	public SwitchConfirmPanel (MainWindow mainWindow) {
 		main = mainWindow;
 		
 		setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
@@ -73,14 +56,14 @@ public class CreditPanel extends JPanel {
 		add(Box.createVerticalGlue());
 		
 		// create the "title"
-		bigTitle = new JLabel("This game was created by");
+		bigTitle = new JLabel("Please give ME the screen.");
 		bigTitle.setFont(TITLE_FONT);
 		bigTitle.setAlignmentX(CENTER_ALIGNMENT); // everything is centered anyways, so yeah.
 		add(bigTitle);
 		add(Box.createVerticalStrut(50));
 
 		// create the "steps"
-        steps = new JLabel(INSTRUCTION_HTML);
+        JLabel steps = new JLabel("Please pressed the button when completed");
 		steps.setFont(BUTTON_FONT);
 		steps.setAlignmentX(CENTER_ALIGNMENT); // everything is centered anyways, so yeah.
         steps.setHorizontalAlignment(JLabel.CENTER);
@@ -89,8 +72,8 @@ public class CreditPanel extends JPanel {
 		add(Box.createVerticalStrut(50));
 		
 		// start button
-		JButton backToMainMenuButton = createMenuButton("Back to main menu");
-		backToMainMenuButton.addActionListener(this::onBackToMainMenuPressed);
+		JButton backToMainMenuButton = createMenuButton("Switch Complete");
+		backToMainMenuButton.addActionListener(this::continueGame);
 		add(backToMainMenuButton);
 		
 		// this "vertical glue" fills up extra space at the bottom, the combined
@@ -104,7 +87,18 @@ public class CreditPanel extends JPanel {
 	 * Basically just switch the panel back to the main menu.
 	 * @param e the event being handled.
 	 */
-	private void onBackToMainMenuPressed(ActionEvent e) {
-		main.switchPanel(MainWindow.CARD_MENU);
+	private void continueGame(ActionEvent e) {
+		main.switchPanel(MainWindow.CARD_GAME);
 	}
+
+	public void setText(String player1, String player2, boolean isPlayer1Turn){
+		if (isPlayer1Turn == true){
+			bigTitle.setText("Please give the screen to "+player1+".");
+		}
+		else{
+			bigTitle.setText("Please give the screen to "+player2+".");
+		}
+
+	}
+
 }

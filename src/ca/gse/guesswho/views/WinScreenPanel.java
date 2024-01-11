@@ -1,3 +1,9 @@
+/*
+WinScreenPanel.java
+Authors: Jacky Guo, Chapman Yu
+Date: Jan. 11, 2024
+Java version: 8
+*/
 package ca.gse.guesswho.views;
 
 import java.awt.Dimension;
@@ -106,19 +112,34 @@ public class WinScreenPanel extends JPanel {
 	 * @param event the events that basically just shows who won (When someone wins)
 	 */
 	void updateView(GameWonEvent event) {
-		if (event.isWinnerP1()){
-			bigTitle.setText("YOU WIN! :D");
-			Clip sound = SoundEffects.getClip("winning.wav");
-			sound.start();
+		if (event.getHistory().getP1IsAI() || event.getHistory().getP2IsAI()){
+			if (event.isWinnerP1()){
+				bigTitle.setText("YOU WIN! :D");
+				Clip sound = SoundEffects.getClip("winning.wav");
+				sound.setFramePosition(0);
+				sound.start();
+			}
+			else{
+				bigTitle.setText("YOU LOSE! :c ");
+				Clip sound = SoundEffects.getClip("sad-trombone.wav");
+				sound.setFramePosition(0);
+				sound.start();
+			}
 		}
 		else{
-			bigTitle.setText("YOU LOSE! :c ");
-			Clip sound = SoundEffects.getClip("sad-trombone.wav");
+			bigTitle.setText(event.getWinnerName() +" WINS! :D");
+			Clip sound = SoundEffects.getClip("winning.wav");
+			sound.setFramePosition(0);
 			sound.start();
 		}
-		
 		history = event.getHistory();
 	}
+
+
+
+
+
+
 	/**
 	 * Basically just switch the panel back to the main menu.
 	 * @param e the event being handled.

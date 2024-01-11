@@ -1,7 +1,15 @@
+/*
+GameState.java
+Authors: Jacky Guo, Chapman Yu
+Date: Jan. 11, 2024
+Java version: 8
+*/
 package ca.gse.guesswho.models;
 
 import java.util.BitSet;
 import java.util.List;
+
+import ca.gse.guesswho.views.MainWindow;
 
 /**
  * Holds the internal state of a Guess Who game. Handles all turn logic, serving as

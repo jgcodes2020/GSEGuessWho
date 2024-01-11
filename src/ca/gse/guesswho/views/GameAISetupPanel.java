@@ -1,3 +1,9 @@
+/*
+GameAISetupPanel.java
+Authors: Jacky Guo, Chapman Yu
+Date: Jan. 11, 2024
+Java version: 8
+*/
 package ca.gse.guesswho.views;
 
 import java.awt.Color;
@@ -23,7 +29,7 @@ import ca.gse.guesswho.components.CharacterCard;
 import ca.gse.guesswho.models.DataCaches;
 import ca.gse.guesswho.models.GuessWhoCharacter;
 
-public class GameSetupPanel extends JPanel {
+public class GameAISetupPanel extends JPanel {
 	private static final Font TITLE_FONT = new Font("Dialog", Font.BOLD, 60);
 	private static final Font BUTTON_FONT = new Font("Dialog", Font.BOLD, 20);
     private static final String P1_BUTTON_TEXT = "Player 1 (You)";
@@ -61,7 +67,7 @@ public class GameSetupPanel extends JPanel {
 	 * Sets up a game setup panel.
 	 * @param mainWindow the main window to link with this game setup panel
 	 */
-	public GameSetupPanel(MainWindow mainWindow) {
+	public GameAISetupPanel(MainWindow mainWindow) {
 		main = mainWindow;
 		
 		setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
@@ -235,7 +241,7 @@ public class GameSetupPanel extends JPanel {
 		ButtonModel aiSelection = aiButtonGroup.getSelection();
         if (turnSelection != null && aiSelection != null){
 			// P1 goes first if the P1 button is selected
-            main.createGame(nameInput.getText(), p1Button.isSelected() , (!easyAIButton.isSelected()));
+            main.createGameAI(nameInput.getText(), p1Button.isSelected() , (!easyAIButton.isSelected()));
 			resetPanel();
 
         }
@@ -271,6 +277,8 @@ public class GameSetupPanel extends JPanel {
 	private void resetPanel(){
 		turnGroup.clearSelection();
 		aiButtonGroup.clearSelection();
+		nameInput.setText("");
+
 	}
     
 

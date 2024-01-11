@@ -1,3 +1,9 @@
+/*
+MenuPanel.java
+Authors: Jacky Guo, Chapman Yu
+Date: Jan. 11, 2024
+Java version: 8
+*/
 package ca.gse.guesswho.views;
 
 import java.awt.Color;
@@ -5,15 +11,11 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowEvent;
 import java.util.List;
 import java.util.ArrayList;
 
 import javax.swing.*;
-
-import ca.gse.guesswho.GuessWho;
-import ca.gse.guesswho.models.DataCaches;
-import ca.gse.guesswho.models.players.DumbAIPlayer;
-import ca.gse.guesswho.models.players.HumanPlayer;
 
 /**
  * Panel that displays and manages the main menu.
@@ -66,19 +68,27 @@ public class MenuPanel extends JPanel {
 		add(Box.createVerticalStrut(50));
 		
 		// creating and adding start button
-		JButton startButton = createMenuButton("START");
-		startButton.addActionListener(this::onStartPressed);
-    startButton.setBackground(Color.RED);
-    startButton.setForeground(Color.WHITE);
-		add(startButton);
+		JButton aiSetupButton = createMenuButton("Play vs AI");
+		aiSetupButton.addActionListener(this::aiSetupButtonPressed);
+		add(aiSetupButton);
+
+		JButton pvpSetupButton = createMenuButton("Player vs Player");
+		pvpSetupButton.addActionListener(this::pvpSetupButtonPressed);
+		add(pvpSetupButton);
+		
+		// creating and adding leaderboard button
+		JButton leaderboardButton = createMenuButton("Leaderboard");
+		leaderboardButton.addActionListener(this::leaderboardButtonPressed);
+		add(leaderboardButton);
 		
 		// creatings and adding how to play button
 		JButton howToPlayButton = createMenuButton("How to play?");
 		howToPlayButton.addActionListener(this::howToPlayButtonPressed);
-    howToPlayButton.setBackground(Color.BLUE);
-    howToPlayButton.setForeground(Color.WHITE);
+    // howToPlayButton.setBackground(Color.BLUE);
+    // howToPlayButton.setForeground(Color.WHITE);
 		add(howToPlayButton);
-
+			
+		// credits button
 		JButton creditButton = createMenuButton("Credits");
 		creditButton.addActionListener(this::creditButtonPressed);
 		add(creditButton);
@@ -97,19 +107,35 @@ public class MenuPanel extends JPanel {
 	 * Switches to GameSetupPanel after the start button is pressed.
 	 * @param e the event parameters.
 	 */
-	private void onStartPressed(ActionEvent e) {
-		main.switchPanel("setup");
+	private void aiSetupButtonPressed(ActionEvent e) {
+		main.switchPanel(MainWindow.CARD_AI_SETUP);
 	}
 	/**
 	 * Switches the panel to TutorialPanel after clicking how to play button
 	 * @param e the event being handled.
 	 */
 	private void howToPlayButtonPressed(ActionEvent e) {
-		main.switchPanel("tutorial");
+		main.switchPanel(MainWindow.CARD_TUTORIAL);
 	}
 
+	/**
+	 * Switches the panel to CreditPanel when the credits button is pressed.
+	 * @param e the event being handled.
+	 */
 	private void creditButtonPressed(ActionEvent e){
-		main.switchPanel("credit");
+		main.switchPanel(MainWindow.CARD_CREDIT);
+	}
+	
+	/**
+	 * Switches the panel to LeaderboardPanel when the leaderboard button is pressed.
+	 * @param e the event being handled
+	 */
+	private void leaderboardButtonPressed(ActionEvent e) {
+		main.switchPanel(MainWindow.CARD_LEADERBOARD);
+	}
+	
+	private void pvpSetupButtonPressed(ActionEvent e){
+		main.switchPanel(MainWindow.CARD_PVP_SETUP);
 	}
 
 	/**
@@ -117,10 +143,10 @@ public class MenuPanel extends JPanel {
 	 * @param e the event being handled.
 	 */
 	private void exitButtonPressed(ActionEvent e) {
-		Frame [] allFrames = Frame.getFrames();
-		for (int i = 0; i < allFrames.length; i++) {
-			allFrames[i].dispose();
-		}
+		// https://stackoverflow.com/a/1235994/10808912
+		// this sends the "window closing" event, giving my event handler
+		// a chance to update before actually closing
+		main.dispatchEvent(new WindowEvent(main, WindowEvent.WINDOW_CLOSING));
 	}
 
 }
