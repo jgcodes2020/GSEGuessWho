@@ -189,7 +189,7 @@ public class GameHistory {
 	 * Checks if Player 1 won this game.
 	 * @return if Player 1 won this game.
 	 */
-	public boolean isWinnerP1() {
+	public boolean getIsWinnerP1() {
 		return isWinnerP1;
 	}
 	
