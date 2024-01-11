@@ -1,7 +1,11 @@
 package ca.gse.guesswho.views;
 
+import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -45,8 +49,42 @@ public class MainWindow extends JFrame {
 	 * Constructs a new main window.
 	 */
 	public MainWindow() {
-		setTitle("Guess Who????????????????????");
+		setTitle("Guess Who Game");
 		setSize(1440, 1024);
+
+    /*setUndecorated(true); // remove the default window decorations
+
+    JPanel titlePanel = new JPanel();
+    titlePanel.setBackground(Color.RED);
+    titlePanel.setPreferredSize(new Dimension(getWidth(), 30));
+
+     // Create minimize, maximize, and close buttons
+    JButton minimizeButton = new JButton("-");
+    minimizeButton.addActionListener(e -> setState(JFrame.ICONIFIED)); // Minimize the window
+
+    JButton maximizeButton = new JButton("+");
+    maximizeButton.addActionListener(e -> {
+        if (getExtendedState() != JFrame.MAXIMIZED_BOTH) {
+            setExtendedState(JFrame.MAXIMIZED_BOTH); // Maximize the window
+        } else {
+            setExtendedState(JFrame.NORMAL); // Restore the window
+        }
+    });
+
+    JButton closeButton = new JButton("x");
+    closeButton.addActionListener(e -> dispose()); // Close the window
+
+    // Add buttons to the title panel
+    titlePanel.add(minimizeButton);
+    titlePanel.add(maximizeButton);
+    titlePanel.add(closeButton);
+
+    
+
+    
+    add(titlePanel, BorderLayout.NORTH);
+
+    */
 		
 		
 		// CardLayout lets us switch beetween various panels
@@ -74,6 +112,8 @@ public class MainWindow extends JFrame {
 
 
 		setContentPane(rootPanel);
+
+    //add(rootPanel, BorderLayout.CENTER);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	

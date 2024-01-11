@@ -132,6 +132,8 @@ public class GameSetupPanel extends JPanel {
 
 		// create start button
 		JButton startButton = createMenuButton("Start Game!");
+    startButton.setBackground(Color.RED);
+    startButton.setForeground(Color.WHITE);
 		startButton.addActionListener(this::startButtonPressed);
 		add(startButton);//Adds start button
 		

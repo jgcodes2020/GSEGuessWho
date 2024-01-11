@@ -1,7 +1,7 @@
 package ca.gse.guesswho;
 
 import java.io.IOException;
-
+import java.awt.Color;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
@@ -39,6 +39,14 @@ public class GuessWho {
 		// 	System.out.printf("%s (%s)\n", entry.getKey(), entry.getValue());
 		// }
 		// System.out.println();
+
+    UIManager.put("nimbusBase", new Color(0xff0000));
+    UIManager.put("nimbusFocus", Color.BLUE); // Red color
+    UIManager.put("background", Color.WHITE);
+    UIManager.put("nimbusSelectionBackground", Color.RED);
+    UIManager.put("nimbusBlueGrey", new Color(0xffb5a1));
+    UIManager.put("control", Color.WHITE);
+    //UIManager.put("Button[Default+Pressed].backgroundPainter", Color.BLUE);
 		
 		try {
 			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");

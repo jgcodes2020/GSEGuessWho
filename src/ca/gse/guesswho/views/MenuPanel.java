@@ -1,5 +1,6 @@
 package ca.gse.guesswho.views;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
@@ -67,11 +68,15 @@ public class MenuPanel extends JPanel {
 		// creating and adding start button
 		JButton startButton = createMenuButton("START");
 		startButton.addActionListener(this::onStartPressed);
+    startButton.setBackground(Color.RED);
+    startButton.setForeground(Color.WHITE);
 		add(startButton);
 		
 		// creatings and adding how to play button
 		JButton howToPlayButton = createMenuButton("How to play?");
 		howToPlayButton.addActionListener(this::howToPlayButtonPressed);
+    howToPlayButton.setBackground(Color.BLUE);
+    howToPlayButton.setForeground(Color.WHITE);
 		add(howToPlayButton);
 
 		JButton creditButton = createMenuButton("Credits");
