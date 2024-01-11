@@ -29,6 +29,7 @@ import ca.gse.guesswho.models.history.GameHistory;
 import ca.gse.guesswho.models.players.DumbAIPlayer;
 import ca.gse.guesswho.models.players.HumanPlayer;
 import ca.gse.guesswho.models.players.SmartAIPlayer;
+import ca.gse.guesswho.sound.SoundEffects;
 
 /**
  * Frame for the main window, manages transitions between panels.
@@ -123,6 +124,7 @@ public class MainWindow extends JFrame {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				saveLeaderboard();
+				SoundEffects.unloadClips();
 			}
 		});
 
@@ -194,8 +196,7 @@ public class MainWindow extends JFrame {
 		gamePanel = new GamePanel(this, player1, player2, isFirst);
 		// switch to game panel
 		rootPanel.add(gamePanel, MainWindow.CARD_GAME);
-		switchPanel(CARD_SWITCH_CONFIRM);
-		switchConfirmPanel.setText(p1Name, p2Name, isFirst);
+		showSwitchScreen(p1Name, p2Name, isFirst);
 	}
 
 	/**
@@ -211,6 +212,7 @@ public class MainWindow extends JFrame {
 
 	void showSwitchScreen(String p1Name, String p2Name, boolean isP1Turn) {
 		switchPanel(CARD_SWITCH_CONFIRM);
+		SoundEffects.playClip("ding.wav");
 		switchConfirmPanel.setText(p1Name, p2Name, isP1Turn);
 	}
 

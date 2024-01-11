@@ -21,7 +21,7 @@ public class SoundEffects {
 	private static Map<String, Clip> clipBank = new HashMap<>();
 
 	/**
-	 * Loads clips
+	 * Loads clips.
 	 * 
 	 * @throws LineUnavailableException is an exception indicating that a line cannot be opened because it is unavailable. This situation arises most commonly when a requested line is already in use by another application.
 	 * @throws UnsupportedAudioFileException is an exception indicating that an operation failed because a file did not contain valid data of a recognized file type and format.
@@ -39,8 +39,7 @@ public class SoundEffects {
 
 	
 	/**
-	 * Unloads clips
-	 * 
+	 * Unloads clips. This should preferably be called prior to killing the application.
 	 */
 	public static void unloadClips() {
 		for (Clip clip : clipBank.values()) {
