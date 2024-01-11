@@ -231,7 +231,7 @@ public class GameHistory {
 		this.winTime = winTime;
 	}
 	
-	public boolean isP1IsAI() {
+	public boolean getP1IsAI() {
 		return p1IsAI;
 	}
 
@@ -239,7 +239,7 @@ public class GameHistory {
 		this.p1IsAI = p1IsAI;
 	}
 	
-	public boolean isP2IsAI() {
+	public boolean getP2IsAI() {
 		return p2IsAI;
 	}
 
