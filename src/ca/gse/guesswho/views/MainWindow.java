@@ -40,10 +40,10 @@ public class MainWindow extends JFrame {
 	// UI ELEMENTS HERE
 	// ----------------
 	// thesse can be modified by the other view classes.
-	
+
 	private JPanel rootPanel = null;
 	private CardLayout rootLayout = null;
-	
+
 	private GameAISetupPanel aiSetupPanel = null;
 	private TutorialPanel tutorialPanel = null;
 	private MenuPanel menuPanel = null;
@@ -53,10 +53,10 @@ public class MainWindow extends JFrame {
 	private GamePvpSetupPanel pvpSetupPanel = null;
 	private SwitchConfirmPanel switchConfirmPanel = null;
 	private LeaderboardPanel leaderboardPanel = null;
-	
+
 	// Panel-shared items
 	private Leaderboard leaderboard;
-	
+
 	/**
 	 * Constructs a new main window.
 	 */
@@ -78,15 +78,7 @@ public class MainWindow extends JFrame {
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				try {
-					System.out.println("Save leaderboard");
-					leaderboard.save();
-				} catch (IOException e1) {
-					// show a dialog to inform the user
-					JOptionPane.showMessageDialog(null,
-							"Could not save the leaderboard for some reason. The program will exit now.",
-							"Error!", JOptionPane.ERROR_MESSAGE);
-				}
+				saveLeaderboard();
 			}
 		});
 
@@ -149,7 +141,7 @@ public class MainWindow extends JFrame {
 		rootLayout.show(rootPanel, MainWindow.CARD_GAME);
 	}
 
-	void createGamePvp(String p1Name, String p2Name, boolean isFirst){
+	void createGamePvp(String p1Name, String p2Name, boolean isFirst) {
 		Player player1 = new HumanPlayer(p1Name);
 		// setup AI player (names are hardcoded)
 		Player player2 = new HumanPlayer(p2Name);
@@ -170,7 +162,7 @@ public class MainWindow extends JFrame {
 		winPanel.updateView(event);
 		switchPanel(CARD_WIN_SCREEN);
 	}
-	
+
 	void showSwitchScreen(String p1Name, String p2Name, boolean isP1Turn) {
 		switchPanel(CARD_SWITCH_CONFIRM);
 		switchConfirmPanel.setText(p1Name, p2Name, isP1Turn);
@@ -183,6 +175,18 @@ public class MainWindow extends JFrame {
 	 */
 	void switchPanel(String panelString) {
 		rootLayout.show(rootPanel, panelString);
+	}
+
+	void saveLeaderboard() {
+		try {
+			System.out.println("Save leaderboard");
+			leaderboard.save();
+		} catch (IOException e1) {
+			// show a dialog to inform the user
+			JOptionPane.showMessageDialog(null,
+					"Could not save the leaderboard for some reason. The program will exit now.",
+					"Error!", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 
 	/**

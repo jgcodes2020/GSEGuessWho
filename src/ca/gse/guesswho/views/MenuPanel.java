@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowEvent;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -133,10 +134,10 @@ public class MenuPanel extends JPanel {
 	 * @param e the event being handled.
 	 */
 	private void exitButtonPressed(ActionEvent e) {
-		Frame[] allFrames = Frame.getFrames();
-		for (int i = 0; i < allFrames.length; i++) {
-			allFrames[i].dispose();
-		}
+		// https://stackoverflow.com/a/1235994/10808912
+		// this sends the "window closing" event, giving my event handler
+		// a chance to update before actually closing
+		main.dispatchEvent(new WindowEvent(main, WindowEvent.WINDOW_CLOSING));
 	}
 
 }

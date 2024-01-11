@@ -32,7 +32,6 @@ public class GamePanel extends JPanel {
 	private JPanel boardPanel;
 	private GameQuestionPanel questionPanel;
 	private GameAnswerPanel answerPanel;
-	private JPanel topBarPanel;
 	private JPanel chatPanel;
 	private JPanel chatPanelContent;
 
@@ -41,10 +40,6 @@ public class GamePanel extends JPanel {
 	private JLabel timeLabel;
 
 	private JLabel roundLabel;
-
-	// Consumer<GameWonEvent> represents a method that takes
-	// GameWonEvent and returns void
-	private ArrayList<Consumer<GameWonEvent>> gameWonHandlers = new ArrayList<>();
 
 	/**
 	 * Internal method. Creates a JPanel for the game board.
@@ -204,7 +199,7 @@ public class GamePanel extends JPanel {
 		// update win time in history
 		history.setWinTime(winTime);
 		// check everyone's secret characters
-		inferSecretCharacters(false);
+		computeStatistics(false);
 		// show the win screen.
 		main.showWinScreen(history);
 		return true;
@@ -220,12 +215,16 @@ public class GamePanel extends JPanel {
 		// measure the time now and take that as the win time.
 		history.setWinTime(System.currentTimeMillis() - startTime);
 		// infer any secret characters.
-		inferSecretCharacters(true);
+		computeStatistics(true);
 		// show the win screen
 		main.showWinScreen(history);
 	}
 
-	private void inferSecretCharacters(boolean isForfeit) {
+	/**
+	 * Computes various items to be included in the game log.
+	 * @param isForfeit Whether the game was forfeited.
+	 */
+	private void computeStatistics(boolean isForfeit) {
 		boolean isWinnerP1 = state.getWinner() == GameState.WINNER_P1;
 		Player player1 = state.getPlayer1();
 		Player player2 = state.getPlayer2();
@@ -243,6 +242,8 @@ public class GamePanel extends JPanel {
 				}
 			}
 		}
+		history.setP1IsAI(!player1.isHuman());
+		history.setP2IsAI(!player2.isHuman());
 
 		// Set secrets for all AI players
 		if (!player1.isHuman() && history.getP1Secret() == null) {
