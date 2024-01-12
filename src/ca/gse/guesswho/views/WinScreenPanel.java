@@ -139,6 +139,8 @@ public class WinScreenPanel extends JPanel {
 	 * @param e the event being handled.
 	 */
 	private void onBackToMainMenuPressed(ActionEvent e) {
+		// start the menu music again
+		main.getMidiPlayer().playLoadedSequence("guesswho.mid", true);
 		main.switchPanel(MainWindow.CARD_MENU);
 	}
 	

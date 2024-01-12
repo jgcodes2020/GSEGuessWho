@@ -25,6 +25,7 @@ import javax.sound.midi.Transmitter;
 public class MidiPlayer implements Closeable {
 	private static final String[] SEQUENCE_LIST = {
 		"jeopardy.mid",
+		"guesswho.mid"
 	};
 	
 	private static Map<String, Sequence> sequences = new HashMap<>();
