@@ -1,6 +1,6 @@
 /*
 LeaderboardPanel.java
-Authors: Jacky Guo, Chapman Yu
+Authors: Jacky Guo, Chapman Yu, Winston Zhao
 Date: Jan. 11, 2024
 Java version: 8
 */
@@ -10,11 +10,14 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
+
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.TableColumn;
 
 
 public class LeaderboardPanel extends JPanel {
@@ -47,14 +50,31 @@ public class LeaderboardPanel extends JPanel {
 		main = mainWindow;
 		
 		setLayout(new BorderLayout());
+
+    // Add a margin of 60 pixels on every side
+    setBorder(BorderFactory.createEmptyBorder(60, 60, 60, 60));
 		
 		JLabel bigTitle = new JLabel("LEADERBOARD");
 		bigTitle.setFont(TITLE_FONT);
+    bigTitle.setHorizontalAlignment(JLabel.CENTER); // Center the title
 		add(bigTitle, BorderLayout.NORTH);
 		
 		// big table for all leaderboard entries.
+
+    
 		bigTable = new JTable(main.getLeaderboard());
+
 		bigTable.getTableHeader().setReorderingAllowed(false);
+    bigTable.getTableHeader().setResizingAllowed(false); // Make the table non-resizable
+    bigTable.setRowHeight(50);
+
+    // Set the default sizes of each column separately
+    TableColumn column1 = bigTable.getColumnModel().getColumn(0);
+    column1.setPreferredWidth(300);
+
+    TableColumn column2 = bigTable.getColumnModel().getColumn(1);
+    column2.setPreferredWidth(10);
+
 		// wrapped in scroll area, in case we ever get that many leaderboard entries.
 		JScrollPane scroller = new JScrollPane(bigTable);
 		add(scroller, BorderLayout.CENTER);

@@ -1,6 +1,6 @@
 /*
 GameQuestionPanel.java
-Authors: Jacky Guo, Chapman Yu
+Authors: Jacky Guo, Chapman Yu, Winston Zhao
 Date: Jan. 11, 2024
 Java version: 8
 */package ca.gse.guesswho.views;
@@ -18,6 +18,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
@@ -129,6 +130,9 @@ public class GameQuestionPanel extends JPanel {
 		forfeitButton.setPreferredSize(new Dimension(210, 105));
 		forfeitButton.addActionListener(this::forfeitButtonPressed);
 		confirmButton.addActionListener(this::submitButtonPressed);
+    confirmButton.setBackground(new Color(0xff5224));
+    confirmButton.setForeground(Color.WHITE);
+    forfeitButton.setBackground(Color.WHITE);
 		errorMessage.setHorizontalAlignment(JLabel.CENTER);
 
 		board.add(confirmButton);

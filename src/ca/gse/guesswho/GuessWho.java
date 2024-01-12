@@ -73,7 +73,7 @@ public class GuessWho {
     UIManager.put("nimbusBase", new Color(0xff0000));
     UIManager.put("nimbusFocus", Color.BLUE); // Red color
     UIManager.put("background", Color.WHITE);
-    UIManager.put("nimbusSelectionBackground", Color.RED);
+    UIManager.put("nimbusSelectionBackground", new Color(0xff5224));
     UIManager.put("nimbusBlueGrey", new Color(0xffb5a1));
     UIManager.put("control", Color.WHITE);
     //UIManager.put("Button[Default+Pressed].backgroundPainter", Color.BLUE);
