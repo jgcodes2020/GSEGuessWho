@@ -8,16 +8,20 @@ package ca.gse.guesswho.views;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
+import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import ca.gse.guesswho.components.CharacterCard;
 import ca.gse.guesswho.models.DataCaches;
 import ca.gse.guesswho.models.GameState;
+import ca.gse.guesswho.models.GuessWhoCharacter;
 import ca.gse.guesswho.models.Question;
 import ca.gse.guesswho.models.players.HumanPlayer;
 
@@ -32,7 +36,8 @@ public class GameAnswerPanel extends JPanel {
 	
     private JPanel responsePanel;
 	private JPanel questionPanel;
-	
+	private JPanel characterPanel;
+
 	private JButton yesButton;
 	private JButton noButton;
 
@@ -43,10 +48,22 @@ public class GameAnswerPanel extends JPanel {
         this.parent = parent;
         questionPanel = buildTopBar();
 		responsePanel = buildResponseBar();
+		characterPanel = buildCharList();
 		setLayout(new BorderLayout());
-		add(responsePanel, BorderLayout.CENTER);
-		add(questionPanel, BorderLayout.NORTH);
-		
+
+		JPanel builderPanel = new JPanel() ;
+		builderPanel.setLayout(new BorderLayout());
+		builderPanel.add(responsePanel, BorderLayout.CENTER);
+		builderPanel.add(questionPanel, BorderLayout.NORTH);
+		builderPanel.add(Box.createVerticalStrut(30), BorderLayout.SOUTH);
+
+
+
+		add(builderPanel, BorderLayout.NORTH);
+		add(characterPanel, BorderLayout.CENTER);
+		add(Box.createVerticalStrut(45), BorderLayout.SOUTH);
+
+
 		this.addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentShown(ComponentEvent e) {
@@ -57,6 +74,41 @@ public class GameAnswerPanel extends JPanel {
 		});
     }
 
+		/**
+	 * Creates the character list.
+	 * 
+	 * @return a JPanel for the character list.
+	 */
+    private JPanel buildCharList(){
+		JPanel realBoard = new JPanel();
+        JPanel charBoard = new JPanel();
+		JLabel instruction = new JLabel("Character List");
+
+		instruction.setFont(BUTTON_FONT);
+		instruction.setHorizontalAlignment(JLabel.CENTER);
+		realBoard.setLayout(new BorderLayout());
+		charBoard.setLayout(new GridLayout(4, 6));
+
+
+        CharacterCard[] cards;
+
+        final int characterAmt = 24;
+        cards = new CharacterCard[characterAmt];
+
+        for (int i = 0; i < characterAmt; i++) {
+            GuessWhoCharacter character = DataCaches.getCharacterList().get(i);
+
+            cards[i] = new CharacterCard(character);
+			cards[i].setEnabled(false);
+            charBoard.add(cards[i]);
+
+        }
+
+		realBoard.add(instruction, BorderLayout.NORTH);
+		realBoard.add(charBoard, BorderLayout.CENTER);
+
+        return realBoard;
+    }
 
 
 	/**
