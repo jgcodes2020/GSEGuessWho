@@ -1,10 +1,14 @@
+/*
+ * DialogUtilities.java
+ * Author: Jacky Guo
+ * Date: Jan. 12, 2024
+ * Java version: 8
+ */
 package ca.gse.guesswho.views;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
