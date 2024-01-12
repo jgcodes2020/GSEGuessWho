@@ -1,3 +1,9 @@
+/*
+MidiMessages.java
+Authors: Jacky Guo
+Date: Jan. 11, 2024
+Java version: 8
+*/
 package ca.gse.guesswho.sound;
 
 import javax.sound.midi.InvalidMidiDataException;

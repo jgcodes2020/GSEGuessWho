@@ -1,3 +1,9 @@
+/*
+MidiPlayer.java
+Authors: Jacky Guo
+Date: Jan. 11, 2024
+Java version: 8
+*/
 package ca.gse.guesswho.sound;
 
 import java.io.Closeable;
@@ -23,6 +29,9 @@ import javax.sound.midi.Transmitter;
  * Class managing various MIDI resources needed for playing MIDI files.
  */
 public class MidiPlayer implements Closeable {
+	/**
+	 * List of MIDI files to preload.
+	 */
 	private static final String[] SEQUENCE_LIST = {
 		"jeopardy.mid",
 		"guesswho.mid"
@@ -34,6 +43,7 @@ public class MidiPlayer implements Closeable {
 	 * Loads MIDI sequences in this class's preload list.
 	 * @throws InvalidMidiDataException if an invalid MIDI file is received
 	 * @throws IOException if an I/O error occurs
+	 * @see MidiPlayer#SEQUENCE_LIST
 	 */
 	public static void loadSequences() throws InvalidMidiDataException, IOException {
 		for (String seqName : SEQUENCE_LIST) {
@@ -66,9 +76,9 @@ public class MidiPlayer implements Closeable {
 	 * @throws MidiUnavailableException If the system does not support MIDI playback.
 	 */
 	public MidiPlayer() throws MidiUnavailableException {
-		// this reads out the MIDI notes
+		// sequencer reads MIDI notes (extra parameter needed to make it not do extra stuff we don't want)
 		sequencer = MidiSystem.getSequencer(false);
-		// this plays the MIDI notes
+		// synthesizer plays MIDI notes
 		synthesizer = MidiSystem.getSynthesizer();
 		// open them
 		sequencer.open();
@@ -91,7 +101,8 @@ public class MidiPlayer implements Closeable {
 	public void playSequence(Sequence sequence, boolean loop) {
 		if (sequencer.isRunning())
 			sequencer.stop();
-			
+		
+		// set the MIDI sequence to the one we want to play
 		try {
 			sequencer.setSequence(sequence);
 		}
@@ -136,7 +147,7 @@ public class MidiPlayer implements Closeable {
 		value = Math.min(Math.max(value, 0.0), 1.0);
 		// MIDI volume is a 14-bit number from 0 to 16383
 		this.volume = (int) (value * 16383);
-		// set the volume of all channels
+		// tell the system to lower master volume
 		controlReceiver.send(MidiMessages.masterVolume(volume), -1);
 	}
 	/**
@@ -153,8 +164,9 @@ public class MidiPlayer implements Closeable {
 	 */
 	@Override
 	public void close() throws IOException {
+		// stop the music
 		sequencer.stop();
-		
+		// close everythin
 		sequenceTransmitter.close();
 		sequenceReceiver.close();
 		sequencer.close();
