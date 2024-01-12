@@ -14,6 +14,7 @@ import java.util.Map;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
@@ -28,6 +29,7 @@ public class SoundEffects {
 	};
 
 	private static Map<String, Clip> clipBank = new HashMap<>();
+	private static double volume = 0.5;
 
 	/**
 	 * Loads clips in the preload list.
@@ -56,24 +58,36 @@ public class SoundEffects {
 			clip.close();
 		}
 	}
-
-
-	/**
-	 * Gets a preloaded clip
-	 * @param fileName the name of the file
-	 * @return the clip itself.
-	 */
-	public static Clip getClip(String fileName) {
-		return clipBank.get(fileName);
-	}
 	
 	/**
-	 * 
-	 * @param fileName
+	 * Plays a preloaded clip. 
+	 * @param fileName the name of the file
 	 */
 	public static void playClip(String fileName) {
 		Clip c = clipBank.get(fileName);
+		
+		FloatControl volumeCtrl = (FloatControl) c.getControl(FloatControl.Type.VOLUME);
+		volumeCtrl.setValue((float) volume);
+		
 		c.setFramePosition(0);
 		c.start();
+	}
+	
+	/**
+	 * Gets the volume used for sound effects.
+	 * @return the volume used for sound effects, where 0.0 is muted and 1.0 is full volume
+	 */
+	public static double getVolume() {
+		return volume;
+	}
+	
+	/**
+	 * Sets the volume for sound effects.
+	 * @param volume the volume, where 0.0 is muted and 1.0 is full volume 
+	 */
+	public static void setVolume(double volume) {
+		if (volume < 0.0 || volume > 1.0)
+			throw new IllegalArgumentException("Volume must be betwee 0.0 and 1.0");
+		SoundEffects.volume = volume;
 	}
 }
