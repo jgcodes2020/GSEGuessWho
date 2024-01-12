@@ -49,12 +49,11 @@ public class GuessWho {
 			SoundEffects.loadClips();
 			System.out.println("Loading music...");
 			MidiPlayer.loadSequences();
-			
-			int y = 0/0;
 		}
 		catch (Exception e) {
 			// errors during load are fatal, 
 			DialogUtilities.showExceptionDialog(null, "An error occurred during loading", e);
+      System.exit(1);
 		}
 		
 		// System.out.println("Characters:");
