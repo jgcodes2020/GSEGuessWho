@@ -13,6 +13,7 @@ import java.util.Map;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.BooleanControl;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineUnavailableException;
@@ -66,8 +67,20 @@ public class SoundEffects {
 	public static void playClip(String fileName) {
 		Clip c = clipBank.get(fileName);
 		
-		FloatControl volumeCtrl = (FloatControl) c.getControl(FloatControl.Type.VOLUME);
-		volumeCtrl.setValue((float) volume);
+		// We have to invert the equation provided here.
+		// https://docs.oracle.com/javase/8/docs/api/javax/sound/sampled/FloatControl.Type.html#MASTER_GAIN
+		FloatControl volumeCtrl = (FloatControl) c.getControl(FloatControl.Type.MASTER_GAIN);
+		BooleanControl muteCtrl = (BooleanControl) c.getControl(BooleanControl.Type.MUTE);
+		
+		// -60 dB -> * 10^(-30)
+		if (volume <= 1e-30) {
+			muteCtrl.setValue(true);
+		}
+		else {
+			muteCtrl.setValue(false);
+			volumeCtrl.setValue((float) (20.0 * Math.log10(volume)));
+		}
+		
 		
 		c.setFramePosition(0);
 		c.start();
