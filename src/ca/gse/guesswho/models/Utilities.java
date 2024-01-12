@@ -6,8 +6,6 @@ Java version: 8
 */
 package ca.gse.guesswho.models;
 
-import java.time.Duration;
-import java.util.BitSet;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Random;

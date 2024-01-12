@@ -8,19 +8,16 @@ package ca.gse.guesswho;
 
 import java.io.File;
 import java.io.IOError;
-import java.io.IOException;
 import java.awt.Color;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import javax.sound.midi.InvalidMidiDataException;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 
 import ca.gse.guesswho.models.DataCaches;
 import ca.gse.guesswho.sound.MidiPlayer;
 import ca.gse.guesswho.sound.SoundEffects;
+import ca.gse.guesswho.views.DialogUtilities;
 import ca.gse.guesswho.views.MainWindow;
 
 /**
@@ -52,10 +49,12 @@ public class GuessWho {
 			SoundEffects.loadClips();
 			System.out.println("Loading music...");
 			MidiPlayer.loadSequences();
+			
+			int y = 0/0;
 		}
 		catch (Exception e) {
 			// errors during load are fatal, 
-			throw new IOError(e);
+			DialogUtilities.showExceptionDialog(null, "An error occurred during loading", e);
 		}
 		
 		// System.out.println("Characters:");
@@ -70,7 +69,7 @@ public class GuessWho {
 		// }
 		// System.out.println();
 
-    UIManager.put("nimbusBase", new Color(0xff0000));
+    UIManager.put("nimbusBase", new Color(0xff8888));
     UIManager.put("nimbusFocus", Color.BLUE); // Red color
     UIManager.put("background", Color.WHITE);
     UIManager.put("nimbusSelectionBackground", new Color(0xff5224));

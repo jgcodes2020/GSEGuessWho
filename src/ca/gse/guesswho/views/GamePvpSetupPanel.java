@@ -34,8 +34,6 @@ public class GamePvpSetupPanel extends JPanel {
 	private static final Font BUTTON_FONT = new Font("Dialog", Font.BOLD, 20);
     private static final String P1_BUTTON_TEXT = "Player 1";
     private static final String P2_BUTTON_TEXT = "Player 2";
-	private static final String EASY_BUTTON_TEXT = "Easy";
-	private static final String HARD_BUTTON_TEXT = "Hard";
 	private MainWindow main;
 	private JLabel turnErrorLabel;
 	private ButtonGroup turnGroup;
@@ -43,10 +41,6 @@ public class GamePvpSetupPanel extends JPanel {
 
     private JTextField p1NameInput;
 	private JTextField p2NameInput;
-	private JToggleButton easyAIButton;
-
-	
-
 	
 	/**
 	 * Creates a menu button. All menu buttons have a bunch of shared properties,

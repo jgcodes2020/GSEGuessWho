@@ -110,7 +110,7 @@ public class GameAnswerPanel extends JPanel {
 	}
 	
 	/**
-     * Set the question on the top bar
+     * Set the question on the top bar.
 	 * 
 	 * @param question The new question
 	 */

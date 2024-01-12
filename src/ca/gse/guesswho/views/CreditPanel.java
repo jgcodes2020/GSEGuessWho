@@ -22,28 +22,29 @@ import javax.swing.JPanel;
 public class CreditPanel extends JPanel {
 	private static final Font TITLE_FONT = new Font("Dialog", Font.BOLD, 60);
 	private static final Font BUTTON_FONT = new Font("Dialog", Font.BOLD, 20);
-	private static final String[] INSTRUCTION_LINES = { // variable
+	private static final String[] DISPLAY_LINES = { // variable
 		"Chapman Yu",
 		"Jacky Guo",
         "Winston Zhao"
 	};
-	private static final String INSTRUCTION_HTML;
+	private static final String DISPLAY_HTML;
 	
+    // Static initializer block: construct HTML from the provided lines.
 	static {
 		StringBuilder text = new StringBuilder("<html><body>");
-		for (String line : INSTRUCTION_LINES) {
+		for (String line : DISPLAY_LINES) {
 			// these characters can mess up html, they need to be replaced with html entities
 			String escaped = line.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;");
 			text.append(escaped);
 			text.append("<br>");
 		}
 		text.append("</body></html>");
-		INSTRUCTION_HTML = text.toString();
+		DISPLAY_HTML = text.toString();
 	}
 	
 	private MainWindow main;
 	private JLabel bigTitle;
-	private JLabel steps;
+	private JLabel display;
 	/**
 	 * Creates a menu button. All menu buttons have a bunch of shared properties,
 	 * so I'm putting this in a method.
@@ -80,11 +81,11 @@ public class CreditPanel extends JPanel {
 		add(Box.createVerticalStrut(50));
 
 		// create the "steps"
-        steps = new JLabel(INSTRUCTION_HTML);
-		steps.setFont(BUTTON_FONT);
-		steps.setAlignmentX(CENTER_ALIGNMENT); // everything is centered anyways, so yeah.
-        steps.setHorizontalAlignment(JLabel.CENTER);
-		add(steps);
+        display = new JLabel(DISPLAY_HTML);
+		display.setFont(BUTTON_FONT);
+		display.setAlignmentX(CENTER_ALIGNMENT); // everything is centered anyways, so yeah.
+        display.setHorizontalAlignment(JLabel.CENTER);
+		add(display);
 		
 		add(Box.createVerticalStrut(50));
 		
