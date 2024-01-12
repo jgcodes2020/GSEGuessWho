@@ -7,16 +7,19 @@ Java version: 8
 package ca.gse.guesswho;
 
 import java.io.File;
+import java.io.IOError;
 import java.io.IOException;
 import java.awt.Color;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 
 import ca.gse.guesswho.models.DataCaches;
+import ca.gse.guesswho.sound.MidiPlayer;
 import ca.gse.guesswho.sound.SoundEffects;
 import ca.gse.guesswho.views.MainWindow;
 
@@ -38,14 +41,22 @@ public class GuessWho {
 	/**
 	 * The program's main method. Loads data, sets up the theme, and starts the application.
 	 * @param args command-line arguments; currently unused.
-	 * @throws IOException if an I/O error occurs.
-	 * @throws UnsupportedAudioFileException
-	 * @throws LineUnavailableException
 	 */
-    public static void main(String[] args) throws IOException, LineUnavailableException, UnsupportedAudioFileException {
-		DataCaches.loadCharacters(GuessWho.class.getResource("CharacterData.csv"));
-		DataCaches.loadQuestions(GuessWho.class.getResource("QuestionBank.csv"));
-		SoundEffects.loadClips();
+    public static void main(String[] args) {
+		try {
+			System.out.println("Loading character data...");
+			DataCaches.loadCharacters(GuessWho.class.getResource("CharacterData.csv"));
+			System.out.println("Loading questions...");
+			DataCaches.loadQuestions(GuessWho.class.getResource("QuestionBank.csv"));
+			System.out.println("Loading sound effects...");
+			SoundEffects.loadClips();
+			System.out.println("Loading music...");
+			MidiPlayer.loadSequences();
+		}
+		catch (Exception e) {
+			// errors during load are fatal, 
+			throw new IOError(e);
+		}
 		
 		// System.out.println("Characters:");
 		// for (GuessWhoCharacter character : DataCaches.getCharacterList()) {

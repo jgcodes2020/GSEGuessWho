@@ -15,6 +15,7 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 
+import javax.sound.midi.MidiUnavailableException;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -29,6 +30,7 @@ import ca.gse.guesswho.models.history.GameHistory;
 import ca.gse.guesswho.models.players.DumbAIPlayer;
 import ca.gse.guesswho.models.players.HumanPlayer;
 import ca.gse.guesswho.models.players.SmartAIPlayer;
+import ca.gse.guesswho.sound.MidiPlayer;
 import ca.gse.guesswho.sound.SoundEffects;
 
 /**
@@ -67,6 +69,7 @@ public class MainWindow extends JFrame {
 
 	// Panel-shared items
 	private Leaderboard leaderboard;
+	private MidiPlayer midiPlayer;
 
 	/**
 	 * Constructs a new main window.
@@ -109,13 +112,22 @@ public class MainWindow extends JFrame {
 
     */
 
-		// setup the leaderboard
+		// setup any global objects
 		try {
 			leaderboard = new Leaderboard(leaderboardPath);
 		} catch (IOException e) {
 			// show a dialog to inform the user
 			JOptionPane.showMessageDialog(null,
 					"Could not load the leaderboard for some reason. The program will exit now.",
+					"Error!", JOptionPane.ERROR_MESSAGE);
+			System.exit(1);
+		}
+		try {
+			midiPlayer = new MidiPlayer();
+		} catch (MidiUnavailableException e) {
+			// show a dialog to inform the user
+			JOptionPane.showMessageDialog(null,
+					"Your system does not support MIDI playback. The program will exit now.",
 					"Error!", JOptionPane.ERROR_MESSAGE);
 			System.exit(1);
 		}
@@ -184,6 +196,8 @@ public class MainWindow extends JFrame {
 		else
 			player2 = new DumbAIPlayer(DUMB_AI_NAME, DataCaches.randomCharacter());
 		gamePanel = new GamePanel(this, player1, player2, isFirst);
+		// start the Jeopardy music
+		midiPlayer.playLoadedSequence("jeopardy.mid", true);
 		// switch to game panel
 		rootPanel.add(gamePanel, MainWindow.CARD_GAME);
 		rootLayout.show(rootPanel, MainWindow.CARD_GAME);
@@ -194,6 +208,8 @@ public class MainWindow extends JFrame {
 		// setup AI player (names are hardcoded)
 		Player player2 = new HumanPlayer(p2Name);
 		gamePanel = new GamePanel(this, player1, player2, isFirst);
+		// start the Jeopardy music
+		midiPlayer.playLoadedSequence("jeopardy.mid", true);
 		// switch to game panel
 		rootPanel.add(gamePanel, MainWindow.CARD_GAME);
 		showSwitchScreen(p1Name, p2Name, isFirst);
@@ -206,6 +222,7 @@ public class MainWindow extends JFrame {
 	 */
 	void showWinScreen(GameHistory history) {
 		GameWonEvent event = new GameWonEvent(this, history);
+		midiPlayer.stop();
 		winPanel.updateView(event);
 		switchPanel(CARD_WIN_SCREEN);
 	}
@@ -244,6 +261,10 @@ public class MainWindow extends JFrame {
 	 */
 	public Leaderboard getLeaderboard() {
 		return leaderboard;
+	}
+	
+	public MidiPlayer getMidiPlayer() {
+		return midiPlayer;
 	}
 
 }
