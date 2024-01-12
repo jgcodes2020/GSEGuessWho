@@ -54,9 +54,6 @@ public class MenuPanel extends JPanel {
     icon.setAlignmentX(CENTER_ALIGNMENT);
     add(icon);
 
-    JLabel shit = new JLabel("Poo");
-    shit.setAlignmentX(CENTER_ALIGNMENT);
-    add(shit);
 
     add(Box.createVerticalStrut(50));
 
