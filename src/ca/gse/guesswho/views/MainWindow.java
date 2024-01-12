@@ -1,6 +1,6 @@
 /*
 MainWindow.java
-Authors: Jacky Guo, Chapman Yu
+Authors: Jacky Guo, Chapman Yu, Winston Zhao
 Date: Jan. 11, 2024
 Java version: 8
 */
@@ -12,6 +12,8 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 
+import java.awt.Image;
+import javax.imageio.ImageIO;
 import javax.sound.midi.MidiUnavailableException;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -27,6 +29,7 @@ import ca.gse.guesswho.models.players.HumanPlayer;
 import ca.gse.guesswho.models.players.SmartAIPlayer;
 import ca.gse.guesswho.sound.MidiPlayer;
 import ca.gse.guesswho.sound.SoundEffects;
+import jogamp.opengl.glu.mipmap.Image;
 
 /**
  * Frame for the main window, manages transitions between panels.
@@ -66,12 +69,21 @@ public class MainWindow extends JFrame {
 	private Leaderboard leaderboard;
 	private MidiPlayer midiPlayer;
 
+
+  
 	/**
 	 * Constructs a new main window.
 	 */
 	public MainWindow(File leaderboardPath) {
 		setTitle("Guess Who????????????????????");
 		setSize(1440, 1024);
+
+    try {
+      Image icon = ImageIO.read(getClass().getResource("../assets/guesswhoicon.png"));
+      this.setIconImage(icon);
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
     
     /*setUndecorated(true); // remove the default window decorations
 

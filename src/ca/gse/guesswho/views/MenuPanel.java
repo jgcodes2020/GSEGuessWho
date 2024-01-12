@@ -48,6 +48,18 @@ public class MenuPanel extends JPanel {
 		
 		// this "vertical glue" fills up extra space at the top
 		add(Box.createVerticalGlue());
+
+    // create the app icon
+    JLabel icon = new JLabel(new ImageIcon("../assets/guesswhoiconlarge.png"));
+    icon.setAlignmentX(CENTER_ALIGNMENT);
+    add(icon);
+
+    JLabel shit = new JLabel("Poo");
+    shit.setAlignmentX(CENTER_ALIGNMENT);
+    add(shit);
+
+    add(Box.createVerticalStrut(50));
+
 		
 		// create the title text (this could be replaced with actual logo art if we wanted)
 		JLabel bigTitle = new JLabel("GUESS WHO\u2122");
