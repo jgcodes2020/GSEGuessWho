@@ -18,8 +18,6 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import ca.gse.guesswho.models.Player;
-
 
 public class SwitchConfirmPanel extends JPanel {
 	private static final Font TITLE_FONT = new Font("Dialog", Font.BOLD, 60);

@@ -57,15 +57,13 @@ public class GameQuestionPanel extends JPanel {
     }
 
     /**
-     * Internal method. Creates a JPanel for the game board.
+     * Internal method. Creates a JPanel for the character grid.
      * 
      * @return a JPanel for the game board.
      */
     private JPanel buildBoard() {
         JPanel board = new JPanel();
         board.setLayout(new GridLayout(4, 6));
-        // board.setBackground(Color.RED);
-        // board.setBorder(BorderFactory.createLineBorder(Color.RED, 20));
 
         final int characterAmt = 24;
         cards = new CharacterCard[characterAmt];
@@ -77,6 +75,7 @@ public class GameQuestionPanel extends JPanel {
 
             cards[i] = new CharacterCard(character);
             cards[i].addActionListener(this::characterCardPressed);
+			
             cardGroup.add(cards[i]);
             board.add(cards[i]);
         }
@@ -90,21 +89,22 @@ public class GameQuestionPanel extends JPanel {
 	private JPanel buildBottomBar() {
 		JPanel board = new JPanel();
 		board.setLayout(new BoxLayout(board, BoxLayout.X_AXIS));
-
+		// load questions into an ArrayList.
 		ArrayList<String> questions = new ArrayList<String>();
 		for (QuestionBankEntry entry : DataCaches.getQuestionBank()) {
 			questions.add(entry.getText());
 		}
-
+		// Questions are stored in a JList, but this has to be initialized
+		// by an array, so convert the ArrayList.
 		questionList = new JList<String>(questions.toArray(new String[0]));
 		questionList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		questionList.addListSelectionListener(this::questionListValueChanged);
 
+		// put them into a scroll pane so they all fit.
 		JScrollPane questionScroll = new JScrollPane(questionList);
 
 		questionScroll.setViewportView(questionList);
 		questionScroll.setPreferredSize(new Dimension(540, 210));
-
 
 		board.add(Box.createHorizontalGlue());
 		board.add(questionScroll);
@@ -122,20 +122,22 @@ public class GameQuestionPanel extends JPanel {
 	private JPanel buildBottomButtons() {
 		JPanel board = new JPanel();
 		board.setLayout(new GridLayout(2,2));
+		// top row (buttons)
 		JButton confirmButton = new JButton("Confirm");
-		JButton forfeitButton = new JButton("Forfeit");
-		errorMessage = new JLabel("");
 		confirmButton.setPreferredSize(new Dimension(210, 105));
+		confirmButton.addActionListener(this::confirmButtonPressed);
+		
+		JButton forfeitButton = new JButton("Forfeit");
 		forfeitButton.setPreferredSize(new Dimension(210, 105));
 		forfeitButton.addActionListener(this::forfeitButtonPressed);
-		confirmButton.addActionListener(this::submitButtonPressed);
+		// bottom row (error label)
+		errorMessage = new JLabel("");
 		errorMessage.setHorizontalAlignment(JLabel.CENTER);
 
 		board.add(confirmButton);
 		board.add(forfeitButton);
 		board.add(errorMessage);
-
-
+		// this just fills extra space
 		board.add(Box.createHorizontalGlue());
 		return board;
 	}
@@ -149,7 +151,7 @@ public class GameQuestionPanel extends JPanel {
 	 * 
 	 * @param e the event being handled.
 	 */
-	private void submitButtonPressed(ActionEvent e) {
+	private void confirmButtonPressed(ActionEvent e) {
 		Question nextQuestion;
 		
 		CharacterCard.Model selectedCard = (CharacterCard.Model) cardGroup.getSelection();
@@ -172,8 +174,6 @@ public class GameQuestionPanel extends JPanel {
 		((HumanPlayer) parent.getState().getCurrentPlayer()).setNextQuestion(nextQuestion);
 		parent.runOneTurn();
 		parent.runAITurnsAndSwitchPanel();
-		// show AI response
-		// TODO: figure out how to show AI response HELLO WINSTON PLEASE HELP :PRAY:
 
 		updateUIState();
 		validate();

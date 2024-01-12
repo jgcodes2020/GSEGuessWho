@@ -6,8 +6,6 @@ Java version: 8
 */
 package ca.gse.guesswho.models;
 
-import java.time.Duration;
-
 /**
  * Game result.
  */

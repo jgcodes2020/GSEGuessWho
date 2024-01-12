@@ -11,11 +11,9 @@ import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.awt.event.*;
 import java.util.*;
-import java.util.function.Consumer;
 import javax.swing.*;
 import javax.swing.Timer;
 import ca.gse.guesswho.components.GScrollConstrainedPanel;
-import ca.gse.guesswho.events.*;
 import ca.gse.guesswho.models.*;
 import ca.gse.guesswho.models.history.GameHistory;
 import ca.gse.guesswho.models.history.GameHistoryEntry;
@@ -130,7 +128,7 @@ public class GamePanel extends JPanel {
 			}
 		}
 		if (state.getIsAnswerPhase()) {
-			doSwitcher();
+			checkSwitcher();
 			switchGamePanel(CARD_ANSWER);
 		} else {
 			switchGamePanel(CARD_QUESTION);
@@ -144,7 +142,7 @@ public class GamePanel extends JPanel {
 	 * @return true if someone won on this turn.
 	 */
 	public boolean runOneTurn() {
-		roundUpdate();
+		turnUpdate();
 		boolean isAnswer = state.getIsAnswerPhase();
 		boolean isPlayer1 = state.getPlayer1Turn();
 		String name = state.getCurrentPlayer().getName();
@@ -168,7 +166,7 @@ public class GamePanel extends JPanel {
 			message = DataCaches.getQuestionString(question);
 		}
 		addChatMessage(message, isPlayer1, name);
-		roundUpdate();
+		turnUpdate();
 		// check for winner
 		if (checkForWinner())
 			return true;
@@ -302,23 +300,27 @@ public class GamePanel extends JPanel {
 		return state;
 	}
 
-	private void roundUpdate() {
+	/**
+	 * Updates the turn counter.
+	 */
+	private void turnUpdate() {
 		roundLabel.setText("Turn " + (state.getTurnCount()));
 	}
 
+	/**
+	 * ActionListener updating the timer screen.
+	 * @param e the event being handled.
+	 */
 	private void timeUpdate(ActionEvent e) {
 		timeLabel.setText("Time: " + Utilities.millisToString(System.currentTimeMillis() - startTime));
 	}
 
-	public long getRunTime() {
-		return (System.currentTimeMillis() - startTime);
-	}
-
-	private void doSwitcher() {
-		if (state.getPlayer1().isHuman() == true && state.getPlayer2().isHuman() == true) {
+	/**
+	 * If the game is a PvP game, shows the switcher screen.
+	 */
+	private void checkSwitcher() {
+		if (state.getPlayer1().isHuman() && state.getPlayer2().isHuman()) {
 			main.showSwitchScreen(state.getPlayer1().getName(), state.getPlayer2().getName(), state.getPlayer1Turn());
-		} else {
-			return;
 		}
 	}
 

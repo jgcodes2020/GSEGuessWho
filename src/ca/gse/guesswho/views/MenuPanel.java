@@ -9,14 +9,8 @@ package ca.gse.guesswho.views;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Frame;
 import java.awt.event.ActionEvent;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.event.WindowEvent;
-import java.util.List;
-import java.util.ArrayList;
-
 import javax.swing.*;
 
 /**
@@ -25,10 +19,6 @@ import javax.swing.*;
 public class MenuPanel extends JPanel {
 	private static final Font TITLE_FONT = new Font("Dialog", Font.BOLD, 60);
 	private static final Font BUTTON_FONT = new Font("Dialog", Font.BOLD, 20);
-	
-	// Runnable represents a void-type method with no parameters.
-	// There is no additional information that needs to be carried.
-	private List<Runnable> startPressedHandlers = new ArrayList<>();
 	
 	private MainWindow main;
 	

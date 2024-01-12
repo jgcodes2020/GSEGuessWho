@@ -6,24 +6,19 @@ Java version: 8
 */
 package ca.gse.guesswho.views;
 
-import java.awt.BorderLayout;
 import java.awt.CardLayout;
-import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 
 import javax.sound.midi.MidiUnavailableException;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import ca.gse.guesswho.events.GameWonEvent;
 import ca.gse.guesswho.models.DataCaches;
-import ca.gse.guesswho.models.GameState;
 import ca.gse.guesswho.models.Leaderboard;
 import ca.gse.guesswho.models.Player;
 import ca.gse.guesswho.models.history.GameHistory;
@@ -117,18 +112,14 @@ public class MainWindow extends JFrame {
 			leaderboard = new Leaderboard(leaderboardPath);
 		} catch (IOException e) {
 			// show a dialog to inform the user
-			JOptionPane.showMessageDialog(null,
-					"Could not load the leaderboard for some reason. The program will exit now.",
-					"Error!", JOptionPane.ERROR_MESSAGE);
+			DialogUtilities.showExceptionDialog(this, "Leaderboard loading failed!", e);
 			System.exit(1);
 		}
 		try {
 			midiPlayer = new MidiPlayer();
 		} catch (MidiUnavailableException e) {
 			// show a dialog to inform the user
-			JOptionPane.showMessageDialog(null,
-					"Your system does not support MIDI playback. The program will exit now.",
-					"Error!", JOptionPane.ERROR_MESSAGE);
+			DialogUtilities.showExceptionDialog(this, "MIDI setup failed!", e);
 			System.exit(1);
 		}
 		// save the leaderboard when the window closes
@@ -216,7 +207,7 @@ public class MainWindow extends JFrame {
 	}
 
 	/**
-	 * Switches the screen to the win screen and make a GameWonEvent
+	 * Switches the screen to the win screen.
 	 * 
 	 * @param isWinnerP1 a variable representing whether the winner is Player 1
 	 */
@@ -227,6 +218,13 @@ public class MainWindow extends JFrame {
 		switchPanel(CARD_WIN_SCREEN);
 	}
 
+	/**
+	 * Switches the screen to the "switch confirm" screen, used in PVP mode.
+	 * 
+	 * @param p1Name Player 1's name.
+	 * @param p2Name Player 2's name.
+	 * @param isP1Turn If true, it is player 1's turn, otherwise it is player 2's
+	 */
 	void showSwitchScreen(String p1Name, String p2Name, boolean isP1Turn) {
 		switchPanel(CARD_SWITCH_CONFIRM);
 		SoundEffects.playClip("ding.wav");
@@ -242,6 +240,9 @@ public class MainWindow extends JFrame {
 		rootLayout.show(rootPanel, panelString);
 	}
 
+	/**
+	 * Saves the leaderboard, showing a dialog if things go wrong.
+	 */
 	void saveLeaderboard() {
 		try {
 			System.out.println("Save leaderboard");
@@ -263,6 +264,10 @@ public class MainWindow extends JFrame {
 		return leaderboard;
 	}
 	
+	/**
+	 * Gets the globally-owned MIDI player instance.
+	 * @return the MIDI player
+	 */
 	public MidiPlayer getMidiPlayer() {
 		return midiPlayer;
 	}
