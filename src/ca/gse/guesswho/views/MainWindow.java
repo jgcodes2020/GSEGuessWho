@@ -45,6 +45,7 @@ public class MainWindow extends JFrame {
 	static final String CARD_PVP_SETUP = "pvpsetup";
 	static final String CARD_SWITCH_CONFIRM = "switch";
 	static final String CARD_LEADERBOARD = "leaderboard";
+	static final String CARD_SETTINGS = "settings";
 
 	private static final String SMART_AI_NAME = "John";
 	private static final String DUMB_AI_NAME = "Gina";
@@ -64,6 +65,7 @@ public class MainWindow extends JFrame {
 	private GamePvpSetupPanel pvpSetupPanel = null;
 	private SwitchConfirmPanel switchConfirmPanel = null;
 	private LeaderboardPanel leaderboardPanel = null;
+	private SettingsPanel settingsPanel = null;
 
 	// Panel-shared items
 	private Leaderboard leaderboard;
@@ -140,6 +142,9 @@ public class MainWindow extends JFrame {
 
 		leaderboardPanel = new LeaderboardPanel(this);
 		rootPanel.add(leaderboardPanel, CARD_LEADERBOARD);
+		
+		settingsPanel = new SettingsPanel(this);
+		rootPanel.add(settingsPanel, CARD_SETTINGS);
 
 		setContentPane(rootPanel);
 

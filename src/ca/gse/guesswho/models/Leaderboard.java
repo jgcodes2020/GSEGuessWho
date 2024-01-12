@@ -75,12 +75,10 @@ public class Leaderboard extends AbstractTableModel {
                 results.add(GameResult.fromCsvRow(line));
             }
 		}
-		System.out.println("rows: " + results.size());
 		// sort the results according to leaderboard order.
 		Utilities.sort(results, SCORE_ORDER);
 		// let the model know that we loaded everything
 		this.fireTableRowsInserted(0, results.size() - 1);
-		System.out.println("results");
 	}
 	
 	public void save() throws IOException {

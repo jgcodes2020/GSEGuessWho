@@ -64,7 +64,7 @@ public class Utilities {
 		// lists.
 		// Insertion sort works by repeatedly adding elements to a sorted list.
 		for (int i = 1; i < list.size(); i++) {
-			for (int j = i; j > 0 && cmp.compare(list.get(j - 1), list.get(j)) > 1; j++) {
+			for (int j = i; j > 0 && cmp.compare(list.get(j - 1), list.get(j)) > 0; j++) {
 				T temp = list.get(j - 1);
 				list.set(j - 1, list.get(j));
 				list.set(j, temp);

@@ -5,6 +5,11 @@ Only supports the question asking stuff as of now. We'll un-scuff it next year.
 
 - Jacky G, Winston Z, Chapman Y; Dec. 22, 2023
 
+LEGAL NOTICE
+================
+jeopardy.mid is a transcription of the main theme from "Jeopardy!"(tm) by Alex Trebek.
+The transcription was made by ear; transcribed into MuseScore and exported as MIDI.
+
 NOTE 1
 ----------
 Let X represent whether P1 is answering (equivalently, P2 is asking) (1 if P1 is answering, 0 if not)
