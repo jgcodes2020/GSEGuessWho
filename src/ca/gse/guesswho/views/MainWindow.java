@@ -29,7 +29,6 @@ import ca.gse.guesswho.models.players.HumanPlayer;
 import ca.gse.guesswho.models.players.SmartAIPlayer;
 import ca.gse.guesswho.sound.MidiPlayer;
 import ca.gse.guesswho.sound.SoundEffects;
-import jogamp.opengl.glu.mipmap.Image;
 
 /**
  * Frame for the main window, manages transitions between panels.
