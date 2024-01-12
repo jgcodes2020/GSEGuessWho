@@ -67,12 +67,12 @@ public class SoundEffects {
 	public static void playClip(String fileName) {
 		Clip c = clipBank.get(fileName);
 		
-		// We have to invert the equation provided here.
+		// We have to invert the equation provided here; converting a multiplier to decibels.
 		// https://docs.oracle.com/javase/8/docs/api/javax/sound/sampled/FloatControl.Type.html#MASTER_GAIN
 		FloatControl volumeCtrl = (FloatControl) c.getControl(FloatControl.Type.MASTER_GAIN);
 		BooleanControl muteCtrl = (BooleanControl) c.getControl(BooleanControl.Type.MUTE);
 		
-		// -60 dB -> * 10^(-30)
+		// -60 dB -> * 10^(-30). -60 dB is equivalent to muting.
 		if (volume <= 1e-30) {
 			muteCtrl.setValue(true);
 		}
