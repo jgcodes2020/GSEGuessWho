@@ -9,11 +9,13 @@ import java.util.Map;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiChannel;
+import javax.sound.midi.MidiMessage;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
 import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
+import javax.sound.midi.ShortMessage;
 import javax.sound.midi.Synthesizer;
 import javax.sound.midi.Transmitter;
 
@@ -52,23 +54,33 @@ public class MidiPlayer implements Closeable {
 	private Sequencer sequencer;
 	private Synthesizer synthesizer;
 	
-	private Transmitter transmitter;
-	private Receiver receiver;
+	private Transmitter sequenceTransmitter;
+	private Receiver sequenceReceiver;
+	private Receiver controlReceiver;
 	
 	private int volume;
 	
+	/**
+	 * Creates a new MIDI player, allocating all needed resources to do so.
+	 * @throws MidiUnavailableException If the system does not support MIDI playback.
+	 */
 	public MidiPlayer() throws MidiUnavailableException {
 		// this reads out the MIDI notes
-		sequencer = MidiSystem.getSequencer();
+		sequencer = MidiSystem.getSequencer(false);
 		// this plays the MIDI notes
 		synthesizer = MidiSystem.getSynthesizer();
 		// open them
 		sequencer.open();
 		synthesizer.open();
-		// connect the two via a virtual MIDI cable
-		transmitter = sequencer.getTransmitter();
-		receiver = synthesizer.getReceiver();
-		transmitter.setReceiver(receiver);
+		// setup connection ports
+		sequenceTransmitter = sequencer.getTransmitter();
+		sequenceReceiver = synthesizer.getReceiver();
+		controlReceiver = synthesizer.getReceiver();
+		// connect sequence transmitter and sequence receiver
+		sequenceTransmitter.setReceiver(sequenceReceiver);
+		
+		// set the volume to 50% for now
+		setVolume(0.5);
 	}
 	/**
 	 * Starts playing a sequence, optionally looping it forever.
@@ -116,15 +128,22 @@ public class MidiPlayer implements Closeable {
 	}
 	
 	/**
-	 * 
-	 * @param value
+	 * Sets the volume. The provided parameter will be clamped inside the method.
+	 * @param value The volume, where 0 is muted and 1 is full volume
 	 */
-	public void setVolume(int value) {
-		if (volume < 0 || volume > 127) 
-			throw new IllegalArgumentException("Invalid MIDI volume");
-		
-		MidiChannel[] channels = synthesizer.getChannels();
-		
+	public void setVolume(double value) {
+		value = Math.min(Math.max(value, 0.0), 1.0);
+		// MIDI volume is a 14-bit number from 0 to 16383
+		this.volume = (int) (value * 16383);
+		// set the volume of all channels
+		controlReceiver.send(MidiMessages.masterVolume(volume), -1);
+	}
+	/**
+	 * Gets the volume.
+	 * @return The volume, where 0 is muted and 1 is full volume
+	 */
+	public double getVolume() {
+		return (double) this.volume / 16383;
 	}
 	
 	/**
@@ -135,8 +154,8 @@ public class MidiPlayer implements Closeable {
 	public void close() throws IOException {
 		sequencer.stop();
 		
-		transmitter.close();
-		receiver.close();
+		sequenceTransmitter.close();
+		sequenceReceiver.close();
 		sequencer.close();
 		synthesizer.close();
 	}
