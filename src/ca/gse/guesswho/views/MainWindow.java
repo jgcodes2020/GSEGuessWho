@@ -73,40 +73,6 @@ public class MainWindow extends JFrame {
 		setTitle("Guess Who????????????????????");
 		setSize(1440, 1024);
     
-    /*setUndecorated(true); // remove the default window decorations
-
-    JPanel titlePanel = new JPanel();
-    titlePanel.setBackground(Color.RED);
-    titlePanel.setPreferredSize(new Dimension(getWidth(), 30));
-
-     // Create minimize, maximize, and close buttons
-    JButton minimizeButton = new JButton("-");
-    minimizeButton.addActionListener(e -> setState(JFrame.ICONIFIED)); // Minimize the window
-
-    JButton maximizeButton = new JButton("+");
-    maximizeButton.addActionListener(e -> {
-        if (getExtendedState() != JFrame.MAXIMIZED_BOTH) {
-            setExtendedState(JFrame.MAXIMIZED_BOTH); // Maximize the window
-        } else {
-            setExtendedState(JFrame.NORMAL); // Restore the window
-        }
-    });
-
-    JButton closeButton = new JButton("x");
-    closeButton.addActionListener(e -> dispose()); // Close the window
-
-    // Add buttons to the title panel
-    titlePanel.add(minimizeButton);
-    titlePanel.add(maximizeButton);
-    titlePanel.add(closeButton);
-
-    
-
-    
-    add(titlePanel, BorderLayout.NORTH);
-
-    */
-
 		// setup any global objects
 		try {
 			leaderboard = new Leaderboard(leaderboardPath);
