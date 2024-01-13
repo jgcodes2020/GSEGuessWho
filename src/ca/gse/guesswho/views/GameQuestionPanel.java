@@ -45,6 +45,7 @@ public class GameQuestionPanel extends JPanel {
 	private JList<String> questionList;
 	private JLabel errorMessage;
 
+
 	/**
 	 * Creates a game question panel.
 	 * 
@@ -137,9 +138,11 @@ public class GameQuestionPanel extends JPanel {
 		forfeitButton.setPreferredSize(new Dimension(210, 105));
 		forfeitButton.addActionListener(this::forfeitButtonPressed);
 		forfeitButton.setBackground(Color.WHITE);
+
 		// bottom row (error label)
 		errorMessage = new JLabel("");
 		errorMessage.setHorizontalAlignment(JLabel.CENTER);
+
 
 		board.add(confirmButton);
 		board.add(forfeitButton);
@@ -177,7 +180,8 @@ public class GameQuestionPanel extends JPanel {
 		((HumanPlayer) parent.getState().getCurrentPlayer()).setNextQuestion(nextQuestion);
 		parent.runOneTurn();
 		parent.runAITurnsAndSwitchPanel();
-
+		questionList.clearSelection();
+		errorMessage.setText("");
 		updateUIState();
 		validate();
 		repaint();
