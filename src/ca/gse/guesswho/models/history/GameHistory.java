@@ -33,6 +33,7 @@ public class GameHistory {
 	private boolean isWinnerP1;
 
 	private boolean isForfeit;
+	private boolean isLogicalError;
 
 	private long winTime;
 
@@ -61,6 +62,7 @@ public class GameHistory {
 		p2IsAI = false;
 
 		isForfeit = false;
+		isLogicalError = true;
 
 		winTime = -1L;
 	}
@@ -162,6 +164,10 @@ public class GameHistory {
 					pw.println("P1 Forfeited");
 				}
 				pw.println("Winner: P2");
+			}
+
+			if (isLogicalError){
+				pw.println("Warning: Logical Error has happened.");
 			}
 		}
 
@@ -318,4 +324,10 @@ public class GameHistory {
 	public void setForfeit(boolean forfeit) {
 		this.isForfeit = forfeit;
 	}
+
+	public void setLogical(boolean errors){
+		this.isLogicalError = errors;
+
+	}
+
 }

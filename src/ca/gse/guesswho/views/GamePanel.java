@@ -182,9 +182,40 @@ public class GamePanel extends JPanel {
 	 * @return Whether somebody won.
 	 */
 	boolean checkForWinner() {
+		int charRemainingP1 = state.getPlayer2().getRemainingIndexes().cardinality();
+		int charRemainingP2 = state.getPlayer1().getRemainingIndexes().cardinality();
+
+		if (charRemainingP1 == 0 || charRemainingP2 == 0){
+			long winTime = System.currentTimeMillis() - startTime;
+			if (state.getPlayer1Turn()){
+				history.setIsWinnerP1(true);
+			}
+			else{
+				history.setIsWinnerP1(false);
+			}
+
+			main.getLeaderboard().addEntry(new GameResult(
+				// player name
+				state.getPlayer1().getName(),
+				// played against smart AI?
+				state.getPlayer2() instanceof SmartAIPlayer,
+				// number of turns
+				history.getTurnCount(),
+				// win time
+				winTime));
+
+			computeStatistics(false);
+			history.setWinTime(winTime);
+			computeStatistics(false);
+			main.showlogicalConScreen(history);
+			System.out.println("yo");
+			return true;
+		}
+
 		// if nobody wins, exit now
-		if (state.getWinner() == GameState.WINNER_NONE)
+		if (state.getWinner() == GameState.WINNER_NONE){
 			return false;
+		}
 		// measure the time now and take that as the win time
 		long winTime = System.currentTimeMillis() - startTime;
 
@@ -208,6 +239,7 @@ public class GamePanel extends JPanel {
 		// check everyone's secret characters
 		computeStatistics(false);
 		// show the win screen.
+		history.setLogical(true);
 		main.showWinScreen(history);
 		return true;
 	}

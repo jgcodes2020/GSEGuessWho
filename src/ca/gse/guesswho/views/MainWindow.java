@@ -45,6 +45,7 @@ public class MainWindow extends JFrame {
     static final String CARD_SWITCH_CONFIRM = "switch";
     static final String CARD_LEADERBOARD = "leaderboard";
     static final String CARD_SETTINGS = "settings";
+    static final String CARD_LOGICAL = "logical";
 
     private static final String SMART_AI_NAME = "John";
     private static final String DUMB_AI_NAME = "Gina";
@@ -65,6 +66,7 @@ public class MainWindow extends JFrame {
     private SwitchConfirmPanel switchConfirmPanel = null;
     private LeaderboardPanel leaderboardPanel = null;
     private SettingsPanel settingsPanel = null;
+    private LogicalContraditionPanel logicalPanel = null;
 
     // Panel-shared items
     private Leaderboard leaderboard;
@@ -142,6 +144,9 @@ public class MainWindow extends JFrame {
 
         settingsPanel = new SettingsPanel(this);
         rootPanel.add(settingsPanel, CARD_SETTINGS);
+        
+        logicalPanel = new LogicalContraditionPanel(this);
+        rootPanel.add(logicalPanel, CARD_LOGICAL);
 
         setContentPane(rootPanel);
 
@@ -189,7 +194,7 @@ public class MainWindow extends JFrame {
     /**
      * Switches the screen to the win screen.
      * 
-     * @param isWinnerP1 a variable representing whether the winner is Player 1
+     * @param history Game history of everything which has happened
      */
     void showWinScreen(GameHistory history) {
         GameWonEvent event = new GameWonEvent(this, history);
@@ -198,6 +203,24 @@ public class MainWindow extends JFrame {
         midiPlayer.stop();
         winPanel.updateView(event);
         switchPanel(CARD_WIN_SCREEN);
+    }
+
+
+
+    /**
+     * Switches the screen to the logical contraition screen.
+     * 
+     * @param history Game history of everything which has happened
+     */
+    void showlogicalConScreen(GameHistory history) {
+        System.out.println("yo");
+
+        GameWonEvent event = new GameWonEvent(this, history);
+        gamePanel = null;
+
+        midiPlayer.stop();
+        logicalPanel.updateView(event);
+        switchPanel(CARD_LOGICAL);
     }
 
     /**

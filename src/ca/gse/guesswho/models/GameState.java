@@ -145,6 +145,11 @@ public class GameState {
                 // don't do anything, the winner is determined
                 return;
             }
+            if (getPlayer1().getRemainingIndexes().cardinality()==0 || getPlayer2().getRemainingIndexes().cardinality() == 0){
+                System.err.println("hrlp");
+                return;
+            }
+
             // clear the other player's remaining indexes
             BitSet remaining = otherPlayer.getRemainingIndexes();
             int remainingLength = remaining.length();
