@@ -62,7 +62,7 @@ public class GameHistory {
 		p2IsAI = false;
 
 		isForfeit = false;
-		isLogicalError = true;
+		isLogicalError = false;
 
 		winTime = -1L;
 	}

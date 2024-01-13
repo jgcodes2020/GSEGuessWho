@@ -208,6 +208,7 @@ public class GamePanel extends JPanel {
 			history.setP2IsAI(!(state.getPlayer2().isHuman()));
 	
 			history.setWinTime(winTime);
+			history.setLogical(true);
 			//computeStatistics(false);
 			main.showlogicalConScreen(history);
 			System.out.println("yo");
@@ -241,7 +242,6 @@ public class GamePanel extends JPanel {
 		// check everyone's secret characters
 		computeStatistics(false);
 		// show the win screen.
-		history.setLogical(true);
 		main.showWinScreen(history);
 		return true;
 	}
