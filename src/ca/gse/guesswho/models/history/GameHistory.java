@@ -33,6 +33,8 @@ public class GameHistory {
 	
 	private boolean isP1First;
 	private boolean isWinnerP1;
+
+	private boolean isForfeit;
 	
 	private long winTime;
 	
@@ -60,6 +62,7 @@ public class GameHistory {
 		p2Secret = null;
 		p2IsAI = false;
 		
+		isForfeit = false;
 		
 		winTime = -1L;
 	}
@@ -146,10 +149,18 @@ public class GameHistory {
 			}
 			
 			pw.println();
-			if (isWinnerP1)
+			if (isWinnerP1){
+				if (isForfeit){
+					pw.println("P2 Forfeited");
+				}
 				pw.println("Winner: P1");
-			else
-				pw.println("Winner: P2");
+			}
+			else{
+				if (isForfeit){
+					pw.println("P1 Forfeited");
+				}
+					pw.println("Winner: P2");
+			}
 		}
 		
 	}
@@ -252,5 +263,10 @@ public class GameHistory {
 
 	public void setP2IsAI(boolean p2IsAI) {
 		this.p2IsAI = p2IsAI;
+	}
+
+
+	public void setForfeit(boolean forfeit) {
+		this.isForfeit = forfeit;
 	}
 }

@@ -216,6 +216,7 @@ public class GamePanel extends JPanel {
 	void forfeit() {
 		// If it's player 1's turn they should lose, i.e. player 2 should win, vice
 		// versa.
+		history.setForfeit(true);
 		history.setIsWinnerP1(!state.getPlayer1Turn());
 		// measure the time now and take that as the win time.
 		history.setWinTime(System.currentTimeMillis() - startTime);
