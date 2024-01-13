@@ -77,8 +77,7 @@ public class GameAISetupPanel extends JPanel {
 		// this "vertical glue" fills up extra space at the top
 		add(Box.createVerticalStrut(15));
 
-		// create the title text (this could be replaced with actual logo art if we
-		// wanted)
+		// create the title text
 		JLabel bigTitle = new JLabel("Game Setup . . .");
 		bigTitle.setFont(TITLE_FONT);
 		bigTitle.setAlignmentX(CENTER_ALIGNMENT); // everything is centered anyways, so yeah.

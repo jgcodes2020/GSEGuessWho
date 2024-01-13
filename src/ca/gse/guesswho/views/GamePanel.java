@@ -74,11 +74,12 @@ public class GamePanel extends JPanel {
 		JPanel board = new JPanel();
 
 		chatPanelContent = new GScrollConstrainedPanel(true, false);
-		chatPanelContent.setLayout(new BoxLayout(chatPanelContent, BoxLayout.Y_AXIS));// Need to fix the layout but i
-																						// want things to go down.
+		chatPanelContent.setLayout(new BoxLayout(chatPanelContent, BoxLayout.Y_AXIS));
+																						
 		board.setLayout(new BorderLayout());
 
 		board.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
 		// tickers for time and round on top
 		timeLabel = new JLabel("Time: 00:00:00");
 		textBoard.add(timeLabel, BorderLayout.WEST);
@@ -159,7 +160,8 @@ public class GamePanel extends JPanel {
 				message = "Yes";
 			else
 				message = "No";
-		} else {
+		} 
+		else {
 			Question question = state.getLastQuestion();
 			history.push(question);
 			// set chat message

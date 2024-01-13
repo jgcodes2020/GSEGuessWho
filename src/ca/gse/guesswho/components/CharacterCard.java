@@ -1,3 +1,9 @@
+/*
+CharacterCard.java
+Authors: Jacky Guo
+Date: Jan. 11, 2024
+Java version: 8
+*/
 package ca.gse.guesswho.components;
 
 import java.awt.BorderLayout;

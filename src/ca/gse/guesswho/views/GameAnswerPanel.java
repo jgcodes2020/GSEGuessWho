@@ -84,10 +84,12 @@ public class GameAnswerPanel extends JPanel {
 		// container for all the stuff
 		JPanel realBoard = new JPanel();
 		realBoard.setLayout(new BorderLayout());
+		
 		// title over the character list
 		JLabel instruction = new JLabel("Character List");
 		instruction.setFont(BUTTON_FONT);
 		instruction.setHorizontalAlignment(JLabel.CENTER);
+
 		// the panel containing the cards
 		JPanel charBoard = new JPanel();
 		charBoard.setLayout(new GridLayout(4, 6));

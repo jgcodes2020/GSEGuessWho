@@ -80,8 +80,7 @@ public class GamePvpSetupPanel extends JPanel {
 		add(Box.createVerticalStrut(20));
 
 		// create step one text
-		JLabel stepOne = new JLabel(
-				"1) Both player pick a character and remember it in your brain. (Take a picture if you need to!)");
+		JLabel stepOne = new JLabel("1) Both player pick a character and remember it in your brain. (Take a picture if you need to!)");
 		stepOne.setFont(BUTTON_FONT);
 		stepOne.setAlignmentX(CENTER_ALIGNMENT); // everything is centered anyways, so yeah.
 		add(stepOne);// add instruction of step 1
