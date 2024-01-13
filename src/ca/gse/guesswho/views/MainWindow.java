@@ -195,6 +195,8 @@ public class MainWindow extends JFrame {
 	 */
 	void showWinScreen(GameHistory history) {
 		GameWonEvent event = new GameWonEvent(this, history);
+		gamePanel = null;
+		
 		midiPlayer.stop();
 		winPanel.updateView(event);
 		switchPanel(CARD_WIN_SCREEN);

@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoundedRangeModel;
@@ -72,6 +74,12 @@ public class SettingsPanel extends JPanel {
 		// sliders operate on integer values, convert from the fraction used in sound API
 		sfxVolume.setValue((int) (SoundEffects.getVolume() * 100.0));
 		sfxVolume.addChangeListener(this::onSfxVolumeChange);
+		sfxVolume.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				onSfxVolumeMouseReleased(e);
+			}
+		});
 		
 		// music label
 		JLabel musicLabel = new JLabel("Music Volume");
@@ -119,13 +127,21 @@ public class SettingsPanel extends JPanel {
 		add(backToMainMenuButton, BorderLayout.SOUTH);
 	}
 	
+	/**
+	 * Sets the sound-effect volume to 
+	 * @param e
+	 */
 	private void onSfxVolumeChange(ChangeEvent e) {
 		// slider's range is [0, 100], map to [0, 1]
 		SoundEffects.setVolume(sfxVolume.getValue() / 100.0);
-		if (!sfxVolume.getValueIsAdjusting()) {
-			// QoL: play ding so user knows how their sound is doing
-			SoundEffects.playClip("ding.wav");
-		}
+	}
+	
+	/**
+	 * Plays the ding sound effect to let the user know how the loud the sound-effects are.
+	 * @param e release
+	 */
+	private void onSfxVolumeMouseReleased(MouseEvent e) {
+		SoundEffects.playClip("ding.wav");
 	}
 	
 	/**

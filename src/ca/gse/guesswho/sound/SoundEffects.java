@@ -80,8 +80,11 @@ public class SoundEffects {
 			muteCtrl.setValue(false);
 			volumeCtrl.setValue((float) (20.0 * Math.log10(volume)));
 		}
-		
-		
+		// This should restart and play the sound. If you try to restart the clip
+		// very quickly in short intervals, it seems to mess up. This is a known bug
+		// and I have no idea how to fix it.
+		c.stop();
+		c.flush();
 		c.setFramePosition(0);
 		c.start();
 	}
