@@ -27,19 +27,20 @@ import ca.gse.guesswho.views.MainWindow;
 public class GuessWho {
 	private static File getLeaderboardPath() {
 		// use Java NIO paths, as it provides more intuitive ways to combine path
-		// 
+		//
 		Path homePath = Paths.get(System.getProperty("user.home"));
 		File leaderboardFile = homePath.resolve("GSEGuessWho_Leaderboard.csv").toFile();
 		System.out.println("Leaderboard: " + leaderboardFile);
 		return leaderboardFile;
 	}
-	
-	
+
 	/**
-	 * The program's main method. Loads data, sets up the theme, and starts the application.
+	 * The program's main method. Loads data, sets up the theme, and starts the
+	 * application.
+	 * 
 	 * @param args command-line arguments; currently unused.
 	 */
-    public static void main(String[] args) {
+	public static void main(String[] args) {
 		try {
 			System.out.println("Loading character data...");
 			DataCaches.loadCharacters(GuessWho.class.getResource("CharacterData.csv"));
@@ -49,42 +50,41 @@ public class GuessWho {
 			SoundEffects.loadClips();
 			System.out.println("Loading music...");
 			MidiPlayer.loadSequences();
-		}
-		catch (Exception e) {
-			// errors during load are fatal, 
+		} catch (Exception e) {
+			// errors during load are fatal,
 			DialogUtilities.showExceptionDialog(null, "An error occurred during loading", e);
-      System.exit(1);
+			System.exit(1);
 		}
-		
+
 		// System.out.println("Characters:");
 		// for (GuessWhoCharacter character : DataCaches.getCharacterList()) {
-		// 	System.out.println(character);
-		// }
-		// System.out.println();
-		
-		// System.out.println("Questions: ");
-		// for (Map.Entry<String, AttributeQuestion> entry : DataCaches.getQuestions().entrySet()) {
-		// 	System.out.printf("%s (%s)\n", entry.getKey(), entry.getValue());
+		// System.out.println(character);
 		// }
 		// System.out.println();
 
-    UIManager.put("nimbusBase", new Color(0xff8888));
-    UIManager.put("nimbusFocus", Color.BLUE); // Red color
-    UIManager.put("background", Color.WHITE);
-    UIManager.put("nimbusSelectionBackground", new Color(0xff5224));
-    UIManager.put("nimbusBlueGrey", new Color(0xffb5a1));
-    UIManager.put("control", Color.WHITE);
-    //UIManager.put("Button[Default+Pressed].backgroundPainter", Color.BLUE);
-		
+		// System.out.println("Questions: ");
+		// for (Map.Entry<String, AttributeQuestion> entry :
+		// DataCaches.getQuestions().entrySet()) {
+		// System.out.printf("%s (%s)\n", entry.getKey(), entry.getValue());
+		// }
+		// System.out.println();
+
+		UIManager.put("nimbusBase", new Color(0xff8888));
+		UIManager.put("nimbusFocus", Color.BLUE); // Red color
+		UIManager.put("background", Color.WHITE);
+		UIManager.put("nimbusSelectionBackground", new Color(0xff5224));
+		UIManager.put("nimbusBlueGrey", new Color(0xffb5a1));
+		UIManager.put("control", Color.WHITE);
+		// UIManager.put("Button[Default+Pressed].backgroundPainter", Color.BLUE);
+
 		try {
 			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException
 				| UnsupportedLookAndFeelException e) {
 			System.out.println("Could not retrieve Nimbus theme, reverting to default theme");
 		}
-		
-		
+
 		MainWindow window = new MainWindow(getLeaderboardPath());
 		window.setVisible(true);
-    }
+	}
 }

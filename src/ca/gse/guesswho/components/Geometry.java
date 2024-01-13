@@ -9,7 +9,8 @@ public class Geometry {
 	/**
 	 * Returns a rectangle whose aspect ratio is the same as {@code imageSize} while
 	 * fitting inside and being centred in a box of size {@code boxSize}.
-	 * @param boxSize the containing box
+	 * 
+	 * @param boxSize   the containing box
 	 * @param imageSize the image size
 	 * @return a rectangle that sizes {@code imageSize} to fit {@code boxSize}.
 	 */
@@ -22,15 +23,14 @@ public class Geometry {
 			// fill height and compute width based on aspect ratio
 			int matchingWidth = boxSize.height * imageSize.width / imageSize.height;
 			int xOffset = (boxSize.width - matchingWidth) / 2;
-			
+
 			return new Rectangle(xOffset, 0, matchingWidth, boxSize.height);
-		}
-		else {
+		} else {
 			// the box is skinnier than the image
 			// fill width and compute height based on aspect ratio
 			int matchingHeight = boxSize.width * imageSize.height / imageSize.width;
 			int yOffset = (boxSize.height - matchingHeight) / 2;
-			
+
 			return new Rectangle(0, yOffset, boxSize.width, matchingHeight);
 		}
 	}

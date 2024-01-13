@@ -12,73 +12,76 @@ import ca.gse.guesswho.models.GuessWhoCharacter;
  * This combines a toggle button, a label, and a character image display.
  */
 public class CharacterCard extends JToggleButton {
-	/**
-	 * The internal model for a character card. Contains data relevant to the
-	 * card regardless of its appearance.
-	 */
-	public static class Model extends JToggleButton.ToggleButtonModel {
-		private GuessWhoCharacter character;
-		
-		/**
-		 * Constructs a new character card model.
-		 * @param character the character to use.
-		 */
-		public Model(GuessWhoCharacter character) {
-			this.character = character;
-		}
+    /**
+     * The internal model for a character card. Contains data relevant to the
+     * card regardless of its appearance.
+     */
+    public static class Model extends JToggleButton.ToggleButtonModel {
+        private GuessWhoCharacter character;
 
-		/**
-		 * Gets the character used by the model.
-		 * @return the character being used.
-		 */
-		public GuessWhoCharacter getCharacter() {
-			return character;
-		}
-	}
-	
+        /**
+         * Constructs a new character card model.
+         * 
+         * @param character the character to use.
+         */
+        public Model(GuessWhoCharacter character) {
+            this.character = character;
+        }
 
-	private JLabel textLabel;
-	private CharacterImageDisplay iconDisplay;
+        /**
+         * Gets the character used by the model.
+         * 
+         * @return the character being used.
+         */
+        public GuessWhoCharacter getCharacter() {
+            return character;
+        }
+    }
 
-	/**
-	 * Creates a new character card for the given character.
-	 * @param character The Guess Who character to set on this CharacterCard.
-	 */
-	public CharacterCard(GuessWhoCharacter character) {
-		// use our custom model for the button.
-		setModel(new CharacterCard.Model(character));
-		setLayout(new BorderLayout());
+    private JLabel textLabel;
+    private CharacterImageDisplay iconDisplay;
 
-		// setBackground(Color.WHITE);
+    /**
+     * Creates a new character card for the given character.
+     * 
+     * @param character The Guess Who character to set on this CharacterCard.
+     */
+    public CharacterCard(GuessWhoCharacter character) {
+        // use our custom model for the button.
+        setModel(new CharacterCard.Model(character));
+        setLayout(new BorderLayout());
 
-		setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        // setBackground(Color.WHITE);
 
-		textLabel = new JLabel(character.getName());
-		textLabel.setHorizontalAlignment(JLabel.CENTER);
+        setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-		iconDisplay = new CharacterImageDisplay(character.getImage());
+        textLabel = new JLabel(character.getName());
+        textLabel.setHorizontalAlignment(JLabel.CENTER);
 
-		add(iconDisplay, BorderLayout.CENTER);
-		add(textLabel, BorderLayout.SOUTH);
-	}
+        iconDisplay = new CharacterImageDisplay(character.getImage());
 
-	/**
-	 * Sets the "crossed out status" for this character card.
-	 * @param value the crossed out status to set.
-	 * @see CharacterImageDisplay#setCrossedOut(boolean)
-	 */
-	public void setCrossedOut(boolean value) {
-		iconDisplay.setCrossedOut(value);
-	}
+        add(iconDisplay, BorderLayout.CENTER);
+        add(textLabel, BorderLayout.SOUTH);
+    }
 
-	/**
-	 * Returns the character that this character card displays.
-	 * @return the character being displayed
-	 */
-	public GuessWhoCharacter getCharacter() {
-		// The character is stored in the model now, so we need to get it from there.
-		return ((CharacterCard.Model) getModel()).getCharacter();
-	}
+    /**
+     * Sets the "crossed out status" for this character card.
+     * 
+     * @param value the crossed out status to set.
+     * @see CharacterImageDisplay#setCrossedOut(boolean)
+     */
+    public void setCrossedOut(boolean value) {
+        iconDisplay.setCrossedOut(value);
+    }
 
-	
+    /**
+     * Returns the character that this character card displays.
+     * 
+     * @return the character being displayed
+     */
+    public GuessWhoCharacter getCharacter() {
+        // The character is stored in the model now, so we need to get it from there.
+        return ((CharacterCard.Model) getModel()).getCharacter();
+    }
+
 }
