@@ -185,28 +185,30 @@ public class GamePanel extends JPanel {
 		int charRemainingP1 = state.getPlayer2().getRemainingIndexes().cardinality();
 		int charRemainingP2 = state.getPlayer1().getRemainingIndexes().cardinality();
 
+		//If there is no character to be selected (aka someone anwsered something wrong)
 		if (charRemainingP1 == 0 || charRemainingP2 == 0){
 			long winTime = System.currentTimeMillis() - startTime;
 			if (state.getPlayer1Turn()){
-				history.setIsWinnerP1(true);
-			}
-			else{
 				history.setIsWinnerP1(false);
 			}
+			else{
+				history.setIsWinnerP1(true);
+			}
+			//setting sercret character for ai
+			if (state.getPlayer1().isHuman() == false ) {
+				AIPlayer aiPlayer1 = (AIPlayer) state.getPlayer1();
+				history.setP1Secret(aiPlayer1.getSecret());
+			}
+			if (state.getPlayer2().isHuman() == false ) {
+				AIPlayer aiPlayer2 = (AIPlayer) state.getPlayer2();
+				history.setP2Secret(aiPlayer2.getSecret());
+			}
 
-			main.getLeaderboard().addEntry(new GameResult(
-				// player name
-				state.getPlayer1().getName(),
-				// played against smart AI?
-				state.getPlayer2() instanceof SmartAIPlayer,
-				// number of turns
-				history.getTurnCount(),
-				// win time
-				winTime));
-
-			computeStatistics(false);
+			history.setP1IsAI(!(state.getPlayer1().isHuman()));
+			history.setP2IsAI(!(state.getPlayer2().isHuman()));
+	
 			history.setWinTime(winTime);
-			computeStatistics(false);
+			//computeStatistics(false);
 			main.showlogicalConScreen(history);
 			System.out.println("yo");
 			return true;
