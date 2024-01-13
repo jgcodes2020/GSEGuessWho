@@ -122,6 +122,10 @@ public class SettingsPanel extends JPanel {
 	private void onSfxVolumeChange(ChangeEvent e) {
 		// slider's range is [0, 100], map to [0, 1]
 		SoundEffects.setVolume(sfxVolume.getValue() / 100.0);
+		if (!sfxVolume.getValueIsAdjusting()) {
+			// QoL: play ding so user knows how their sound is doing
+			SoundEffects.playClip("ding.wav");
+		}
 	}
 	
 	/**
