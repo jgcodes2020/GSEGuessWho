@@ -21,8 +21,8 @@ import ca.gse.guesswho.views.DialogUtilities;
 import ca.gse.guesswho.views.MainWindow;
 
 /**
- * Main class for the game. Manages the main window, and switches
- * between the various panels that comprise the main layout.
+ * Main class for the game. Manages the main window and preloads various
+ * pieces of data stored within the game files.
  */
 public class GuessWho {
 	private static File getLeaderboardPath() {

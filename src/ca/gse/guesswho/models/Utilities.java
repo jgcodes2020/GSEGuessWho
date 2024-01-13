@@ -95,16 +95,19 @@ public class Utilities {
      * @param list the list to insert
      * @param item the item to insert
      * @param cmp  the comparator to use
+	 * @return the index where the item is after insertion
      */
-    public static <T> void insertIntoSorted(List<T> list, T item, Comparator<T> cmp) {
+    public static <T> int insertIntoSorted(List<T> list, T item, Comparator<T> cmp) {
         // this works like a single pass of insertion sort: put the item at the end
         // and move it to the left until it is greater than the item to its left.
         list.add(item);
-        for (int i = list.size() - 1; i > 0 && cmp.compare(list.get(i - 1), list.get(i)) > 0; i--) {
+		int i;
+        for (i = list.size() - 1; i > 0 && cmp.compare(list.get(i - 1), list.get(i)) > 0; i--) {
             T temp = list.get(i - 1);
             list.set(i - 1, list.get(i));
             list.set(i, temp);
         }
+		return i;
     }
 
     public static <T extends Comparable<T>> void insertIntoSorted(List<T> list, T item) {

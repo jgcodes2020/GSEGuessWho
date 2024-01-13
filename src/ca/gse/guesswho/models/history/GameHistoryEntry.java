@@ -45,6 +45,11 @@ public class GameHistoryEntry {
         return answer;
     }
 
+	/**
+	 * Converts this game history entry into a readable string.
+	 * The format used is {@code Question -> Answer}.
+	 * @return a readable string representing this game history entry
+	 */
     @Override
     public String toString() {
         // example: Is your character male? -> Yes

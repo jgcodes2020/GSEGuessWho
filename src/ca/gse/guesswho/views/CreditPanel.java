@@ -17,6 +17,9 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+/**
+ * Panel showing credits for the game.
+ */
 public class CreditPanel extends JPanel {
 	private static final Font TITLE_FONT = new Font("Dialog", Font.BOLD, 60);
 	private static final Font BUTTON_FONT = new Font("Dialog", Font.BOLD, 20);
@@ -82,7 +85,7 @@ public class CreditPanel extends JPanel {
 		add(bigTitle);
 		add(Box.createVerticalStrut(50));
 
-		// create the "steps"
+		// create the credits lines
 		display = new JLabel(DISPLAY_HTML);
 		display.setFont(BUTTON_FONT);
 		display.setAlignmentX(CENTER_ALIGNMENT); // everything is centered anyways, so yeah.

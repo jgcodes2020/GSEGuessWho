@@ -23,7 +23,8 @@ public class SmartAIPlayer extends AIPlayer {
 	private static BitSet[] questionPatterns = null;
 
 	/**
-	 * Constructs a series of bitmasks
+	 * Constructs a series of bitmasks representing the outcome of each question on
+	 * a full board. This is used to efficiently evaluate questions when making decisions.
 	 */
 	public static void setupQuestionPatterns() {
 		List<QuestionBankEntry> questionBank = DataCaches.getQuestionBank();
@@ -80,9 +81,10 @@ public class SmartAIPlayer extends AIPlayer {
 		// the optimal split will cut our character count in half each time.
 		int halfRemaining = numRemaining / 2;
 
-		// find the best question to ask.
+		// find the best question to ask by linear search.
 		int bestIndex = 0;
 		int bestSplitDiff;
+		// start with index 0.
 		{
 			// compute the set of remaining characters if the answer is yes.
 			BitSet tempBits = (BitSet) questionPatterns[0].clone();
@@ -90,7 +92,7 @@ public class SmartAIPlayer extends AIPlayer {
 			// compute how close to perfectly even the split is.
 			bestSplitDiff = Math.abs(halfRemaining - tempBits.cardinality());
 		}
-
+		// check all the other indices.
 		for (int i = 1; i < questionPatterns.length; i++) {
 			// compute the set of remaining characters if the answer is yes.
 			BitSet tempBits = (BitSet) questionPatterns[i].clone();
@@ -104,7 +106,7 @@ public class SmartAIPlayer extends AIPlayer {
 			}
 		}
 
-		// ask the question
+		// pull the corresponding question from the question bank and ask it.
 		return DataCaches.getQuestionBank().get(bestIndex).getQuestionObject();
 	}
 

@@ -28,6 +28,9 @@ import ca.gse.guesswho.components.CharacterCard;
 import ca.gse.guesswho.models.DataCaches;
 import ca.gse.guesswho.models.GuessWhoCharacter;
 
+/**
+ * Panel for setting up a player vs. AI game.
+ */
 public class GameAISetupPanel extends JPanel {
 	private static final Font TITLE_FONT = new Font("Dialog", Font.BOLD, 60);
 	private static final Font BUTTON_FONT = new Font("Dialog", Font.BOLD, 20);
@@ -61,7 +64,7 @@ public class GameAISetupPanel extends JPanel {
 	}
 
 	/**
-	 * Sets up a game setup panel.
+	 * Sets up a PvC (player vs. computer) game setup panel.
 	 * 
 	 * @param mainWindow the main window to link with this game setup panel
 	 */
@@ -149,9 +152,7 @@ public class GameAISetupPanel extends JPanel {
 		menuButton.setBackground(new Color(0xffffff));
 		add(menuButton);// Add return button
 
-		add(Box.createVerticalStrut(15));
-		// this "vertical glue" fills up extra space at the bottom, the combined
-		// effects of the top and bottom will center everything else in the middle
+		add(Box.createVerticalStrut(15)); // more separation
 
 	}
 
@@ -266,8 +267,7 @@ public class GameAISetupPanel extends JPanel {
 	}
 
 	/**
-	 * Resets the panel so everything will be resets next time the panel is called.
-	 * 
+	 * Resets the panel so everything will be resets next time the panel is shown.
 	 */
 	private void resetPanel() {
 		turnGroup.clearSelection();

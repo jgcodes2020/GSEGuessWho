@@ -21,6 +21,9 @@ import javax.swing.event.ChangeEvent;
 
 import ca.gse.guesswho.sound.SoundEffects;
 
+/**
+ * Panel displaying settings. For now, this is only the music and SFX volume sliders.
+ */
 public class SettingsPanel extends JPanel {
 	private static final Font TITLE_FONT = new Font("Dialog", Font.BOLD, 60);
 	private static final Font BUTTON_FONT = new Font("Dialog", Font.BOLD, 20);

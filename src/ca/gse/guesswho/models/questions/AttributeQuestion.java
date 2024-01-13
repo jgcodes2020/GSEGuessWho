@@ -51,8 +51,8 @@ public class AttributeQuestion extends Question {
 
 	/**
 	 * Determines whether an object is semantically equal to this question; that is,
-	 * it checks
-	 * if the other object asks for the same attribute and value as this question.
+	 * it checks if the other object asks for the same attribute and value as this
+	 * question.
 	 * 
 	 * @return whether the supplied object refers to the same question as this one
 	 */
@@ -65,6 +65,13 @@ public class AttributeQuestion extends Question {
 		return (this.attribute == that.attribute) && (this.checkedValue == that.checkedValue);
 	}
 
+	/**
+	 * Generates a hash code for this question that is consistent with the
+	 * {@link AttributeQuestion#equals(Object)} function. Any attribute question
+	 * will hash to a single value, and it is highly likely for said value to be
+	 * unique.
+	 * @return a hash code for this question.
+	 */
 	@Override
 	public int hashCode() {
 		// We use Java's built-in hash code combiner here as I can't be
@@ -73,6 +80,13 @@ public class AttributeQuestion extends Question {
 		return Objects.hash(attribute, checkedValue);
 	}
 
+	/**
+	 * Returns a human-readable direct representation of the data. This does *not*
+	 * produce any readable question; it does show the indices used for attribute
+	 * and value.
+	 * 
+	 * @return a string showing the attribute index and value
+	 */
 	@Override
 	public String toString() {
 		return String.format("AttributeQuestion {attr=%s, value=%s}", this.attribute, this.checkedValue);

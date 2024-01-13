@@ -42,11 +42,14 @@ public class GameResult {
             throw new IllegalArgumentException("Invalid CSV row: not exactly 4 fields");
 
         // create the object based on the provided parts
-        // (name, is AI smart, turn count, win time)
         return new GameResult(
+				// name
                 parts[0],
+				// is AI smart
                 Boolean.parseBoolean(parts[1]),
+				// turns taken to win
                 Integer.parseInt(parts[2]),
+				// time to win
                 Utilities.stringToMillis(parts[3]));
     }
 
@@ -79,14 +82,18 @@ public class GameResult {
     }
 
     /**
-     * Gets the number of turns taken for this leaderboard entry.
+     * Gets the number of turns taken.
      * 
-     * @return the number of turns
+     * @return the number of turns taken.
      */
     public int getTurnCount() {
         return turnCount;
     }
 
+	/**
+	 * Gets the amount of time taken to win this game.
+	 * @return the amount of time, in milliseconds.
+	 */
     public long getWinTime() {
         return winTime;
     }

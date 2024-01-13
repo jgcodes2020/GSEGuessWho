@@ -11,10 +11,10 @@ import ca.gse.guesswho.models.history.GameHistory;
  */
 public class GameWonEvent extends EventObject {
     GameHistory history;
-    String winner;
+    String winnerName;
 
     /**
-     * Constructs a GameWinnerEvent that represents a game being won.
+     * Constructs a GameWonEvent that represents a game being won.
      * 
      * @param source   the source of the event
      * @param winnerP1 If true, the winner is player 1.
@@ -23,10 +23,11 @@ public class GameWonEvent extends EventObject {
     public GameWonEvent(Object source, GameHistory history) {
         super(source);
         this.history = history;
+		// determine the winner's name
         if (history.getIsWinnerP1()) {
-            winner = history.getP1Name();
+            winnerName = history.getP1Name();
         } else {
-            winner = history.getP2Name();
+            winnerName = history.getP2Name();
         }
     }
 
@@ -39,11 +40,19 @@ public class GameWonEvent extends EventObject {
         return history.getIsWinnerP1();
     }
 
+	/**
+	 * Returns the history associated with this game.
+	 * @return the game history
+	 */
     public GameHistory getHistory() {
         return history;
     }
 
+	/**
+	 * Returns the name of this game's winner
+	 * @return
+	 */
     public String getWinnerName() {
-        return winner;
+        return winnerName;
     }
 }

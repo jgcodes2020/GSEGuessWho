@@ -72,6 +72,13 @@ public class CharacterQuestion extends Question {
 		return this.character == that.character;
 	}
 
+	/**
+	 * Generates a hash code for this question that is consistent with the
+	 * {@link CharacterQuestion#equals(Object)} function. Any character question
+	 * will hash to a single value, and it is highly likely for said value to be
+	 * unique.
+	 * @return a hash code for this question.
+	 */
 	@Override
 	public int hashCode() {
 		// invert and offset the hash code so that the question hashes differently

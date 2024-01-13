@@ -57,7 +57,7 @@ public class GamePvpSetupPanel extends JPanel {
 	}
 
 	/**
-	 * Sets up a game setup panel.
+	 * Sets up a PvP game setup panel.
 	 * 
 	 * @param mainWindow the main window to link with this game setup panel
 	 */

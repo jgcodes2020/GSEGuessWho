@@ -4,12 +4,13 @@ import ca.gse.guesswho.models.Player;
 import ca.gse.guesswho.models.Question;
 
 /**
- * Represents a Human player.
+ * Represents a Human player. Human players must have their questions
+ * and answers fed from an external source, typically the UI.
  */
 public class HumanPlayer extends Player {
     private String name;
+	// questions ans answers
     private Question nextQuestion;
-
     private boolean nextAnswer;
     private boolean hasNextAnswer;
 
@@ -48,7 +49,7 @@ public class HumanPlayer extends Player {
             throw new IllegalStateException("No next question is queued");
 
         Question result = nextQuestion;
-        nextQuestion = null;
+        nextQuestion = null; // remove the queued question
         return result;
     }
 
@@ -73,7 +74,7 @@ public class HumanPlayer extends Player {
     public boolean answerQuestion(Question question) {
         if (!hasNextAnswer)
             throw new IllegalStateException("No next answer is queued");
-        hasNextAnswer = false;
+        hasNextAnswer = false; // "remove" the queued answer
         return nextAnswer;
     }
 

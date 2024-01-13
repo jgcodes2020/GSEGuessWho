@@ -28,6 +28,10 @@ import ca.gse.guesswho.models.GuessWhoCharacter;
 import ca.gse.guesswho.models.history.GameHistory;
 import ca.gse.guesswho.sound.SoundEffects;
 
+/**
+ * Panel displayed to show the winner of a game. Also has a button
+ * to save the game's history; useful for testing and debugging.
+ */
 public class WinScreenPanel extends JPanel {
 	private static final Font TITLE_FONT = new Font("Dialog", Font.BOLD, 60);
 	private static final Font BUTTON_FONT = new Font("Dialog", Font.BOLD, 20);

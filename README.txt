@@ -1,17 +1,18 @@
-GSE Guess Who (WIP)
+GSE Guess Who
 ======================
 Current code can be run by copy-pasting the contents of the source folder into Eclipse.
-Only supports the question asking stuff as of now. We'll un-scuff it next year.
-
-- Jacky G, Winston Z, Chapman Y; Dec. 22, 2023
 
 LEGAL NOTICE
 ================
 jeopardy.mid is a transcription of the main theme from "Jeopardy!"(tm) by Alex Trebek.
 The transcription was made by ear; transcribed into MuseScore and exported as MIDI.
 
+COMMENT EXPLANATIONS
+************************
+Below are explanations of various non-trivial lines of code.
+
 NOTE 1
-----------
+========
 Let X represent whether P1 is answering (equivalently, P2 is asking) (1 if P1 is answering, 0 if not)
 Let Y represent the last answer (1 for yes, 0 for no).
 Let Q represent whether the winner is P1 (1 for P1 win, 0 for P2 win).
@@ -57,7 +58,7 @@ The parts
 ----------
 Days are matched by this: (?:(\d|[1-9]\d+)d\+)?
 This matches optionally:
-    some valid integer without leading zeros (captured), then the string "d+"
+    - some valid integer without leading zeros (captured), then the string "d+"
 Note that + must be escaped because it has another meaning that we don't want.
 
 The hours, minutes and seconds are matched by this: (\d{2}):(\d{2}):(\d{2})
@@ -65,4 +66,6 @@ This matches a pair of digits (captured), then a colon, then another pair of dig
 then another colon, then finally one last pair of digits (captured).
 
 The milliseconds are matched by this: (?:\\.(\d{3}))?
-This optionally matches a period (escaped), followed by 3 digits (captured).
+This optionally matches:
+    - a period (escaped), 
+    - followed by 3 digits (captured).

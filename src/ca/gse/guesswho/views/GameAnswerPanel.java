@@ -7,6 +7,7 @@ Java version: 8
 package ca.gse.guesswho.views;
 
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -25,6 +26,9 @@ import ca.gse.guesswho.models.GuessWhoCharacter;
 import ca.gse.guesswho.models.Question;
 import ca.gse.guesswho.models.players.HumanPlayer;
 
+/**
+ * Subpanel of {@link GamePanel}
+ */
 public class GameAnswerPanel extends JPanel {
 	private static final Font BUTTON_FONT = new Font("Dialog", Font.BOLD, 20);
 	private static final Font PROMPT_FONT = new Font("Dialog", Font.BOLD, 40);
@@ -77,17 +81,19 @@ public class GameAnswerPanel extends JPanel {
 	 * @return a JPanel for the character list.
 	 */
 	private JPanel buildCharList() {
+		// container for all the stuff
 		JPanel realBoard = new JPanel();
-		JPanel charBoard = new JPanel();
+		realBoard.setLayout(new BorderLayout());
+		// title over the character list
 		JLabel instruction = new JLabel("Character List");
-
 		instruction.setFont(BUTTON_FONT);
 		instruction.setHorizontalAlignment(JLabel.CENTER);
-		realBoard.setLayout(new BorderLayout());
+		// the panel containing the cards
+		JPanel charBoard = new JPanel();
 		charBoard.setLayout(new GridLayout(4, 6));
 
+		// load the character grid
 		CharacterCard[] cards;
-
 		final int characterAmt = 24;
 		cards = new CharacterCard[characterAmt];
 
@@ -99,7 +105,7 @@ public class GameAnswerPanel extends JPanel {
 			charBoard.add(cards[i]);
 
 		}
-
+		// add both parts to the container
 		realBoard.add(instruction, BorderLayout.NORTH);
 		realBoard.add(charBoard, BorderLayout.CENTER);
 
@@ -120,18 +126,21 @@ public class GameAnswerPanel extends JPanel {
 	}
 
 	/**
-	 * Internal method. Creates a JPanel for the response bar .
+	 * Internal method. Creates a JPanel for the response bar. This just has
+	 * two buttons for "yes" and "no".
 	 * 
 	 * @return a JPanel for the response bar.
 	 */
 	private JPanel buildResponseBar() {
 		JPanel board = new JPanel();
+		board.setLayout(new FlowLayout());
+		
 		yesButton = new JButton("Yes");
-		noButton = new JButton("No");
-
 		yesButton.addActionListener(this::onResponseClicked);
-		noButton.addActionListener(this::onResponseClicked);
 		yesButton.setFont(BUTTON_FONT);
+		
+		noButton = new JButton("No");
+		noButton.addActionListener(this::onResponseClicked);
 		noButton.setFont(BUTTON_FONT);
 
 		board.add(yesButton);
@@ -139,6 +148,10 @@ public class GameAnswerPanel extends JPanel {
 		return board;
 	}
 
+	/**
+	 * Called when either yes or no is clicked.
+	 * @param e the event being handled
+	 */
 	private void onResponseClicked(ActionEvent e) {
 		Object source = e.getSource();
 		boolean check;

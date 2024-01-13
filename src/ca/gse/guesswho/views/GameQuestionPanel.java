@@ -36,7 +36,7 @@ import ca.gse.guesswho.models.players.HumanPlayer;
 import ca.gse.guesswho.models.questions.CharacterQuestion;
 
 /**
- * A subpanel inside the game panel that prompts the user for a question.
+ * Subpanel of {@link GamePanel} that prompts the user for a question.
  */
 public class GameQuestionPanel extends JPanel {
 	private GamePanel parent;
