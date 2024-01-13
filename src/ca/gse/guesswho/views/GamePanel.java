@@ -85,7 +85,7 @@ public class GamePanel extends JPanel {
 
 		roundLabel = new JLabel("Turn " + state.getTurnCount());
 		textBoard.add(roundLabel, BorderLayout.EAST);
-		
+
 		// questions panel
 		board.add(textBoard, BorderLayout.NORTH);
 		JLabel questions = new JLabel("Questions");
@@ -185,18 +185,18 @@ public class GamePanel extends JPanel {
 			return false;
 		// measure the time now and take that as the win time
 		long winTime = System.currentTimeMillis() - startTime;
-			
+
 		// if we're doing player vs AI and we won, then save a leaderboard entry
 		if (!state.getPlayer2().isHuman() && state.getWinner() == GameState.WINNER_P1) {
 			main.getLeaderboard().addEntry(new GameResult(
-				// player name
-				state.getPlayer1().getName(), 
-				// played against smart AI?
-				state.getPlayer2() instanceof SmartAIPlayer, 
-				// number of turns
-				history.getTurnCount(), 
-				// win time
-				winTime));
+					// player name
+					state.getPlayer1().getName(),
+					// played against smart AI?
+					state.getPlayer2() instanceof SmartAIPlayer,
+					// number of turns
+					history.getTurnCount(),
+					// win time
+					winTime));
 		}
 		// update winner in history
 		boolean isWinnerP1 = state.getWinner() == GameState.WINNER_P1;
@@ -228,6 +228,7 @@ public class GamePanel extends JPanel {
 
 	/**
 	 * Computes various items to be included in the game log.
+	 * 
 	 * @param isForfeit Whether the game was forfeited.
 	 */
 	private void computeStatistics(boolean isForfeit) {
@@ -310,6 +311,7 @@ public class GamePanel extends JPanel {
 
 	/**
 	 * ActionListener updating the timer screen.
+	 * 
 	 * @param e the event being handled.
 	 */
 	private void timeUpdate(ActionEvent e) {
