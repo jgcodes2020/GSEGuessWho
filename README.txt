@@ -1,6 +1,27 @@
 GSE Guess Who
 ======================
-Current code can be run by copy-pasting the contents of the source folder into Eclipse.
+To run this code in Eclipse, create a new Java project, then copy the contents
+of the `src` folder (NOT the `src` folder itself!) into the `src` folder in
+Eclipse. Open `GuessWho.java` to run the program.
+
+PACKAGE LISTING
+================
+ca.gse.guesswho - root package
+- .assets - folder for assets
+  - .characters - image assets for all 24 characters
+  - .music - MIDI files for music
+  - .sfx - Sound effects in .wav format
+- .components - custom components used in the view.
+- .events - event objects. Originally we had an event system for switching panels, 
+  so it's a bit of "legacy code" left behind from then.
+- .models - view-independent models of Guess Who. "Business logic".
+  - .history - classes for recording game history.
+  - .players - subclasses of `ca.gse.guesswho.models.Player` for both human and
+    computer players.
+  - .questions - subclasses of `ca.gse.guesswho.models.Question`.
+- .sound - classes for managing sound effects and music.
+- .views - classes representing discrete units of the GUI.
+
 
 LEGAL NOTICE
 ================
@@ -58,7 +79,7 @@ The parts
 ----------
 Days are matched by this: (?:(\d|[1-9]\d+)d\+)?
 This matches optionally:
-    - some valid integer without leading zeros (captured), then the string "d+"
+  - some valid integer without leading zeros (captured), then the string "d+"
 Note that + must be escaped because it has another meaning that we don't want.
 
 The hours, minutes and seconds are matched by this: (\d{2}):(\d{2}):(\d{2})
@@ -67,5 +88,5 @@ then another colon, then finally one last pair of digits (captured).
 
 The milliseconds are matched by this: (?:\\.(\d{3}))?
 This optionally matches:
-    - a period (escaped), 
-    - followed by 3 digits (captured).
+  - a period (escaped), 
+  - followed by 3 digits (captured).

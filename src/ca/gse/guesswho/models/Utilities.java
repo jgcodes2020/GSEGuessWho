@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
 public class Utilities {
     // This is a regular expression. Regular expressions are very powerful tools for
     // parsing strings,
-    // so this makes my life a bit easier. See note 2 in README for explanation.
+    // so this makes my life a bit easier. See note 2 in README.txt for explanation.
     private static final Pattern TIME_REGEX = Pattern
             .compile("^(?:(\\d|[1-9]\\d+)d\\+)?(\\d{2}):(\\d{2}):(\\d{2})(?:\\.(\\d{3}))?$");
 

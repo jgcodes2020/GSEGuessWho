@@ -135,7 +135,7 @@ public class GameState {
             lastAnswer = currentPlayer.answerQuestion(lastQuestion);
             // final questions either win or lose
             if (lastQuestion.getIsFinal()) {
-                // cool logic thing. see note 1 in README.
+                // cool logic thing. see note 1 in README.txt
                 boolean isP1Winner = isPlayer1Turn ^ lastAnswer;
                 if (isP1Winner) {
                     winner = WINNER_P1;
