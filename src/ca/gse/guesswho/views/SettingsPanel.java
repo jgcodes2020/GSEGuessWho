@@ -148,6 +148,8 @@ public class SettingsPanel extends JPanel {
 	 * @param e release
 	 */
 	private void onSfxVolumeMouseReleased(MouseEvent e) {
+		// sometimes this doesn't play the sound properly. The solution requires more
+		// extra work than I think is worth doing.
 		SoundEffects.playClip("ding.wav");
 	}
 
