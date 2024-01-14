@@ -78,7 +78,7 @@ public class MainWindow extends JFrame {
     public MainWindow(File leaderboardPath) {
         setTitle("Guess Who????????????????????");
         setSize(1440, 1024);
-
+		// set the window icon
         try {
             Image icon = ImageIO.read(getClass().getResource("../assets/guesswhoicon.png"));
             this.setIconImage(icon);

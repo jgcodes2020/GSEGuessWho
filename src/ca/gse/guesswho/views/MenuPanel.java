@@ -51,8 +51,9 @@ public class MenuPanel extends JPanel {
 		add(Box.createVerticalGlue());
 
 		// create the app icon
-		JLabel icon = new JLabel(new ImageIcon("../assets/guesswhoiconlarge.png"));
+		JLabel icon = new JLabel(new ImageIcon(MenuPanel.class.getResource("../assets/guesswhoiconlarge.png")));
 		icon.setAlignmentX(CENTER_ALIGNMENT);
+		icon.setPreferredSize(new Dimension(200, 200));
 		add(icon);
 
 		add(Box.createVerticalStrut(50));
