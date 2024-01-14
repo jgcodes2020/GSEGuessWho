@@ -1,5 +1,5 @@
 /*
-WinScreenPanel.java
+LogicalContradictionPanel.java
 Authors: Jacky Guo, Chapman Yu
 Date: Jan. 11, 2024
 Java version: 8
@@ -90,7 +90,7 @@ public class LogicalContraditionPanel extends JPanel {
 
 		// create the title text (this could be replaced with actual logo art if we
 		// wanted)
-		bigTitle = new JLabel("Logical Contradition!");
+		bigTitle = new JLabel("Logical Contradiction!");
 		bigTitle.setFont(TITLE_FONT);
 		bigTitle.setAlignmentX(CENTER_ALIGNMENT); // everything is centered anyways, so yeah.
 		add(bigTitle);
