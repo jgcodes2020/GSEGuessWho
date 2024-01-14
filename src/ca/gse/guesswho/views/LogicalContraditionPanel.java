@@ -88,20 +88,22 @@ public class LogicalContraditionPanel extends JPanel {
 		// this "vertical glue" fills up extra space at the top
 		add(Box.createVerticalGlue());
 
-		// create the title text (this could be replaced with actual logo art if we
-		// wanted)
+		// create the title text
 		bigTitle = new JLabel("Logical Contradiction!");
 		bigTitle.setFont(TITLE_FONT);
 		bigTitle.setAlignmentX(CENTER_ALIGNMENT); // everything is centered anyways, so yeah.
 		add(bigTitle);
 
+		// spacing
 		add(Box.createVerticalStrut(20));
+		
 		//Showing them what is a logical contraditon is.
 		JLabel smallTitle = new JLabel("A player has answered a question wrong, the game has been stopped.");
 		smallTitle.setFont(BUTTON_FONT);
 		smallTitle.setAlignmentX(CENTER_ALIGNMENT); 
 		add(smallTitle);
-
+		
+		// spacing
 		add(Box.createVerticalStrut(50));
 
 		JButton saveLogButton = createMenuButton("Save game log");

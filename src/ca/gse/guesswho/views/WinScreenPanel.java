@@ -88,15 +88,16 @@ public class WinScreenPanel extends JPanel {
 		// this "vertical glue" fills up extra space at the top
 		add(Box.createVerticalGlue());
 
-		// create the title text (this could be replaced with actual logo art if we
-		// wanted)
+		// create the title text
 		bigTitle = new JLabel("");
 		bigTitle.setFont(TITLE_FONT);
 		bigTitle.setAlignmentX(CENTER_ALIGNMENT); // everything is centered anyways, so yeah.
 		add(bigTitle);
-
+		
+		// spacing
 		add(Box.createVerticalStrut(50));
-
+		
+		// button to save logs
 		JButton saveLogButton = createMenuButton("Save game log");
 		saveLogButton.addActionListener(this::onSaveLogPressed);
 		add(saveLogButton);
